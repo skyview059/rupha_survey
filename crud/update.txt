@@ -1,0 +1,7 @@
+1. Main Route Linking --------
+2. Sidebar Linking -----------
+3. Tab View  or Plain -------- Done
+
+4. Diffrent update page ------ Done
+5. view/table_name ----------- Done 
+
