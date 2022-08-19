@@ -67,6 +67,7 @@ class User extends Admin_controller{
 	    'role_id' => set_value('role_id', 2),
 	    'full_name' => set_value('full_name'),
 	    'email' => set_value('email'),	    
+	    'password' => set_value('password'),	    
 	    'contact' => set_value('contact'),	    	    
 	    'status' => set_value('status'),
 	);
