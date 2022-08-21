@@ -1,280 +1,424 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
- 
+
 /* Author: Khairul Azam
- * Date : 12th Jan, 2022
+ * Date : 2022-08-21
  */
 
-class Member extends Admin_controller{
-    function __construct(){
-        parent::__construct();
-        $this->load->model('Member_model');
-        
-        $this->load->helper('members');
-        $this->load->library('form_validation');
-    }
+class Member extends Admin_controller {
+	function __construct() {
+		parent::__construct();
+		$this->load->model('Member_model');
+		$this->load->helper('member');
+		$this->load->library('form_validation');
+	}
 
-    public function index(){
-        $q = urldecode($this->input->get('q', TRUE));        
-        $balance = ($this->input->get('balance')) ?  $this->input->get('balance') : 'Any';
-        
-        
-        $limit = ($this->input->get('limit')) ? (int)$this->input->get('limit') : 200;
-        $start = intval($this->input->get('start'));
-                         
-        $config['base_url'] = build_pagination_url( Backend_URL . 'member', 'start' );;
-        $config['first_url'] = build_pagination_url( Backend_URL . 'member', 'start' );
-         
-        $config['per_page'] = $limit;
-        $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Member_model->total_rows($q,$balance);
-                
-        $members = $this->Member_model->get_limit_data($config['per_page'], $start, $q,$balance);
-        
-        $this->load->library('pagination');
-        $this->pagination->initialize($config);
+	public function index() {
+		$q = urldecode($this->input->get('q', TRUE));
+		$start = intval($this->input->get('start'));
 
-        $data = array(
-            'members' => $members,
-            'q' => $q,
-            'pagination' => $this->pagination->create_links(),
-            'total_rows' => $config['total_rows'],
-            'start' => $start,            
-            'limit' => $limit,
-            'balance' => $balance            
-        );
-        $this->viewAdminContent('member/member/index', $data);
-    }
-    
-    public function stmt( $id = 0){  
-        
-        $this->db->where('member_id', $id);
-        $stmts = $this->db->get('member_stmt')->result();
-        
-        $member = $row = $this->Member_model->get_by_id($id);
-        
-        $data['name']    = $member->name;                
-        $data['address'] = $member->address;                
-        $data['contact'] = $member->contact;
-        
-        $data['stmts'] = $stmts;                
-        $data['start'] = 0;                
-        $data['id'] = $id;
-                    
-        $this->viewAdminContent('member/member/stmt', $data);
-    }
-               
-    public function profile($id){
-        $row = $this->Member_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-		'id'        => $row->id,		
-		'ref_id'    => $row->ref_id,		
-		'name'      => $row->name,		
-                'photo'     => $row->photo,
-		'contact'   => $row->contact,
-		'address'   => nl2br($row->address),
-		'join_date' => globalDateFormat($row->join_date),		
-		'remark'    => nl2br($row->remark),		
-		'status'    => $row->status,
-	    );
-            $this->viewAdminContent('member/member/profile', $data);
-        } else {
-            $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
-            redirect(site_url( Backend_URL. 'member'));
-        }
-    }
+		$config['base_url'] = build_pagination_url(Backend_URL . 'member/', 'start');
+		$config['first_url'] = build_pagination_url(Backend_URL . 'member/', 'start');
 
-    public function create(){
-        $data = array(
-            'button' => 'Registration',
-            'action' => site_url( Backend_URL . 'member/create_action'),
-	    'id' => set_value('id'),	    	    
-	    'ref_id' => set_value('ref_id'),
-	    'name' => set_value('name'),	    
-	    'contact' => set_value('contact'),
-	    'address' => set_value('address'),
-	    'join_date' => set_value('join_date', date('Y-m-d')),
-	    'remark' => set_value('remark'),	    
-	    'status' => set_value('status', 'Active'),
-	);
-        $this->viewAdminContent('member/member/create', $data);
-    }
-    
-    public function create_action(){
-        $this->_rules();
+		$config['per_page'] = 25;
+		$config['page_query_string'] = TRUE;
+		$config['total_rows'] = $this->Member_model->total_rows($q);
+		$members = $this->Member_model->get_limit_data($config['per_page'], $start, $q);
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        } else {
-            $data = array(
-		'ref_id' => $this->input->post('ref_id',TRUE),		
-		'name' => $this->input->post('name',TRUE),		
-		'contact' => $this->input->post('contact',TRUE),
-		'address' => $this->input->post('address',TRUE),
-		'join_date' => $this->input->post('join_date',TRUE),                
-		'total_dr' => 0,
-		'total_cr' => 0,
-		'balance' => 0,
-		'remark' => $this->input->post('remark',TRUE),	
-		'status' => $this->input->post('status',TRUE),
-	    );
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
 
-            $member_id = $this->Member_model->insert($data);
-            $this->session->set_flashdata('message', '<p class="ajax_success">Member Registration Successfully</p>');
-//            redirect(site_url( Backend_URL. 'member'));
-            redirect(site_url( Backend_URL. 'member/update/'. $member_id ));
-        }
-    }
-    
-    public function update($id){
-        $row = $this->Member_model->get_by_id($id);
+		$data = array(
+			'members' => $members,
+			'q' => $q,
+			'pagination' => $this->pagination->create_links(),
+			'total_rows' => $config['total_rows'],
+			'start' => $start,
+		);
+		$this->viewAdminContent('member/member/index', $data);
+	}
 
-        if ($row) {
-            $data = array(
-                'button' => 'Update',
-                'action' => site_url( Backend_URL . 'member/update_action'),
-		'id' => set_value('id', $row->id),
-		'ref_id' => set_value('ref_id', $row->ref_id),		
-		'name' => set_value('name', $row->name),
-		'photo' => set_value('photo', $row->photo ),
-		'contact' => set_value('contact', $row->contact),
-		'address' => set_value('address', $row->address),
-		'join_date' => set_value('join_date', $row->join_date),
-		'remark' => set_value('remark', $row->remark),		
-		'status' => set_value('status', $row->status),
-	    );
-            $this->viewAdminContent('member/member/update', $data);
-        } else {
-            $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
-            redirect(site_url( Backend_URL. 'member'));
-        }
-    }
-    
-    public function update_action(){
-        $this->_rules();
+	public function read($id) {
+		$row = $this->Member_model->get_by_id($id);
+		if ($row) {
+			$data = array(
+				'id' => $row->id,
+				'union_id' => $row->union_id,
+				'previous_holding_no' => $row->previous_holding_no,
+				'present_holding_no' => $row->present_holding_no,
+				'word_no' => $row->word_no,
+				'village' => $row->village,
+				'khana_chief_name_ba' => $row->khana_chief_name_ba,
+				'khana_chief_name_en' => $row->khana_chief_name_en,
+				'mobile_no' => $row->mobile_no,
+				'avg_annual_income' => $row->avg_annual_income,
+				'father_name' => $row->father_name,
+				'mother_name' => $row->mother_name,
+				'date_of_birth' => $row->date_of_birth,
+				'nid' => $row->nid,
+				'social_security_benefit_id' => $row->social_security_benefit_id,
+				'income_source_id' => $row->income_source_id,
+				'house_members' => $row->house_members,
+				'male' => $row->male,
+				'female' => $row->female,
+				'adult' => $row->adult,
+				'infant' => $row->infant,
+				'tube_well' => $row->tube_well,
+				'latrine' => $row->latrine,
+				'disabled_member_name' => $row->disabled_member_name,
+				'disabled_member_age' => $row->disabled_member_age,
+				'type_of_disability' => $row->type_of_disability,
+				'expatriate_name' => $row->expatriate_name,
+				'country_name' => $row->country_name,
+				'asset_type_id' => $row->asset_type_id,
+				'description' => $row->description,
+				'raw_house' => $row->raw_house,
+				'half_baked_house' => $row->half_baked_house,
+				'paved_house' => $row->paved_house,
+				'type_of_infrastructure' => $row->type_of_infrastructure,
+				'annual_value' => $row->annual_value,
+				'annual_tax_amount' => $row->annual_tax_amount,
+				'created_by' => $row->created_by,
+				'updated_by' => $row->updated_by,
+				'created_at' => $row->created_at,
+				'updated_at' => $row->updated_at,
+			);
+			$this->viewAdminContent('member/member/read', $data);
+		} else {
+			$this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
+			redirect(site_url(Backend_URL . 'member'));
+		}
+	}
 
-        $id = $this->input->post('id', TRUE);
-        if ($this->form_validation->run() == FALSE) {
-            $this->update( $id );
-        } else {
-            $path  = 'uploads/members/' . date('Y/m/');
-            $name  = uniqid();
-            $photo = uploadPhoto($_FILES['photo'], $path, $name);
-            if(empty($photo)){
-                $photo = $this->input->post('old_photo',TRUE);
-            }
-            
-            $data = array(
-		'ref_id' => $this->input->post('ref_id',TRUE),		
-		'name' => $this->input->post('name',TRUE),                
-                'photo'   => $photo,		
-		'contact' => $this->input->post('contact',TRUE),
-		'address' => $this->input->post('address',TRUE),
-		'join_date' => $this->input->post('join_date',TRUE),
-		'remark' => $this->input->post('remark',TRUE),	
-		'status' => $this->input->post('status',TRUE),
-	    );
+	public function create() {
+		$data = array(
+			'button' => 'Create',
+			'action' => site_url(Backend_URL . 'member/create_action'),
+			'id' => set_value('id'),
+			'union_id' => set_value('union_id'),
+			'previous_holding_no' => set_value('previous_holding_no'),
+			'present_holding_no' => set_value('present_holding_no'),
+			'word_no' => set_value('word_no'),
+			'village' => set_value('village'),
+			'khana_chief_name_ba' => set_value('khana_chief_name_ba'),
+			'khana_chief_name_en' => set_value('khana_chief_name_en'),
+			'mobile_no' => set_value('mobile_no'),
+			'avg_annual_income' => set_value('avg_annual_income'),
+			'father_name' => set_value('father_name'),
+			'mother_name' => set_value('mother_name'),
+			'date_of_birth' => set_value('date_of_birth'),
+			'nid' => set_value('nid'),
 
-            $this->Member_model->update($id, $data);
-            $this->session->set_flashdata('message', '<p class="ajax_success">Member Updated Successlly</p>');
-            redirect(site_url( Backend_URL. 'member/update/'. $id ));
-        }
-    }
+			'social_security_benefit_id' => set_value('social_security_benefit_id'),
+			'income_source_id' => set_value('income_source_id'),
+			'house_members' => set_value('house_members'),
+			'male' => set_value('male'),
+			'female' => set_value('female'),
+			'adult' => set_value('adult'),
+			'infant' => set_value('infant'),
+			'tube_well' => set_value('tube_well'),
+			'latrine' => set_value('latrine'),
+			'disabled_member_name' => set_value('disabled_member_name'),
+			'disabled_member_age' => set_value('disabled_member_age'),
+			'type_of_disability' => set_value('type_of_disability'),
+			'expatriate_name' => set_value('expatriate_name'),
+			'country_name' => set_value('country_name'),
+			'asset_type_id' => set_value('asset_type_id'),
+			'description' => set_value('description'),
+			'raw_house' => set_value('raw_house'),
+			'half_baked_house' => set_value('half_baked_house'),
+			'paved_house' => set_value('paved_house'),
+			'type_of_infrastructure' => set_value('type_of_infrastructure'),
+			'annual_value' => set_value('annual_value'),
+			'annual_tax_amount' => set_value('annual_tax_amount'),
 
-    public function delete($id){
-        $row = $this->Member_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-		'id' => $row->id,
-		'ref_id' => $row->ref_id,
-		'name' => $row->name,		
-		'contact' => $row->contact,
-		'address' => $row->address,
-		'join_date' => globalDateFormat($row->join_date),
-		'remark' => nl2br($row->remark),	
-		'status' => $row->status,
-		'bill_record' => $this->check_before_delete( $id ),		
-		'force' => ($this->role_id == 1) ? true : false,
-	    );
-            $this->viewAdminContent('member/member/delete', $data);
-        } else {
-            $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
-            redirect(site_url( Backend_URL. 'member'));
-        }
-    }
+		);
+		$this->viewAdminContent('member/member/create', $data);
+	}
 
-    private function check_before_delete( $id = 0 ){
-        $this->db->where('member_id', $id );
-        return $this->db->count_all_results('member_stmt');
-    }
+	public function create_action() {
+		$this->_rules();
 
-    public function delete_action($id){
-        $row = $this->Member_model->get_by_id($id);
+		if ($this->form_validation->run() == FALSE) {
+			$this->create();
+		} else {
+			$data = array(
+				'union_id' => $this->input->post('union_id', TRUE),
+				'previous_holding_no' => $this->input->post('previous_holding_no', TRUE),
+				'present_holding_no' => $this->input->post('present_holding_no', TRUE),
+				'word_no' => $this->input->post('word_no', TRUE),
+				'village' => $this->input->post('village', TRUE),
+				'khana_chief_name_ba' => $this->input->post('khana_chief_name_ba', TRUE),
+				'khana_chief_name_en' => $this->input->post('khana_chief_name_en', TRUE),
+				'mobile_no' => $this->input->post('mobile_no', TRUE),
+				'avg_annual_income' => $this->input->post('avg_annual_income', TRUE),
+				'father_name' => $this->input->post('father_name', TRUE),
+				'mother_name' => $this->input->post('mother_name', TRUE),
+				'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+				'nid' => $this->input->post('nid', TRUE),
+				'social_security_benefit_id' => $this->input->post('social_security_benefit_id', TRUE),
+				'income_source_id' => $this->input->post('income_source_id', TRUE),
+				'house_members' => $this->input->post('house_members', TRUE),
+				'male' => $this->input->post('male', TRUE),
+				'female' => $this->input->post('female', TRUE),
+				'adult' => $this->input->post('adult', TRUE),
+				'infant' => $this->input->post('infant', TRUE),
+				'tube_well' => $this->input->post('tube_well', TRUE),
+				'latrine' => $this->input->post('latrine', TRUE),
+				'disabled_member_name' => $this->input->post('disabled_member_name', TRUE),
+				'disabled_member_age' => $this->input->post('disabled_member_age', TRUE),
+				'type_of_disability' => $this->input->post('type_of_disability', TRUE),
+				'expatriate_name' => $this->input->post('expatriate_name', TRUE),
+				'country_name' => $this->input->post('country_name', TRUE),
+				'asset_type_id' => $this->input->post('asset_type_id', TRUE),
+				'description' => $this->input->post('description', TRUE),
+				'raw_house' => $this->input->post('raw_house', TRUE),
+				'half_baked_house' => $this->input->post('half_baked_house', TRUE),
+				'paved_house' => $this->input->post('paved_house', TRUE),
+				'type_of_infrastructure' => $this->input->post('type_of_infrastructure', TRUE),
+				'annual_value' => $this->input->post('annual_value', TRUE),
+				'annual_tax_amount' => $this->input->post('annual_tax_amount', TRUE),
+				'created_by' => $this->user_id,
+				'created_at' => date('Y-m-d H:i:s'),
+			);
 
-        $bill_count = $this->check_before_delete( $id );
-        if($bill_count){
-            $this->session->set_flashdata('message', '<p class="ajax_error">This member has '.$bill_count.' bill record(s). So \'Delete\' is not accept</p>');
-            redirect(site_url( Backend_URL. 'member'));
-        }
-        
-        
-        if ($row) {
-            $this->Member_model->delete($id);
-            $this->session->set_flashdata('message', '<p class="ajax_success">Member Deleted Successfully</p>');
-            redirect(site_url( Backend_URL. 'member'));
-        } else {
-            $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
-            redirect(site_url( Backend_URL. 'member'));
-        }
-    }
-    
-    public function force_delete($id){
-        
-        $row = $this->Member_model->get_by_id($id);
-        if($row){
-            $this->db->where('member_id', $id);
-            $this->db->delete('member_stmt');
+			$this->Member_model->insert($data);
+			$this->session->set_flashdata('message', '<p class="ajax_success">Member Added Successfully</p>');
+			redirect(site_url(Backend_URL . 'member'));
+		}
+	}
 
-            $this->Member_model->delete($id);
-            $this->session->set_flashdata('message', '<p class="ajax_success">Member Forced Deleted Successfully Will Bills</p>');
-        } else {
-            $this->session->set_flashdata('message', '<p class="ajax_success">Member not found to delete</p>');
-        }
-        redirect(site_url( Backend_URL. 'member'));
-    }
-    
+	public function update($id) {
+		$row = $this->Member_model->get_by_id($id);
 
-    public function _menu(){
-        return add_main_menu('Member', 'member', 'member', 'fa-gear');
-        /*
-        return buildMenuForMoudle([
-            'module'    => 'Member',
-            'icon'      => 'fa-hand-o-right',
-            'href'      => 'member',                    
-            'children'  => [
-                [
-                    'title' => 'All Member',
-                    'icon'  => 'fa fa-bars',
-                    'href'  => 'member'
-                ],[
-                    'title' => 'Member Group',
-                    'icon'  => 'fa fa-plus',
-                    'href'  => 'member/group'
-                ]
-            ]        
-        ]);
-         * 
-         */
-    }
+		if ($row) {
+			$data = array(
+				'button' => 'Update',
+				'action' => site_url(Backend_URL . 'member/update_action'),
+				'id' => set_value('id', $row->id),
+				'union_id' => set_value('union_id', $row->union_id),
+				'previous_holding_no' => set_value('previous_holding_no', $row->previous_holding_no),
+				'present_holding_no' => set_value('present_holding_no', $row->present_holding_no),
+				'word_no' => set_value('word_no', $row->word_no),
+				'village' => set_value('village', $row->village),
+				'khana_chief_name_ba' => set_value('khana_chief_name_ba', $row->khana_chief_name_ba),
+				'khana_chief_name_en' => set_value('khana_chief_name_en', $row->khana_chief_name_en),
+				'mobile_no' => set_value('mobile_no', $row->mobile_no),
+				'avg_annual_income' => set_value('avg_annual_income', $row->avg_annual_income),
+				'father_name' => set_value('father_name', $row->father_name),
+				'mother_name' => set_value('mother_name', $row->mother_name),
+				'date_of_birth' => set_value('date_of_birth', $row->date_of_birth),
+				'social_security_benefit_id' => set_value('social_security_benefit_id', $row->social_security_benefit_id),
+				'income_source_id' => set_value('income_source_id', $row->income_source_id),
+				'house_members' => set_value('house_members', $row->house_members),
+				'male' => set_value('male', $row->male),
+				'female' => set_value('female', $row->female),
+				'adult' => set_value('adult', $row->adult),
+				'infant' => set_value('infant', $row->infant),
+				'tube_well' => set_value('tube_well', $row->tube_well),
+				'latrine' => set_value('latrine', $row->latrine),
+				'disabled_member_name' => set_value('disabled_member_name', $row->disabled_member_name),
+				'disabled_member_age' => set_value('disabled_member_age', $row->disabled_member_age),
+				'type_of_disability' => set_value('type_of_disability', $row->type_of_disability),
+				'expatriate_name' => set_value('expatriate_name', $row->expatriate_name),
+				'country_name' => set_value('country_name', $row->country_name),
+				'asset_type_id' => set_value('asset_type_id', $row->asset_type_id),
+				'description' => set_value('description', $row->description),
+				'raw_house' => set_value('raw_house', $row->raw_house),
+				'half_baked_house' => set_value('half_baked_house', $row->half_baked_house),
+				'paved_house' => set_value('paved_house', $row->paved_house),
+				'type_of_infrastructure' => set_value('type_of_infrastructure', $row->type_of_infrastructure),
+				'annual_value' => set_value('annual_value', $row->annual_value),
+				'annual_tax_amount' => set_value('annual_tax_amount', $row->annual_tax_amount),
+				'updated_by' => $this->user_id,
+				'updated_at' => date('Y-m-d H:i:s'),
+			);
+			$this->viewAdminContent('member/member/update', $data);
+		} else {
+			$this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
+			redirect(site_url(Backend_URL . 'member'));
+		}
+	}
 
-    public function _rules(){	
-	$this->form_validation->set_rules('ref_id', ' ref id', 'trim|required');	
-	$this->form_validation->set_rules('name', ' name', 'trim|required');		
-	$this->form_validation->set_rules('contact', 'contact', 'trim|min_length[11]|max_length[11]');
-		
-	$this->form_validation->set_rules('join_date', 'join date', 'trim|required');	
-	
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
-    }
+	public function update_action() {
+		$this->_rules();
+
+		$id = $this->input->post('id', TRUE);
+		if ($this->form_validation->run() == FALSE) {
+			$this->update($id);
+		} else {
+			$data = array(
+				'union_id' => $this->input->post('union_id', TRUE),
+				'previous_holding_no' => $this->input->post('previous_holding_no', TRUE),
+				'present_holding_no' => $this->input->post('present_holding_no', TRUE),
+				'word_no' => $this->input->post('word_no', TRUE),
+				'village' => $this->input->post('village', TRUE),
+				'khana_chief_name_ba' => $this->input->post('khana_chief_name_ba', TRUE),
+				'khana_chief_name_en' => $this->input->post('khana_chief_name_en', TRUE),
+				'mobile_no' => $this->input->post('mobile_no', TRUE),
+				'avg_annual_income' => $this->input->post('avg_annual_income', TRUE),
+				'father_name' => $this->input->post('father_name', TRUE),
+				'mother_name' => $this->input->post('mother_name', TRUE),
+				'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+				'social_security_benefit_id' => $this->input->post('social_security_benefit_id', TRUE),
+				'income_source_id' => $this->input->post('income_source_id', TRUE),
+				'house_members' => $this->input->post('house_members', TRUE),
+				'male' => $this->input->post('male', TRUE),
+				'female' => $this->input->post('female', TRUE),
+				'adult' => $this->input->post('adult', TRUE),
+				'infant' => $this->input->post('infant', TRUE),
+				'tube_well' => $this->input->post('tube_well', TRUE),
+				'latrine' => $this->input->post('latrine', TRUE),
+				'disabled_member_name' => $this->input->post('disabled_member_name', TRUE),
+				'disabled_member_age' => $this->input->post('disabled_member_age', TRUE),
+				'type_of_disability' => $this->input->post('type_of_disability', TRUE),
+				'expatriate_name' => $this->input->post('expatriate_name', TRUE),
+				'country_name' => $this->input->post('country_name', TRUE),
+				'asset_type_id' => $this->input->post('asset_type_id', TRUE),
+				'description' => $this->input->post('description', TRUE),
+				'raw_house' => $this->input->post('raw_house', TRUE),
+				'half_baked_house' => $this->input->post('half_baked_house', TRUE),
+				'paved_house' => $this->input->post('paved_house', TRUE),
+				'type_of_infrastructure' => $this->input->post('type_of_infrastructure', TRUE),
+				'annual_value' => $this->input->post('annual_value', TRUE),
+				'annual_tax_amount' => $this->input->post('annual_tax_amount', TRUE),
+				'created_by' => $this->input->post('created_by', TRUE),
+				'updated_by' => $this->input->post('updated_by', TRUE),
+				'created_at' => $this->input->post('created_at', TRUE),
+				'updated_at' => $this->input->post('updated_at', TRUE),
+			);
+
+			$this->Member_model->update($id, $data);
+			$this->session->set_flashdata('message', '<p class="ajax_success">Member Updated Successlly</p>');
+			redirect(site_url(Backend_URL . 'member/update/' . $id));
+		}
+	}
+
+	public function delete($id) {
+		$row = $this->Member_model->get_by_id($id);
+		if ($row) {
+			$data = array(
+				'id' => $row->id,
+				'union_id' => $row->union_id,
+				'previous_holding_no' => $row->previous_holding_no,
+				'present_holding_no' => $row->present_holding_no,
+				'word_no' => $row->word_no,
+				'village' => $row->village,
+				'khana_chief_name_ba' => $row->khana_chief_name_ba,
+				'khana_chief_name_en' => $row->khana_chief_name_en,
+				'mobile_no' => $row->mobile_no,
+				'avg_annual_income' => $row->avg_annual_income,
+				'father_name' => $row->father_name,
+				'mother_name' => $row->mother_name,
+				'date_of_birth' => $row->date_of_birth,
+				'social_security_benefit_id' => $row->social_security_benefit_id,
+				'income_source_id' => $row->income_source_id,
+				'house_members' => $row->house_members,
+				'male' => $row->male,
+				'female' => $row->female,
+				'adult' => $row->adult,
+				'infant' => $row->infant,
+				'tube_well' => $row->tube_well,
+				'latrine' => $row->latrine,
+				'disabled_member_name' => $row->disabled_member_name,
+				'disabled_member_age' => $row->disabled_member_age,
+				'type_of_disability' => $row->type_of_disability,
+				'expatriate_name' => $row->expatriate_name,
+				'country_name' => $row->country_name,
+				'asset_type_id' => $row->asset_type_id,
+				'description' => $row->description,
+				'raw_house' => $row->raw_house,
+				'half_baked_house' => $row->half_baked_house,
+				'paved_house' => $row->paved_house,
+				'type_of_infrastructure' => $row->type_of_infrastructure,
+				'annual_value' => $row->annual_value,
+				'annual_tax_amount' => $row->annual_tax_amount,
+				'created_by' => $row->created_by,
+				'updated_by' => $row->updated_by,
+				'created_at' => $row->created_at,
+				'updated_at' => $row->updated_at,
+			);
+			$this->viewAdminContent('member/member/delete', $data);
+		} else {
+			$this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
+			redirect(site_url(Backend_URL . 'member'));
+		}
+	}
+
+	public function delete_action($id) {
+		$row = $this->Member_model->get_by_id($id);
+
+		if ($row) {
+			$this->Member_model->delete($id);
+			$this->session->set_flashdata('message', '<p class="ajax_success">Member Deleted Successfully</p>');
+			redirect(site_url(Backend_URL . 'member'));
+		} else {
+			$this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
+			redirect(site_url(Backend_URL . 'member'));
+		}
+	}
+
+	public function _menu() {
+		// return add_main_menu('Member', 'member', 'member', 'fa-hand-o-right');
+		return buildMenuForMoudle([
+			'module' => 'Member',
+			'icon' => 'fa-hand-o-right',
+			'href' => 'member',
+			'children' => [
+				[
+					'title' => 'All Member',
+					'icon' => 'fa fa-bars',
+					'href' => 'member',
+				], [
+					'title' => ' |_ Add New',
+					'icon' => 'fa fa-plus',
+					'href' => 'member/create',
+				],
+			],
+		]);
+	}
+
+	public function _rules() {
+		$this->form_validation->set_rules('union_id', 'union id', 'trim|required|numeric');
+		$this->form_validation->set_rules('previous_holding_no', 'previous holding no', 'trim|required');
+		$this->form_validation->set_rules('present_holding_no', 'present holding no', 'trim|required');
+		$this->form_validation->set_rules('word_no', 'word no', 'trim|required');
+		$this->form_validation->set_rules('village', 'village', 'trim|required');
+		$this->form_validation->set_rules('khana_chief_name_ba', 'khana chief name ba', 'trim|required');
+		$this->form_validation->set_rules('khana_chief_name_en', 'khana chief name en', 'trim|required');
+		$this->form_validation->set_rules('mobile_no', 'mobile no', 'trim|required');
+		$this->form_validation->set_rules('avg_annual_income', 'avg annual income', 'trim|required|numeric');
+		$this->form_validation->set_rules('father_name', 'father name', 'trim|required');
+		$this->form_validation->set_rules('mother_name', 'mother name', 'trim|required');
+		$this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required');
+		$this->form_validation->set_rules('social_security_benefit_id', 'social security benefit id', 'trim|required|numeric');
+		$this->form_validation->set_rules('income_source_id', 'income source id', 'trim|required|numeric');
+		$this->form_validation->set_rules('house_members', 'house members', 'trim|required');
+		$this->form_validation->set_rules('male', 'male', 'trim|required');
+		$this->form_validation->set_rules('female', 'female', 'trim|required');
+		$this->form_validation->set_rules('adult', 'adult', 'trim|required');
+		$this->form_validation->set_rules('infant', 'infant', 'trim|required');
+		$this->form_validation->set_rules('tube_well', 'tube well', 'trim|required');
+		$this->form_validation->set_rules('latrine', 'latrine', 'trim|required');
+		$this->form_validation->set_rules('disabled_member_name', 'disabled member name', 'trim|required');
+		$this->form_validation->set_rules('disabled_member_age', 'disabled member age', 'trim|required');
+		$this->form_validation->set_rules('type_of_disability', 'type of disability', 'trim|required');
+		$this->form_validation->set_rules('expatriate_name', 'expatriate name', 'trim|required');
+		$this->form_validation->set_rules('country_name', 'country name', 'trim|required');
+		$this->form_validation->set_rules('asset_type_id', 'asset type id', 'trim|required|numeric');
+		$this->form_validation->set_rules('description', 'description', 'trim|required');
+		$this->form_validation->set_rules('raw_house', 'raw house', 'trim|required|numeric');
+		$this->form_validation->set_rules('half_baked_house', 'half baked house', 'trim|required|numeric');
+		$this->form_validation->set_rules('paved_house', 'paved house', 'trim|required|numeric');
+		$this->form_validation->set_rules('type_of_infrastructure', 'type of infrastructure', 'trim|required');
+		$this->form_validation->set_rules('annual_value', 'annual value', 'trim|required|numeric');
+		$this->form_validation->set_rules('annual_tax_amount', 'annual tax amount', 'trim|required|numeric');
+		$this->form_validation->set_rules('created_by', 'created by', 'trim|required|numeric');
+		$this->form_validation->set_rules('updated_by', 'updated by', 'trim|required|numeric');
+		$this->form_validation->set_rules('created_at', 'created at', 'trim|required');
+		$this->form_validation->set_rules('updated_at', 'updated at', 'trim|required');
+
+		$this->form_validation->set_rules('id', 'id', 'trim');
+		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+	}
+
 }

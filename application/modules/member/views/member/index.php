@@ -1,107 +1,142 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <section class="content-header">
-    <h1> Member  <small>Control panel</small> 
-        
-        <?php echo anchor(site_url(Backend_URL . 'member/create'), '<i class="fa fa-user-plus"></i> New Registration', 'class="btn btn-default"'); ?> </h1>
+    <h1> Member  <small>Control panel</small> <?php echo anchor(site_url( Backend_URL . 'member/create'),' + Add New', 'class="btn btn-default"'); ?> </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo site_url(Backend_URL) ?>"><i class="fa fa-dashboard"></i> Admin</a></li>
-        <li class="active">Member</li>
+        <li><a href="<?php echo site_url( Backend_URL )?>"><i class="fa fa-dashboard"></i> Admin</a></li>
+	<li class="active">Member</li>
     </ol>
 </section>
 
 <section class="content">       
     <div class="box">            
-        <div class="box-header with-border">
-             
-            <form action="<?php echo site_url(Backend_URL . 'member'); ?>" class="form-inline" method="get">
-                <div class="input-group">
-                    <span class="input-group-addon"> Limit</span>
-                    <select name="limit" class="form-control">
-                        <?php echo numericDropDown(50,500,100, $limit );?>
-                    </select>                            
-                </div>
-                
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Keyword" name="q" value="<?php echo $q; ?>">
-                    <span class="input-group-btn">                                                                                                
-                        <button class="btn btn-primary" type="submit">Search</button>
-                        <a href="<?php echo site_url(Backend_URL . 'member'); ?>" class="btn btn-default">Reset</a>
-                    </span>
-                </div>
-            </form>
-                 
+        <div class="box-header with-border">                                   
+            <div class="col-md-3 col-md-offset-9 text-right">
+                <form action="<?php echo site_url( Backend_URL .'member'); ?>" class="form-inline" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
+                        <span class="input-group-btn">
+                            <?php if ($q <> '') { ?>
+                                <a href="<?php echo site_url( Backend_URL .'member'); ?>" class="btn btn-default">Reset</a>
+                            <?php } ?>
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="box-body">                        
+    
+        <div class="box-body">
             <?php echo $this->session->flashdata('message'); ?>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered table-condensed">
-                    <thead>
-                        <tr>                            
-                            <th width="40">Ref.ID</th>                            
-                            <th width="50">Picture</th>
-                            <th>Name</th>                                                               
-                            <th width="100">Contact</th>
-                            <th width="100" class="text-right">Withdraw &nbsp;</th>
-                            <th width="100" class="text-right text-green">Deposit &nbsp;</th>
-                            <th width="100" class="text-right text-red">Balance &nbsp;</th>
-                            <th width="90" class="text-right">Joined</th>                            
-                            <th width="150" class="text-center">Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php 
-                        
-                        $t_dr = $t_cr = 0;
-                        
-                        foreach ($members as $m) {                            
-                            $t_dr += $m->dr_tk;
-                            $t_cr += $m->cr_tk;
-                            ?>
-                            <tr>
-                                <td><?php echo memberID($m->ref_id); ?></td>                                
-                                <td><img src="<?php echo getPhoto($m->photo); ?>" class="img-responsive img-circle"></td>                                        
-                                <td>
-                                    <?php 
-                                echo anchor(
-                                        site_url(Backend_URL . 'member/profile/' . $m->id), $m->name . ' &nbsp;<i class="fa fa-external-link"></i>' );
-                                
-                                ?>
-                                </td>                                
-                                
-                                <td><?php echo bdContactNumber($m->contact); ?></td>                                
-                                <td class="text-right"><?php echo BDT($m->dr_tk); ?></td>
-                                <td class="text-right"><?php echo BDT($m->cr_tk); ?></td>                                
-                                <td class="text-right text-green text-bold"><?php echo BDT($m->dr_tk - $m->cr_tk); ?></td>                                
-                                <td class="text-right"><?php echo globalDateFormat($m->join_date); ?></td>                                
-                                <td class="text-center">
-                                    <?php
-                                    echo anchor(site_url(Backend_URL . 'member/stmt/' . $m->id), '<i class="fa fa-fw fa-bars"></i> Bills &#2547; ', 'class="btn btn-xs btn-primary"');
-                                    echo anchor(site_url(Backend_URL . 'member/update/' . $m->id), '<i class="fa fa-fw fa-edit"></i> Edit', 'class="btn btn-xs btn-warning"');                                    
-                                    ?>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
+            <table class="table table-hover table-condensed">
+                <thead>
                     <tr>
-                        <th class="text-right" colspan="4">Total = </th>
-                        <th class="text-right"><?php echo BDT($t_dr); ?></th>
-                        <th class="text-right"><?php echo BDT($t_cr); ?></th>
-                        <th class="text-right"><?php //echo BDT($t_paid); ?></th>
-                        <th class="text-right"></th>
-                        <th></th>                        
+                    	<th width="40">S/L</th>
+		<th>Union Id</th>
+		<th>Previous Holding No</th>
+		<th>Present Holding No</th>
+		<th>Word No</th>
+		<th>Village</th>
+		<th>Khana Chief Name Ba</th>
+		<th>Khana Chief Name En</th>
+		<th>Mobile No</th>
+		<th>Avg Annual Income</th>
+		<th>Father Name</th>
+		<th>Mother Name</th>
+		<th>Date Of Birth</th>
+		<th>Social Security Benefit Id</th>
+		<th>Income Source Id</th>
+		<th>House Members</th>
+		<th>Male</th>
+		<th>Female</th>
+		<th>Adult</th>
+		<th>Infant</th>
+		<th>Tube Well</th>
+		<th>Latrine</th>
+		<th>Disabled Member Name</th>
+		<th>Disabled Member Age</th>
+		<th>Type Of Disability</th>
+		<th>Expatriate Name</th>
+		<th>Country Name</th>
+		<th>Asset Type Id</th>
+		<th>Description</th>
+		<th>Raw House</th>
+		<th>Half Baked House</th>
+		<th>Paved House</th>
+		<th>Type Of Infrastructure</th>
+		<th>Annual Value</th>
+		<th>Annual Tax Amount</th>
+		<th>Created By</th>
+		<th>Updated By</th>
+		<th>Created At</th>
+		<th>Updated At</th>
+		<th width="200">Action</th>
                     </tr>
+                </thead>
+
+                <tbody>
+	<?php foreach ($members as $member) { ?>
+                    <tr>
+		<td><?php echo ++$start ?></td>
+		<td><?php echo $member->union_id; ?></td>
+		<td><?php echo $member->previous_holding_no; ?></td>
+		<td><?php echo $member->present_holding_no; ?></td>
+		<td><?php echo $member->word_no; ?></td>
+		<td><?php echo $member->village; ?></td>
+		<td><?php echo $member->khana_chief_name_ba; ?></td>
+		<td><?php echo $member->khana_chief_name_en; ?></td>
+		<td><?php echo $member->mobile_no; ?></td>
+		<td><?php echo $member->avg_annual_income; ?></td>
+		<td><?php echo $member->father_name; ?></td>
+		<td><?php echo $member->mother_name; ?></td>
+		<td><?php echo $member->date_of_birth; ?></td>
+		<td><?php echo $member->social_security_benefit_id; ?></td>
+		<td><?php echo $member->income_source_id; ?></td>
+		<td><?php echo $member->house_members; ?></td>
+		<td><?php echo $member->male; ?></td>
+		<td><?php echo $member->female; ?></td>
+		<td><?php echo $member->adult; ?></td>
+		<td><?php echo $member->infant; ?></td>
+		<td><?php echo $member->tube_well; ?></td>
+		<td><?php echo $member->latrine; ?></td>
+		<td><?php echo $member->disabled_member_name; ?></td>
+		<td><?php echo $member->disabled_member_age; ?></td>
+		<td><?php echo $member->type_of_disability; ?></td>
+		<td><?php echo $member->expatriate_name; ?></td>
+		<td><?php echo $member->country_name; ?></td>
+		<td><?php echo $member->asset_type_id; ?></td>
+		<td><?php echo $member->description; ?></td>
+		<td><?php echo $member->raw_house; ?></td>
+		<td><?php echo $member->half_baked_house; ?></td>
+		<td><?php echo $member->paved_house; ?></td>
+		<td><?php echo $member->type_of_infrastructure; ?></td>
+		<td><?php echo $member->annual_value; ?></td>
+		<td><?php echo $member->annual_tax_amount; ?></td>
+		<td><?php echo $member->created_by; ?></td>
+		<td><?php echo $member->updated_by; ?></td>
+		<td><?php echo $member->created_at; ?></td>
+		<td><?php echo $member->updated_at; ?></td>
+		<td>
+			<?php 
+			echo anchor(site_url(Backend_URL .'member/read/'.$member->id),'<i class="fa fa-fw fa-external-link"></i> View', 'class="btn btn-xs btn-primary"'); 
+			echo anchor(site_url(Backend_URL .'member/update/'.$member->id),'<i class="fa fa-fw fa-edit"></i> Edit',  'class="btn btn-xs btn-warning"'); 
+			echo anchor(site_url(Backend_URL .'member/delete/'.$member->id),'<i class="fa fa-fw fa-trash"></i> Delete ', 'class="btn btn-xs btn-danger"'); 
+			?>
+		</td>
+                    </tr>
+                <?php } ?>
+                    </tbody>
                 </table>
             </div>
-
-
+        
+        
             <div class="row">                
                 <div class="col-md-6">
-                    <span class="btn btn-primary">Total: <?php echo $total_rows ?></span>
+                    <span class="btn btn-primary">Total Member: <?php echo $total_rows ?></span>
+	    
                 </div>
                 <div class="col-md-6 text-right">
-                    <?php echo $pagination; ?>
+                    <?php echo $pagination ?>
                 </div>                
             </div>
         </div>

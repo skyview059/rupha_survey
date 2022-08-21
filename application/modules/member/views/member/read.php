@@ -1,19 +1,21 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <?php load_module_asset('users','css'); ?>
 <section class="content-header">
-    <h1>Member  <small>Delete</small> </h1>
+    <h1>Member  <small>Read</small> </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url( Backend_URL )?>"><i class="fa fa-dashboard"></i> Admin</a></li>
-	<li><a href="<?php echo Backend_URL ?>member">Member</a></li>
-        <li class="active">Delete</li>
+	<li><a href="<?php echo site_url( Backend_URL .'member' )?>">Member</a></li>
+        <li class="active">Details</li>
     </ol>
 </section>
 
 <section class="content">
-    <?php echo memberTabs($id, 'delete'); ?>
+    <?php echo memberTabs($id, 'read'); ?>
     <div class="box no-border">
+        
         <div class="box-header with-border">
-            <h3 class="box-title">Preview Before Delete</h3>
+            <h3 class="box-title">Details View</h3>
+            <?php echo $this->session->flashdata('message'); ?>
         </div>
         <table class="table table-striped">
 	    <tr><td width="150">Union Id</td><td width="5">:</td><td><?php echo $union_id; ?></td></tr>
@@ -54,8 +56,6 @@
 	    <tr><td width="150">Updated By</td><td width="5">:</td><td><?php echo $updated_by; ?></td></tr>
 	    <tr><td width="150">Created At</td><td width="5">:</td><td><?php echo $created_at; ?></td></tr>
 	    <tr><td width="150">Updated At</td><td width="5">:</td><td><?php echo $updated_at; ?></td></tr>
+	    <tr><td></td><td></td><td><a href="<?php echo site_url( Backend_URL .'member') ?>" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Back</a><a href="<?php echo site_url( Backend_URL .'member/update/'.$id ) ?>" class="btn btn-primary"> <i class="fa fa-edit"></i> Edit</a></td></tr>
 	</table>
-	<div class="box-header">
-			 <?php echo anchor(site_url(Backend_URL .'member/delete_action/'.$id),'<i class="fa fa-fw fa-trash"></i> Confrim Delete ', 'class="btn btn-danger" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); ?>
-	</div>
 	</div></section>
