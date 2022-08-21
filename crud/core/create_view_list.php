@@ -35,7 +35,7 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
             <table class=\"table table-hover table-condensed\">
                 <thead>
                     <tr>
-                    \t<th width=\"40\">ID</th>";
+                    \t<th width=\"40\">S/L</th>";
          foreach ($non_pk as $row) {
             $string .= "\n\t\t<th>" . label($row['column_name']) . "</th>";
         }
@@ -43,20 +43,20 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
                     </tr>
                 </thead>\n
                 <tbody>\n";
-        $string .= "\t<?php foreach ($" . $c_url . " as \$$c_url) { ?>
+        $string .= "\t<?php foreach (\${$c_url}s as \$$c_url) { ?>
                     <tr>";
 
         $string .= "\n\t\t<td><?php echo ++\$start ?></td>";
         foreach ($non_pk as $row) {
-            $string .= "\n\t\t<td><?php echo $" . $c_url ."->". $row['column_name'] . " ?></td>";
+            $string .= "\n\t\t<td><?php echo \${$c_url}->{$row['column_name']}; ?></td>";
         }
 
 
         $string .= "\n\t\t<td>"
                 . "\n\t\t\t<?php "
-                . "\n\t\t\techo anchor(site_url(Backend_URL .'".$redirect_link."/read/'.$".$c_url."->".$pk."),'<i class=\"fa fa-fw fa-external-link\"></i> View', 'class=\"btn btn-xs btn-default\"'); "        
-                . "\n\t\t\techo anchor(site_url(Backend_URL .'".$redirect_link."/update/'.$".$c_url."->".$pk."),'<i class=\"fa fa-fw fa-edit\"></i> Edit',  'class=\"btn btn-xs btn-default\"'); "        
-                . "\n\t\t\techo anchor(site_url(Backend_URL .'".$redirect_link."/delete/'.$".$c_url."->".$pk."),'<i class=\"fa fa-fw fa-trash\"></i> Delete ', 'class=\"btn btn-xs btn-default\"'); "
+                . "\n\t\t\techo anchor(site_url(Backend_URL .'{$redirect_link}/read/'.\${$c_url}->{$pk}),'<i class=\"fa fa-fw fa-external-link\"></i> View', 'class=\"btn btn-xs btn-primary\"'); "
+                . "\n\t\t\techo anchor(site_url(Backend_URL .'{$redirect_link}/update/'.\${$c_url}->{$pk}),'<i class=\"fa fa-fw fa-edit\"></i> Edit',  'class=\"btn btn-xs btn-warning\"'); "        
+                . "\n\t\t\techo anchor(site_url(Backend_URL .'{$redirect_link}/delete/'.\${$c_url}->{$pk}),'<i class=\"fa fa-fw fa-trash\"></i> Delete ', 'class=\"btn btn-xs btn-danger\"'); "
                 . "\n\t\t\t?>"
                 . "\n\t\t</td>
                     </tr>
@@ -68,7 +68,7 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
         
             <div class=\"row\">                
                 <div class=\"col-md-6\">
-                    <span class=\"btn btn-primary\">Total Record : <?php echo \$total_rows ?></span>";
+                    <span class=\"btn btn-primary\">Total ". ucfirst($folder).": <?php echo \$total_rows ?></span>";
                     if ($export_excel == '1') {
                         $string .= "\n\t\t<?php echo anchor(site_url(Backend_URL .'".$redirect_link."/excel'), 'Excel', 'class=\"btn btn-primary\"'); ?>";
                     }

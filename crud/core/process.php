@@ -24,7 +24,7 @@ if (isset($_POST['generate'])){
         $table_name = $table_name;
         $c = $controller <> '' ? ucfirst($controller) : ucfirst($table_name);
         $m = $model <> '' ? ucfirst($model) : ucfirst($table_name) . '_model';
-        $h = strtolower($table_name) . '_helper';
+        $h = strtolower($c) . '_helper';
         
         $v_list = 'index';  // $table_name . "_list";
         $v_read = 'read';   // $table_name . "_read";
@@ -86,15 +86,16 @@ if (isset($_POST['generate'])){
         // generate
         include 'core/create_config_pagination.php';
         include 'core/create_view_form.php';
+        include 'core/create_view_update.php';
         
         if($module_type == 'MainModule'){ 
             include 'core/create_config_routes.php';
             include 'core/create_controller.php';            
             include 'core/create_view_read.php';            
-            include 'core/create_view_delete.php';                          
+            include 'core/create_view_delete.php';
+            
         } else {
-            include 'core/create_controller_single.php';
-            include 'core/create_view_update.php';
+            include 'core/create_controller_single.php';            
         }
         
         
@@ -109,8 +110,7 @@ if (isset($_POST['generate'])){
             
         } else {
             include 'core/create_view_list_datatables.php';            
-        }
-        
+        }        
               
 
         $export_excel   == 1 ? include 'core/create_exportexcel_helper.php' : '';

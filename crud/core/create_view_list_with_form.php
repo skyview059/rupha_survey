@@ -51,7 +51,7 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
                                 }
                             }        
                             $string .= "\n\t <button type=\"submit\" class=\"btn btn-primary\">Save New</button> ";
-                            $string .= "\n\t <a href=\"<?php echo site_url('".$c_url."') ?>\" class=\"btn btn-default\">Reset</a>";
+                            $string .= "\n\t <button type=\"reset\" class=\"btn btn-default\">Reset</button> ";
                             $string .= "\n\t<?php echo form_close(); ?>
 
                     </div>                    
@@ -64,12 +64,12 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
             <div class=\"box box-primary\">            
                 <div class=\"box-header with-border\">                                   
                     <div class=\"col-md-5 col-md-offset-7 text-right\">
-                        <form action=\"<?php echo site_url( Backend_URL .'$tab_link'); ?>\" class=\"form-inline\" method=\"get\">
+                        <form action=\"<?php echo site_url( Backend_URL .'{$tab_link}'); ?>\" class=\"form-inline\" method=\"get\">
                             <div class=\"input-group\">
                                 <input type=\"text\" class=\"form-control\" name=\"q\" value=\"<?php echo \$q; ?>\">
                                 <span class=\"input-group-btn\">
                                     <?php if (\$q <> '') { ?>
-                                        <a href=\"<?php echo site_url( Backend_URL .'$tab_link'); ?>\" class=\"btn btn-default\">Reset</a>
+                                        <a href=\"<?php echo site_url( Backend_URL .'{$tab_link}'); ?>\" class=\"btn btn-default\">Reset</a>
                                     <?php } ?>
                                     <button class=\"btn btn-primary\" type=\"submit\">Search</button>
                                 </span>
@@ -84,7 +84,7 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
                     <table class=\"table table-bordered table-striped table-condensed\">
                         <thead>
                             <tr>
-                            \t<th width=\"40\">ID</th>";
+                            \t<th width=\"40\">S/L</th>";
                             foreach ($non_pk as $row) {
                                 $string .= "\n\t\t<th>" . label($row['column_name']) . "</th>";
                             }
@@ -92,18 +92,18 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
                             </tr>
                         </thead>\n
                         <tbody>\n";
-                        $string .= "\t<?php foreach ($" . $c_url . " as \$$c_url) { ?>
+                        $string .= "\t<?php foreach (\${$c_url}s as \$$c_url) { ?>
                                     <tr>";
                         $string .= "\n\t\t<td><?php echo ++\$start ?></td>";
                         foreach ($non_pk as $row) {
-                            $string .= "\n\t\t<td><?php echo $" . $c_url ."->". $row['column_name'] . " ?></td>";
+                            $string .= "\n\t\t<td><?php echo \${$c_url}->{$row['column_name']} ?></td>";
                         }
 
 
                 $string .= "\n\t\t<td>"
                         . "\n\t\t\t<?php "                        
-                        . "\n\t\t\techo anchor(site_url(Backend_URL .'".$redirect_link."/update/'.$".$c_url."->".$pk."),'<i class=\"fa fa-fw fa-edit\"></i>',  'class=\"btn btn-xs btn-default\" title=\"Edit\"'); "        
-                        . "\n\t\t\techo anchor(site_url(Backend_URL .'".$redirect_link."/delete_action/'.$".$c_url."->".$pk."),'<i class=\"fa fa-fw fa-trash\"></i>', 'onclick=\"return confirm(\'Confirm Delete\')\" class=\"btn btn-xs btn-danger\" title=\"Delete\"'); "
+                        . "\n\t\t\techo anchor(site_url(Backend_URL .'{$redirect_link}/update/'.\${$c_url}->{$pk}),'<i class=\"fa fa-fw fa-edit\"></i>',  'class=\"btn btn-xs btn-default\" title=\"Edit\"'); "        
+                        . "\n\t\t\techo anchor(site_url(Backend_URL .'{$redirect_link}/delete/'.\${$c_url}->{$pk}),'<i class=\"fa fa-fw fa-trash\"></i>', 'onclick=\"return confirm(\'Confirm Delete\')\" class=\"btn btn-xs btn-danger\" title=\"Delete\"'); "
                         . "\n\t\t\t?>"
                         . "\n\t\t</td>
                             </tr>
@@ -115,7 +115,7 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
 
                     <div class=\"row\">                
                         <div class=\"col-md-6\">
-                            <span class=\"btn btn-primary\">Total Record : <?php echo \$total_rows ?></span>";
+                            <span class=\"btn btn-primary\">Total ". ucfirst($folder).": <?php echo \$total_rows ?></span>";
                             if ($export_excel == '1') {
                                 $string .= "\n\t\t<?php echo anchor(site_url(Backend_URL .'".$redirect_link."/excel'), 'Excel', 'class=\"btn btn-primary\"'); ?>";
                             }
@@ -138,5 +138,5 @@ $string .= "\n\t<li class=\"active\">". ucfirst($c_url)."</li>
 </section>";
 
 
-$hasil_view_list = createFile($string, $target.  "views/$c_url/" . $v_list_file);
+$hasil_view_list = createFile($string, $target.  "views/{$c_url}/{$v_list_file}");
 

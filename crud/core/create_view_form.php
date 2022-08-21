@@ -19,7 +19,7 @@ $string .= "\n\t<li><a href=\"<?php echo Backend_URL ?>{$tab_link}\">". ucfirst(
 <section class=\"content\">       
     <div class=\"box\">
         <div class=\"box-header with-border\">
-            <h3 class=\"box-title\">Create New ". ucfirst($table_name)."</h3>
+            <h3 class=\"box-title\">Add New ". ucfirst($c)."</h3>
         </div>
         
         <div class=\"box-body\">
@@ -55,13 +55,13 @@ $string .= "\n\t<li><a href=\"<?php echo Backend_URL ?>{$tab_link}\">". ucfirst(
             }
         }
         
-$string .= "\n\t<div class=\"col-md-12 text-right\">";
-$string .= "\n\t    <input type=\"hidden\" name=\"".$pk."\" value=\"<?php echo $".$pk."; ?>\" /> ";
+$string .= "\n\t<div class=\"col-md-10 col-md-offset-2\" style=\"padding-left:5px;\">";
+$string .= "\n\t    <input type=\"hidden\" name=\"{$pk}\" value=\"<?php echo \${$pk}; ?>\" />";
 $string .= "\n\t    <button type=\"submit\" class=\"btn btn-primary\"><?php echo \$button ?></button> ";
-$string .= "\n\t    <a href=\"<?php echo site_url( Backend_URL .'".$redirect_link."') ?>\" class=\"btn btn-default\">Cancel</a>";
+$string .= "\n\t    <a href=\"<?php echo site_url( Backend_URL .'{$redirect_link}') ?>\" class=\"btn btn-default\">Cancel</a>";
 $string .= "\n\t</div>";
-$string .= "\n</form>";
-$string .= "\n\t</div></div></section>";
+$string .= "\n\t<?php echo form_close(); ?>>";
+$string .= "\n\t</div>\n</div>\n</section>";
 
-$hasil_view_form = createFile($string, $target.  "views/$c_url/" . $v_form_file);
+$hasil_view_form = createFile($string, $target.  "views/{$c_url}/{$v_form_file}");
 
