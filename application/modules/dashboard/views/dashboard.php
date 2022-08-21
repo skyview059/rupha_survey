@@ -22,6 +22,7 @@
                 <li>Site Owner </li>
                 <li>Union Secretary</li>
                 <li>Account</li>
+                <li>Data Entry Operator</li>
             </ol>
         </div>
         <div class="box-footer"></div>
