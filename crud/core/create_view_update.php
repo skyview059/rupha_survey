@@ -23,7 +23,7 @@ if($jenis_tabel == 'reguler_table'){
     $string .= "<div class=\"box\">";
 }
 $string .=    "\n<div class=\"box-header with-border\">
-            <h3 class=\"box-title\">Update ". ucfirst($table_name)."</h3>
+            <h3 class=\"box-title\">Update ". ucfirst($c)."</h3>
             <?php echo \$this->session->flashdata('message'); ?>
         </div>
         
