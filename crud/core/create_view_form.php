@@ -60,7 +60,7 @@ $string .= "\n\t    <input type=\"hidden\" name=\"{$pk}\" value=\"<?php echo \${
 $string .= "\n\t    <button type=\"submit\" class=\"btn btn-primary\"><?php echo \$button ?></button> ";
 $string .= "\n\t    <a href=\"<?php echo site_url( Backend_URL .'{$redirect_link}') ?>\" class=\"btn btn-default\">Cancel</a>";
 $string .= "\n\t</div>";
-$string .= "\n\t<?php echo form_close(); ?>>";
+$string .= "\n\t<?php echo form_close(); ?>";
 $string .= "\n\t</div>\n</div>\n</section>";
 
 $hasil_view_form = createFile($string, $target.  "views/{$c_url}/{$v_form_file}");
