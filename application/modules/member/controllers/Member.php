@@ -136,11 +136,19 @@ class Member extends Admin_controller {
 	}
 
 	public function create_action() {
-		$this->_rules();
+
+		// dd($this->input->post());
+		// $this->_rules();
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->create();
 		} else {
+
+			$relatives = $this->input->post('relative_name');
+			$relativeOccupation = $this->input->post('relative_occupation');
+			$relativeRelationship = $this->input->post('relative_relationship');
+			$relativeEducationQualification = $this->input->post('relative_education_qualification');
+
 			$data = array(
 				'union_id' => $this->input->post('union_id', TRUE),
 				'previous_holding_no' => $this->input->post('previous_holding_no', TRUE),
@@ -182,6 +190,26 @@ class Member extends Admin_controller {
 			);
 
 			$this->Member_model->insert($data);
+			$memberId = $this->db->insert_id();
+
+			$relativeArr = [];
+			if(!empty($relatives)){
+				foreach($relatives as $key => $relative){
+					$relativeArr[$key] = [
+						'member_id' => $memberId,
+						'name' => $relative,
+						'occupation' => $relativeOccupation[$key] ?? null,
+						'relationship' => $relativeRelationship[$key] ?? null,
+						'educational_qualification' => $relativeEducationQualification[$key] ?? null,
+					];
+	
+				}
+
+				$this->db->insert('member_relatives', $relativeArr);
+			}
+			
+
+
 			$this->session->set_flashdata('message', '<p class="ajax_success">Member Added Successfully</p>');
 			redirect(site_url(Backend_URL . 'member'));
 		}
@@ -412,11 +440,7 @@ class Member extends Admin_controller {
 		$this->form_validation->set_rules('type_of_infrastructure', 'type of infrastructure', 'trim|required');
 		$this->form_validation->set_rules('annual_value', 'annual value', 'trim|required|numeric');
 		$this->form_validation->set_rules('annual_tax_amount', 'annual tax amount', 'trim|required|numeric');
-		$this->form_validation->set_rules('created_by', 'created by', 'trim|required|numeric');
-		$this->form_validation->set_rules('updated_by', 'updated by', 'trim|required|numeric');
-		$this->form_validation->set_rules('created_at', 'created at', 'trim|required');
-		$this->form_validation->set_rules('updated_at', 'updated at', 'trim|required');
-
+		
 		$this->form_validation->set_rules('id', 'id', 'trim');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 	}
