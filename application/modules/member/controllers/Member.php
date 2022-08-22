@@ -107,7 +107,6 @@ class Member extends Admin_controller {
 			'mother_name' => set_value('mother_name'),
 			'date_of_birth' => set_value('date_of_birth'),
 			'nid' => set_value('nid'),
-
 			'social_security_benefit_id' => set_value('social_security_benefit_id'),
 			'income_source_id' => set_value('income_source_id'),
 			'house_members' => set_value('house_members'),
@@ -138,10 +137,11 @@ class Member extends Admin_controller {
 	public function create_action() {
 
 		// dd($this->input->post());
-		// $this->_rules();
+		$this->_rules();
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->create();
+			echo ajaxRespond('Fail', validation_errors());
+			
 		} else {
 
 			$relatives = $this->input->post('relative_name');
@@ -406,41 +406,20 @@ class Member extends Admin_controller {
 	}
 
 	public function _rules() {
-		$this->form_validation->set_rules('union_id', 'union id', 'trim|required|numeric');
-		$this->form_validation->set_rules('previous_holding_no', 'previous holding no', 'trim|required');
-		$this->form_validation->set_rules('present_holding_no', 'present holding no', 'trim|required');
-		$this->form_validation->set_rules('word_no', 'word no', 'trim|required');
-		$this->form_validation->set_rules('village', 'village', 'trim|required');
-		$this->form_validation->set_rules('khana_chief_name_ba', 'khana chief name ba', 'trim|required');
-		$this->form_validation->set_rules('khana_chief_name_en', 'khana chief name en', 'trim|required');
-		$this->form_validation->set_rules('mobile_no', 'mobile no', 'trim|required');
-		$this->form_validation->set_rules('avg_annual_income', 'avg annual income', 'trim|required|numeric');
-		$this->form_validation->set_rules('father_name', 'father name', 'trim|required');
-		$this->form_validation->set_rules('mother_name', 'mother name', 'trim|required');
-		$this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required');
-		$this->form_validation->set_rules('social_security_benefit_id', 'social security benefit id', 'trim|required|numeric');
-		$this->form_validation->set_rules('income_source_id', 'income source id', 'trim|required|numeric');
-		$this->form_validation->set_rules('house_members', 'house members', 'trim|required');
-		$this->form_validation->set_rules('male', 'male', 'trim|required');
-		$this->form_validation->set_rules('female', 'female', 'trim|required');
-		$this->form_validation->set_rules('adult', 'adult', 'trim|required');
-		$this->form_validation->set_rules('infant', 'infant', 'trim|required');
-		$this->form_validation->set_rules('tube_well', 'tube well', 'trim|required');
-		$this->form_validation->set_rules('latrine', 'latrine', 'trim|required');
-		$this->form_validation->set_rules('disabled_member_name', 'disabled member name', 'trim|required');
-		$this->form_validation->set_rules('disabled_member_age', 'disabled member age', 'trim|required');
-		$this->form_validation->set_rules('type_of_disability', 'type of disability', 'trim|required');
-		$this->form_validation->set_rules('expatriate_name', 'expatriate name', 'trim|required');
-		$this->form_validation->set_rules('country_name', 'country name', 'trim|required');
-		$this->form_validation->set_rules('asset_type_id', 'asset type id', 'trim|required|numeric');
-		$this->form_validation->set_rules('description', 'description', 'trim|required');
-		$this->form_validation->set_rules('raw_house', 'raw house', 'trim|required|numeric');
-		$this->form_validation->set_rules('half_baked_house', 'half baked house', 'trim|required|numeric');
-		$this->form_validation->set_rules('paved_house', 'paved house', 'trim|required|numeric');
-		$this->form_validation->set_rules('type_of_infrastructure', 'type of infrastructure', 'trim|required');
-		$this->form_validation->set_rules('annual_value', 'annual value', 'trim|required|numeric');
-		$this->form_validation->set_rules('annual_tax_amount', 'annual tax amount', 'trim|required|numeric');
-		
+		$this->form_validation->set_rules('union_id', 'union id', 'trim|required|numeric', array('required' => 'ইউনিয়ন নির্বাচন করতে হবে!'));
+		$this->form_validation->set_rules('previous_holding_no', 'previous holding no', 'trim|required', array('required' => 'পূর্ববর্তী হোল্ডিং নাম্বার অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('present_holding_no', 'present holding no', 'trim|required', array('required' => 'বর্তমান হোল্ডিং নাম্বার অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('word_no', 'word no', 'trim|required', array('required' => 'ওয়ার্ড নং অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('village', 'village', 'trim|required', array('required' => 'গ্রাম/মহল্লার নাম অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('khana_chief_name_ba', 'khana chief name ba', 'trim|required', array('required' => 'খানা প্রধানের নাম (বাংলায়) অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('khana_chief_name_en', 'khana chief name en', 'trim|required', array('required' => 'খানা প্রধানের নাম (ইংরেজিতে) অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('father_name', 'father name', 'trim|required', array('required' => 'পিতা/স্বামীর নাম অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('mother_name', 'mother name', 'trim|required', array('required' => 'মাতার নাম অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required', array('required' => 'জন্ম তারিখ অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('social_security_benefit_id', 'social security benefit id', 'trim|required|numeric', array('required' => 'জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং অবশ্যই পূরণ করতে হবে!'));
+		$this->form_validation->set_rules('income_source_id', 'income source id', 'trim|required|numeric', array('required' => 'সামাজিক সুরক্ষার সুবিধা নির্বাচন করতে হবে!'));
+		$this->form_validation->set_rules('tube_well', 'tube well', 'trim|required', array('required' => 'সামাজিক সুরক্ষার সুবিধা নির্বাচন করতে হবে!'));
+		$this->form_validation->set_rules('latrine', 'latrine', 'trim|required', array('required' => 'সামাজিক সুরক্ষার সুবিধা নির্বাচন করতে হবে!'));
 		$this->form_validation->set_rules('id', 'id', 'trim');
 		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 	}
