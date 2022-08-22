@@ -13,49 +13,61 @@
     <?php echo memberTabs($id, 'delete'); ?>
     <div class="box no-border">
         <div class="box-header with-border">
-            <h3 class="box-title">Preview Before Delete</h3>
+            <h3 class="box-title">মুছে ফেলার আগে পূর্বরূপ দেখুন</h3>
         </div>
         <table class="table table-striped">
-	    <tr><td width="150">Union Id</td><td width="5">:</td><td><?php echo $union_id; ?></td></tr>
-	    <tr><td width="150">Previous Holding No</td><td width="5">:</td><td><?php echo $previous_holding_no; ?></td></tr>
-	    <tr><td width="150">Present Holding No</td><td width="5">:</td><td><?php echo $present_holding_no; ?></td></tr>
-	    <tr><td width="150">Word No</td><td width="5">:</td><td><?php echo $word_no; ?></td></tr>
-	    <tr><td width="150">Village</td><td width="5">:</td><td><?php echo $village; ?></td></tr>
-	    <tr><td width="150">Khana Chief Name Ba</td><td width="5">:</td><td><?php echo $khana_chief_name_ba; ?></td></tr>
-	    <tr><td width="150">Khana Chief Name En</td><td width="5">:</td><td><?php echo $khana_chief_name_en; ?></td></tr>
-	    <tr><td width="150">Mobile No</td><td width="5">:</td><td><?php echo $mobile_no; ?></td></tr>
-	    <tr><td width="150">Avg Annual Income</td><td width="5">:</td><td><?php echo $avg_annual_income; ?></td></tr>
-	    <tr><td width="150">Father Name</td><td width="5">:</td><td><?php echo $father_name; ?></td></tr>
-	    <tr><td width="150">Mother Name</td><td width="5">:</td><td><?php echo $mother_name; ?></td></tr>
-	    <tr><td width="150">Date Of Birth</td><td width="5">:</td><td><?php echo $date_of_birth; ?></td></tr>
-	    <tr><td width="150">Social Security Benefit Id</td><td width="5">:</td><td><?php echo $social_security_benefit_id; ?></td></tr>
-	    <tr><td width="150">Income Source Id</td><td width="5">:</td><td><?php echo $income_source_id; ?></td></tr>
-	    <tr><td width="150">House Members</td><td width="5">:</td><td><?php echo $house_members; ?></td></tr>
-	    <tr><td width="150">Male</td><td width="5">:</td><td><?php echo $male; ?></td></tr>
-	    <tr><td width="150">Female</td><td width="5">:</td><td><?php echo $female; ?></td></tr>
-	    <tr><td width="150">Adult</td><td width="5">:</td><td><?php echo $adult; ?></td></tr>
-	    <tr><td width="150">Infant</td><td width="5">:</td><td><?php echo $infant; ?></td></tr>
-	    <tr><td width="150">Tube Well</td><td width="5">:</td><td><?php echo $tube_well; ?></td></tr>
-	    <tr><td width="150">Latrine</td><td width="5">:</td><td><?php echo $latrine; ?></td></tr>
-	    <tr><td width="150">Disabled Member Name</td><td width="5">:</td><td><?php echo $disabled_member_name; ?></td></tr>
-	    <tr><td width="150">Disabled Member Age</td><td width="5">:</td><td><?php echo $disabled_member_age; ?></td></tr>
-	    <tr><td width="150">Type Of Disability</td><td width="5">:</td><td><?php echo $type_of_disability; ?></td></tr>
-	    <tr><td width="150">Expatriate Name</td><td width="5">:</td><td><?php echo $expatriate_name; ?></td></tr>
-	    <tr><td width="150">Country Name</td><td width="5">:</td><td><?php echo $country_name; ?></td></tr>
-	    <tr><td width="150">Asset Type Id</td><td width="5">:</td><td><?php echo $asset_type_id; ?></td></tr>
-	    <tr><td width="150">Description</td><td width="5">:</td><td><?php echo $description; ?></td></tr>
-	    <tr><td width="150">Raw House</td><td width="5">:</td><td><?php echo $raw_house; ?></td></tr>
-	    <tr><td width="150">Half Baked House</td><td width="5">:</td><td><?php echo $half_baked_house; ?></td></tr>
-	    <tr><td width="150">Paved House</td><td width="5">:</td><td><?php echo $paved_house; ?></td></tr>
-	    <tr><td width="150">Type Of Infrastructure</td><td width="5">:</td><td><?php echo $type_of_infrastructure; ?></td></tr>
-	    <tr><td width="150">Annual Value</td><td width="5">:</td><td><?php echo $annual_value; ?></td></tr>
-	    <tr><td width="150">Annual Tax Amount</td><td width="5">:</td><td><?php echo $annual_tax_amount; ?></td></tr>
-	    <tr><td width="150">Created By</td><td width="5">:</td><td><?php echo $created_by; ?></td></tr>
-	    <tr><td width="150">Updated By</td><td width="5">:</td><td><?php echo $updated_by; ?></td></tr>
-	    <tr><td width="150">Created At</td><td width="5">:</td><td><?php echo $created_at; ?></td></tr>
-	    <tr><td width="150">Updated At</td><td width="5">:</td><td><?php echo $updated_at; ?></td></tr>
-	</table>
-	<div class="box-header">
-			 <?php echo anchor(site_url(Backend_URL .'member/delete_action/'.$id),'<i class="fa fa-fw fa-trash"></i> Confrim Delete ', 'class="btn btn-danger" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); ?>
+			<thead>
+				<tr>
+					<td class="text-center">
+						<h3><?php echo $union_name; ?> ইউনিয়ন পরিষদ</h3>
+						<h5>উপজেলা: <?= $upazila_name;?>, <?= $district_name;?></h5>
+					</td>
+				</tr>
+			</thead>
+		</table>
+        <table class="table table-striped">
+			<tr><td width="150">পূর্ববর্তী হোল্ডিং নাম্বার</td><td width="5">:</td><td><?php echo $previous_holding_no; ?></td></tr>
+			<tr><td width="150">বর্তমান হোল্ডিং নাম্বার</td><td width="5">:</td><td><?php echo $present_holding_no; ?></td></tr>
+			<tr><td width="150">ওয়ার্ড নং</td><td width="5">:</td><td><?php echo $word_no; ?></td></tr>
+			<tr><td width="150">গ্রাম/মহল্লার নাম</td><td width="5">:</td><td><?php echo $village; ?></td></tr>
+			<tr><td width="150">খানা প্রধানের নাম (বাংলায়)</td><td width="5">:</td><td><?php echo $khana_chief_name_ba; ?></td></tr>
+			<tr><td width="150">খানা প্রধানের নাম (ইংরেজিতে)</td><td width="5">:</td><td><?php echo $khana_chief_name_en; ?></td></tr>
+			<tr><td width="150">মোবাইল নং</td><td width="5">:</td><td><?php echo $mobile_no; ?></td></tr>
+			<tr><td width="150">বাৎসরিক গড় আয়</td><td width="5">:</td><td><?php echo $avg_annual_income; ?></td></tr>
+			<tr><td width="150">পিতা/স্বামীর নাম</td><td width="5">:</td><td><?php echo $father_name; ?></td></tr>
+			<tr><td width="150">মাতার নাম</td><td width="5">:</td><td><?php echo $mother_name; ?></td></tr>
+			<tr><td width="150">জন্ম তারিখ</td><td width="5">:</td><td><?php echo $date_of_birth; ?></td></tr>
+			<tr><td width="150">জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং</td><td width="5">:</td><td><?php echo $nid; ?></td></tr>
+			<tr><td width="150">সামাজিক সুরক্ষার সুবিধা</td><td width="5">:</td><td><?php echo $social_security_benefit_name; ?></td></tr>
+			<tr><td width="150">খানা প্রদানের পেশা/আয়ের উৎস</td><td width="5">:</td><td><?php echo $income_source_name; ?></td></tr>
+			<tr><td width="150">খানা সদস্য সংখ্যা</td><td width="5">:</td><td><?php echo $house_members; ?></td></tr>
+			<tr><td width="150">পুরুষ</td><td width="5">:</td><td><?php echo $male; ?></td></tr>
+			<tr><td width="150">মহিলা</td><td width="5">:</td><td><?php echo $female; ?></td></tr>
+			<tr><td width="150">প্রাপ্ত বয়স্ক</td><td width="5">:</td><td><?php echo $adult; ?></td></tr>
+			<tr><td width="150">অপ্রাপ্ত বয়স্ক</td><td width="5">:</td><td><?php echo $infant; ?></td></tr>
+			<tr><td width="150">নলকূপ</td><td width="5">:</td><td><?php echo $tube_well; ?></td></tr>
+			<tr><td width="150">ল্যাট্রিন</td><td width="5">:</td><td><?php echo $latrine; ?></td></tr>
+			<tr><td width="150">প্রতিবন্ধী সদস্য থাকলে তার নাম</td><td width="5">:</td><td><?php echo $disabled_member_name; ?></td></tr>
+			<tr><td width="150">প্রতিবন্ধী সদস্য থাকলে তার বয়স</td><td width="5">:</td><td><?php echo $disabled_member_age; ?></td></tr>
+			<tr><td width="150">প্রতিবন্ধীতার ধরণ</td><td width="5">:</td><td><?php echo $type_of_disability; ?></td></tr>
+			<tr><td width="150">প্রবাসী কোন সদস্য থাকলে তার নাম</td><td width="5">:</td><td><?php echo $expatriate_name; ?></td></tr>
+			<tr><td width="150">দেশের নাম</td><td width="5">:</td><td><?php echo $country_name; ?></td></tr>
+			<tr><td width="150">খানা প্রদানের সম্পদের ধরন</td><td width="5">:</td><td><?php echo $asset_type_name; ?></td></tr>
+			<tr><td width="150">বিস্তারিত উল্লেখ করুন</td><td width="5">:</td><td><?php echo $description; ?></td></tr>
+			<tr><td width="150">কাঁচা ঘর</td><td width="5">:</td><td><?php echo $raw_house; ?></td></tr>
+			<tr><td width="150">আধাপাকা ঘর</td><td width="5">:</td><td><?php echo $half_baked_house; ?></td></tr>
+			<tr><td width="150">পাকা ঘর</td><td width="5">:</td><td><?php echo $paved_house; ?></td></tr>
+			<tr><td width="150">ধরন</td><td width="5">:</td><td><?php echo $type_of_infrastructure; ?></td></tr>
+			<tr><td width="150">বার্ষিক মূল্য/ব্যাংক ঋণ নিয়ে গৃহ তৈরী হলে বার্ষিক সুদ বাদে নীট বার্ষিক মূল্য</td><td width="5">:</td><td><?php echo $annual_value; ?></td></tr>
+			<tr><td width="150">বার্ষিক করের পরিমান</td><td width="5">:</td><td><?php echo $annual_tax_amount; ?></td></tr>
+			<tr><td width="150">Created By</td><td width="5">:</td><td><?php echo $created_by; ?></td></tr>
+			<tr><td width="150">Updated By</td><td width="5">:</td><td><?php echo $updated_by; ?></td></tr>
+			<tr><td width="150">Created At</td><td width="5">:</td><td><?php echo $created_at; ?></td></tr>
+			<tr><td width="150">Updated At</td><td width="5">:</td><td><?php echo $updated_at; ?></td></tr>
+		</table>
+		<div class="box-header">
+		<a href="<?php echo site_url( Backend_URL .'member') ?>" class="btn btn-default"><i class="fa fa-long-arrow-left"></i> Back</a>
+			<?php echo anchor(site_url(Backend_URL .'member/delete_action/'.$id),'<i class="fa fa-fw fa-trash"></i> Confrim Delete ', 'class="btn btn-danger" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); ?>
+		</div>
 	</div>
-	</div></section>
+</section>

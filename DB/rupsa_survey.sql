@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `acls` (
   UNIQUE KEY `permKey` (`permission_key`),
   KEY `module_id` (`module_id`),
   CONSTRAINT `acls_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=351 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table rupsa_survey.acls: ~36 rows (approximately)
 DELETE FROM `acls`;
@@ -276,18 +276,18 @@ DROP TABLE IF EXISTS `members`;
 CREATE TABLE IF NOT EXISTS `members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `union_id` int(11) DEFAULT NULL,
-  `previous_holding_no` varchar(50) DEFAULT NULL,
-  `present_holding_no` varchar(50) NOT NULL,
-  `word_no` varchar(10) NOT NULL,
-  `village` varchar(200) NOT NULL COMMENT 'Village/Neighborhood',
-  `khana_chief_name_ba` varchar(255) DEFAULT NULL,
-  `khana_chief_name_en` varchar(255) DEFAULT NULL,
-  `mobile_no` varchar(50) DEFAULT NULL,
+  `previous_holding_no` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `present_holding_no` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `word_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `village` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Village/Neighborhood',
+  `khana_chief_name_ba` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `khana_chief_name_en` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile_no` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `avg_annual_income` decimal(10,2) DEFAULT NULL,
-  `father_name` varchar(100) DEFAULT NULL COMMENT 'Father/Husband',
-  `mother_name` varchar(100) DEFAULT NULL,
+  `father_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Father/Husband',
+  `mother_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date_of_birth` date NOT NULL,
-  `nid` varchar(50) DEFAULT NULL,
+  `nid` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `social_security_benefit_id` int(11) DEFAULT NULL,
   `income_source_id` int(11) DEFAULT NULL COMMENT 'Khana Chief Profession/Source Of Income',
   `house_members` tinyint(4) DEFAULT NULL COMMENT 'Number of house members',
@@ -295,19 +295,19 @@ CREATE TABLE IF NOT EXISTS `members` (
   `female` tinyint(4) DEFAULT NULL,
   `adult` tinyint(4) DEFAULT NULL,
   `infant` tinyint(4) DEFAULT NULL,
-  `tube_well` varchar(50) DEFAULT NULL COMMENT 'Yes/No',
-  `latrine` varchar(50) DEFAULT NULL COMMENT 'Yes/No',
-  `disabled_member_name` varchar(50) DEFAULT NULL COMMENT 'Pratibandhi sadasya name jodi thake',
+  `tube_well` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Yes/No',
+  `latrine` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Yes/No',
+  `disabled_member_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Pratibandhi sadasya name jodi thake',
   `disabled_member_age` tinyint(4) DEFAULT NULL,
-  `type_of_disability` varchar(50) DEFAULT NULL COMMENT 'Pratibandhitar Dharan',
-  `expatriate_name` varchar(50) DEFAULT NULL COMMENT 'If the expatriate has any problem his name',
-  `country_name` varchar(50) DEFAULT NULL,
+  `type_of_disability` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Pratibandhitar Dharan',
+  `expatriate_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'If the expatriate has any problem his name',
+  `country_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `asset_type_id` int(11) DEFAULT NULL COMMENT 'Food is the main resource type',
-  `description` text,
+  `description` text COLLATE utf8_unicode_ci,
   `raw_house` int(11) DEFAULT NULL COMMENT 'Living Room/Type of infrastructure',
   `half_baked_house` int(11) DEFAULT NULL,
   `paved_house` int(11) DEFAULT NULL COMMENT 'Paka Ghar',
-  `type_of_infrastructure` varchar(200) DEFAULT NULL COMMENT 'Own House, Rent',
+  `type_of_infrastructure` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Own House, Rent',
   `annual_value` decimal(10,2) DEFAULT NULL,
   `annual_tax_amount` decimal(10,2) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
@@ -315,11 +315,15 @@ CREATE TABLE IF NOT EXISTS `members` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table rupsa_survey.members: ~0 rows (approximately)
+-- Dumping data for table rupsa_survey.members: ~3 rows (approximately)
 DELETE FROM `members`;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
+INSERT INTO `members` (`id`, `union_id`, `previous_holding_no`, `present_holding_no`, `word_no`, `village`, `khana_chief_name_ba`, `khana_chief_name_en`, `mobile_no`, `avg_annual_income`, `father_name`, `mother_name`, `date_of_birth`, `nid`, `social_security_benefit_id`, `income_source_id`, `house_members`, `male`, `female`, `adult`, `infant`, `tube_well`, `latrine`, `disabled_member_name`, `disabled_member_age`, `type_of_disability`, `expatriate_name`, `country_name`, `asset_type_id`, `description`, `raw_house`, `half_baked_house`, `paved_house`, `type_of_infrastructure`, `annual_value`, `annual_tax_amount`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(2, 563, '23423', '23423', '234', 'dfsd', 'sdf', 'sdfsdf', '213123', 0.00, 'sdfsdf', 'sdfsdf', '2022-08-22', '', 3, 12, 0, 0, 0, 0, 0, '???', '???', '', 0, '', '', '', 0, '', 0, 0, 0, '???? ?????', 0.00, 0.00, 1, NULL, '2022-08-22 19:58:02', NULL),
+	(3, 563, '???', '???', '?', '????', '?????', 'werwer', '23423423', 0.00, 'sdfsdf', 'sdfsdfsd', '2022-08-22', '', 3, 2, 0, 0, 0, 0, 0, 'না', 'হাঁ', '', 0, '', '', '', 2, '', 0, 0, 0, 'নিজে বসবাস', 0.00, 0.00, 1, 1, '2022-08-22 20:00:07', '2022-08-22 22:53:44'),
+	(4, 567, '??', '???', '??', '???', '??????', 'hggf', '56455655', 0.00, '?????', '?????', '2022-08-22', '', 2, 3, 0, 0, 0, 0, 0, '???', '???', '', 0, '', '', '', 0, '', 0, 0, 0, '???? ?????', 0.00, 0.00, 1, NULL, '2022-08-22 20:06:12', NULL);
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 
 -- Dumping structure for table rupsa_survey.member_relatives
@@ -332,11 +336,14 @@ CREATE TABLE IF NOT EXISTS `member_relatives` (
   `relationship` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `educational_qualification` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table rupsa_survey.member_relatives: ~0 rows (approximately)
+-- Dumping data for table rupsa_survey.member_relatives: ~2 rows (approximately)
 DELETE FROM `member_relatives`;
 /*!40000 ALTER TABLE `member_relatives` DISABLE KEYS */;
+INSERT INTO `member_relatives` (`id`, `member_id`, `name`, `occupation`, `relationship`, `educational_qualification`) VALUES
+	(2, 2, 'ওয়ের্বের্বের', '্বের্বের', '্বের্বের', '্বের্বের'),
+	(6, 3, 'সদস', 'সদফফ', 'সদসদ', 'সদসদ');
 /*!40000 ALTER TABLE `member_relatives` ENABLE KEYS */;
 
 -- Dumping structure for table rupsa_survey.member_stmt
@@ -420,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `role_permissions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `roleID_2` (`role_id`,`acl_id`),
   UNIQUE KEY `role_id` (`role_id`,`acl_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Role Permit ACL';
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Role Permit ACL';
 
 -- Dumping data for table rupsa_survey.role_permissions: ~126 rows (approximately)
 DELETE FROM `role_permissions`;

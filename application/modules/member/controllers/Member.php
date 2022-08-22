@@ -42,7 +42,10 @@ class Member extends Admin_controller {
 		if ($row) {
 			$data = array(
 				'id' => $row->id,
-				'union_id' => $row->union_id,
+				'division_name' => $row->division_name,
+				'district_name' => $row->district_name,
+				'upazila_name' => $row->upazila_name,
+				'union_name' => $row->union_name,
 				'previous_holding_no' => $row->previous_holding_no,
 				'present_holding_no' => $row->present_holding_no,
 				'word_no' => $row->word_no,
@@ -55,8 +58,8 @@ class Member extends Admin_controller {
 				'mother_name' => $row->mother_name,
 				'date_of_birth' => $row->date_of_birth,
 				'nid' => $row->nid,
-				'social_security_benefit_id' => $row->social_security_benefit_id,
-				'income_source_id' => $row->income_source_id,
+				'social_security_benefit_name' => $row->ssb_name,
+				'income_source_name' => $row->income_source_name,
 				'house_members' => $row->house_members,
 				'male' => $row->male,
 				'female' => $row->female,
@@ -69,7 +72,7 @@ class Member extends Admin_controller {
 				'type_of_disability' => $row->type_of_disability,
 				'expatriate_name' => $row->expatriate_name,
 				'country_name' => $row->country_name,
-				'asset_type_id' => $row->asset_type_id,
+				'asset_type_name' => $row->asset_type_name,
 				'description' => $row->description,
 				'raw_house' => $row->raw_house,
 				'half_baked_house' => $row->half_baked_house,
@@ -141,13 +144,12 @@ class Member extends Admin_controller {
 
 		if ($this->form_validation->run() == FALSE) {
 			echo ajaxRespond('Fail', validation_errors());
-			
 		} else {
 
 			$relatives = $this->input->post('relative_name');
 			$relativeOccupation = $this->input->post('relative_occupation');
 			$relativeRelationship = $this->input->post('relative_relationship');
-			$relativeEducationQualification = $this->input->post('relative_education_qualification');
+			$relativeEducationQualification = $this->input->post('relative_educational_qualification');
 
 			$data = array(
 				'union_id' => $this->input->post('union_id', TRUE),
@@ -194,8 +196,9 @@ class Member extends Admin_controller {
 
 			$relativeArr = [];
 			if(!empty($relatives)){
+				$i=0;
 				foreach($relatives as $key => $relative){
-					$relativeArr[$key] = [
+					$relativeArr[$i++] = [
 						'member_id' => $memberId,
 						'name' => $relative,
 						'occupation' => $relativeOccupation[$key] ?? null,
@@ -205,18 +208,17 @@ class Member extends Admin_controller {
 	
 				}
 
-				$this->db->insert('member_relatives', $relativeArr);
+				$this->db->insert_batch('member_relatives', $relativeArr); 
 			}
-			
-
-
-			$this->session->set_flashdata('message', '<p class="ajax_success">Member Added Successfully</p>');
-			redirect(site_url(Backend_URL . 'member'));
+			echo ajaxRespond('OK', '<p class="ajax_success">Member Added Successfully</p>');
+			// $this->session->set_flashdata('message', '<p class="ajax_success">Member Added Successfully</p>');
+			// redirect(site_url(Backend_URL . 'member'));
 		}
 	}
 
 	public function update($id) {
 		$row = $this->Member_model->get_by_id($id);
+		$relatives = $this->Member_model->get_member_relatives($id);
 
 		if ($row) {
 			$data = array(
@@ -235,6 +237,7 @@ class Member extends Admin_controller {
 				'father_name' => set_value('father_name', $row->father_name),
 				'mother_name' => set_value('mother_name', $row->mother_name),
 				'date_of_birth' => set_value('date_of_birth', $row->date_of_birth),
+				'nid' => set_value('nid', $row->nid),
 				'social_security_benefit_id' => set_value('social_security_benefit_id', $row->social_security_benefit_id),
 				'income_source_id' => set_value('income_source_id', $row->income_source_id),
 				'house_members' => set_value('house_members', $row->house_members),
@@ -257,6 +260,7 @@ class Member extends Admin_controller {
 				'type_of_infrastructure' => set_value('type_of_infrastructure', $row->type_of_infrastructure),
 				'annual_value' => set_value('annual_value', $row->annual_value),
 				'annual_tax_amount' => set_value('annual_tax_amount', $row->annual_tax_amount),
+				'relatives' => $relatives,
 				'updated_by' => $this->user_id,
 				'updated_at' => date('Y-m-d H:i:s'),
 			);
@@ -268,12 +272,18 @@ class Member extends Admin_controller {
 	}
 
 	public function update_action() {
+		
 		$this->_rules();
 
 		$id = $this->input->post('id', TRUE);
 		if ($this->form_validation->run() == FALSE) {
-			$this->update($id);
+			echo ajaxRespond('Fail', validation_errors());
 		} else {
+			$relatives = $this->input->post('relative_name');
+			$relativeOccupation = $this->input->post('relative_occupation');
+			$relativeRelationship = $this->input->post('relative_relationship');
+			$relativeEducationQualification = $this->input->post('relative_educational_qualification');
+
 			$data = array(
 				'union_id' => $this->input->post('union_id', TRUE),
 				'previous_holding_no' => $this->input->post('previous_holding_no', TRUE),
@@ -287,6 +297,7 @@ class Member extends Admin_controller {
 				'father_name' => $this->input->post('father_name', TRUE),
 				'mother_name' => $this->input->post('mother_name', TRUE),
 				'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+				'nid' => $this->input->post('nid', TRUE),
 				'social_security_benefit_id' => $this->input->post('social_security_benefit_id', TRUE),
 				'income_source_id' => $this->input->post('income_source_id', TRUE),
 				'house_members' => $this->input->post('house_members', TRUE),
@@ -309,15 +320,30 @@ class Member extends Admin_controller {
 				'type_of_infrastructure' => $this->input->post('type_of_infrastructure', TRUE),
 				'annual_value' => $this->input->post('annual_value', TRUE),
 				'annual_tax_amount' => $this->input->post('annual_tax_amount', TRUE),
-				'created_by' => $this->input->post('created_by', TRUE),
-				'updated_by' => $this->input->post('updated_by', TRUE),
-				'created_at' => $this->input->post('created_at', TRUE),
-				'updated_at' => $this->input->post('updated_at', TRUE),
+				'updated_by' => $this->user_id,
+				'updated_at' => date('Y-m-d H:i:s'),
 			);
-
+			
 			$this->Member_model->update($id, $data);
-			$this->session->set_flashdata('message', '<p class="ajax_success">Member Updated Successlly</p>');
-			redirect(site_url(Backend_URL . 'member/update/' . $id));
+			$this->Member_model->delete_member_relative($id);
+			
+			$relativeArr = [];
+			if(!empty($relatives)){
+				$i=0;
+				foreach($relatives as $key => $relative){
+					$relativeArr[$i++] = [
+						'member_id' => $id,
+						'name' => $relative,
+						'occupation' => $relativeOccupation[$key] ?? null,
+						'relationship' => $relativeRelationship[$key] ?? null,
+						'educational_qualification' => $relativeEducationQualification[$key] ?? null,
+					];
+	
+				}
+
+				$this->db->insert_batch('member_relatives', $relativeArr); 
+			}
+			echo ajaxRespond('OK', '<p class="ajax_success">Member Updated Successlly</p>');
 		}
 	}
 
@@ -326,7 +352,10 @@ class Member extends Admin_controller {
 		if ($row) {
 			$data = array(
 				'id' => $row->id,
-				'union_id' => $row->union_id,
+				'division_name' => $row->division_name,
+				'district_name' => $row->district_name,
+				'upazila_name' => $row->upazila_name,
+				'union_name' => $row->union_name,
 				'previous_holding_no' => $row->previous_holding_no,
 				'present_holding_no' => $row->present_holding_no,
 				'word_no' => $row->word_no,
@@ -338,8 +367,9 @@ class Member extends Admin_controller {
 				'father_name' => $row->father_name,
 				'mother_name' => $row->mother_name,
 				'date_of_birth' => $row->date_of_birth,
-				'social_security_benefit_id' => $row->social_security_benefit_id,
-				'income_source_id' => $row->income_source_id,
+				'nid' => $row->nid,
+				'social_security_benefit_name' => $row->ssb_name,
+				'income_source_name' => $row->income_source_name,
 				'house_members' => $row->house_members,
 				'male' => $row->male,
 				'female' => $row->female,
@@ -352,7 +382,7 @@ class Member extends Admin_controller {
 				'type_of_disability' => $row->type_of_disability,
 				'expatriate_name' => $row->expatriate_name,
 				'country_name' => $row->country_name,
-				'asset_type_id' => $row->asset_type_id,
+				'asset_type_name' => $row->asset_type_name,
 				'description' => $row->description,
 				'raw_house' => $row->raw_house,
 				'half_baked_house' => $row->half_baked_house,
@@ -376,6 +406,7 @@ class Member extends Admin_controller {
 		$row = $this->Member_model->get_by_id($id);
 
 		if ($row) {
+			$this->Member_model->delete_member_relative($id);
 			$this->Member_model->delete($id);
 			$this->session->set_flashdata('message', '<p class="ajax_success">Member Deleted Successfully</p>');
 			redirect(site_url(Backend_URL . 'member'));
@@ -418,10 +449,10 @@ class Member extends Admin_controller {
 		$this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required', array('required' => 'জন্ম তারিখ অবশ্যই পূরণ করতে হবে!'));
 		$this->form_validation->set_rules('social_security_benefit_id', 'social security benefit id', 'trim|required|numeric', array('required' => 'জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং অবশ্যই পূরণ করতে হবে!'));
 		$this->form_validation->set_rules('income_source_id', 'income source id', 'trim|required|numeric', array('required' => 'সামাজিক সুরক্ষার সুবিধা নির্বাচন করতে হবে!'));
-		$this->form_validation->set_rules('tube_well', 'tube well', 'trim|required', array('required' => 'সামাজিক সুরক্ষার সুবিধা নির্বাচন করতে হবে!'));
-		$this->form_validation->set_rules('latrine', 'latrine', 'trim|required', array('required' => 'সামাজিক সুরক্ষার সুবিধা নির্বাচন করতে হবে!'));
+		$this->form_validation->set_rules('tube_well', 'tube well', 'trim|required', array('required' => 'নলকূপ নির্বাচন করতে হবে!'));
+		$this->form_validation->set_rules('latrine', 'latrine', 'trim|required', array('required' => 'ল্যাট্রিন নির্বাচন করতে হবে!'));
 		$this->form_validation->set_rules('id', 'id', 'trim');
-		$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+		$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
 	}
 
 }

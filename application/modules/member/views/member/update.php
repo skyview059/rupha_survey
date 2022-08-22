@@ -9,286 +9,431 @@
     </ol>
 </section>
 
-<section class="content"><?php echo memberTabs($id, 'update'); ?><div class="box no-border">
-<div class="box-header with-border">
-            <h3 class="box-title">Update Member</h3>
+<section class="content"><?php echo memberTabs($id, 'update'); ?>
+    <div class="box no-border">
+        <div class="box-header with-border">
+            <h3 class="box-title">সদস্য আপডেট করুন</h3>
+            <div id="ajax_respond"></div>
             <?php echo $this->session->flashdata('message'); ?>
         </div>
         
         <div class="box-body">
-        <form class="form-horizontal" action="<?php echo $action; ?>" method="post">
-	    <div class="form-group">
-                    <label for="union_id" class="col-sm-2 control-label">Union Id :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="union_id" id="union_id" placeholder="Union Id" value="<?php echo $union_id; ?>" />
+            <form class="form-horizontal" id="memberForm" name="memberForm" method="post"> 
+                <div class="form-group">
+                    <label for="union_id" class="col-sm-2 control-label">ইউনিয়ন :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <select id="union_id" name="union_id" class="form-control">
+                            <?php echo getUnions($union_id, 60); ?>
+                        </select>
                         <?php echo form_error('union_id') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="previous_holding_no" class="col-sm-2 control-label">Previous Holding No :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="previous_holding_no" id="previous_holding_no" placeholder="Previous Holding No" value="<?php echo $previous_holding_no; ?>" />
+                <div class="form-group">
+                    <label for="previous_holding_no" class="col-sm-2 control-label">পূর্ববর্তী হোল্ডিং নাম্বার :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="previous_holding_no" id="previous_holding_no" placeholder="পূর্ববর্তী হোল্ডিং নম্বর" value="<?php echo $previous_holding_no; ?>" />
                         <?php echo form_error('previous_holding_no') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="present_holding_no" class="col-sm-2 control-label">Present Holding No :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="present_holding_no" id="present_holding_no" placeholder="Present Holding No" value="<?php echo $present_holding_no; ?>" />
+                <div class="form-group">
+                    <label for="present_holding_no" class="col-sm-2 control-label">বর্তমান হোল্ডিং নাম্বার :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="present_holding_no" id="present_holding_no" placeholder="বর্তমান হোল্ডিং নম্বর" value="<?php echo $present_holding_no; ?>" />
                         <?php echo form_error('present_holding_no') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="word_no" class="col-sm-2 control-label">Word No :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="word_no" id="word_no" placeholder="Word No" value="<?php echo $word_no; ?>" />
+                <div class="form-group">
+                    <label for="word_no" class="col-sm-2 control-label">ওয়ার্ড নং :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="word_no" id="word_no" placeholder="ওয়ার্ড নং" value="<?php echo $word_no; ?>" />
                         <?php echo form_error('word_no') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="village" class="col-sm-2 control-label">Village :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="village" id="village" placeholder="Village" value="<?php echo $village; ?>" />
+                <div class="form-group">
+                    <label for="village" class="col-sm-2 control-label">গ্রাম/মহল্লার নাম :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="village" id="village" placeholder="গ্রাম/মহল্লার নাম" value="<?php echo $village; ?>" />
                         <?php echo form_error('village') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="khana_chief_name_ba" class="col-sm-2 control-label">Khana Chief Name Ba :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="khana_chief_name_ba" id="khana_chief_name_ba" placeholder="Khana Chief Name Ba" value="<?php echo $khana_chief_name_ba; ?>" />
+                <div class="form-group">
+                    <label for="khana_chief_name_ba" class="col-sm-2 control-label">খানা প্রধানের নাম (বাংলায়):<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="khana_chief_name_ba" id="khana_chief_name_ba" placeholder="খানা প্রধানের নাম (বাংলায়)" value="<?php echo $khana_chief_name_ba; ?>" />
                         <?php echo form_error('khana_chief_name_ba') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="khana_chief_name_en" class="col-sm-2 control-label">Khana Chief Name En :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="khana_chief_name_en" id="khana_chief_name_en" placeholder="Khana Chief Name En" value="<?php echo $khana_chief_name_en; ?>" />
+                <div class="form-group">
+                    <label for="khana_chief_name_en" class="col-sm-2 control-label">খানা প্রধানের নাম (ইংরেজিতে) :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="khana_chief_name_en" id="khana_chief_name_en" placeholder="খানা প্রধানের নাম (ইংরেজিতে)" value="<?php echo $khana_chief_name_en; ?>" />
                         <?php echo form_error('khana_chief_name_en') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="mobile_no" class="col-sm-2 control-label">Mobile No :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="mobile_no" id="mobile_no" placeholder="Mobile No" value="<?php echo $mobile_no; ?>" />
+                <div class="form-group">
+                    <label for="mobile_no" class="col-sm-2 control-label">মোবাইল নং :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="mobile_no" id="mobile_no" placeholder="মোবাইল নং" value="<?php echo $mobile_no; ?>" />
                         <?php echo form_error('mobile_no') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="avg_annual_income" class="col-sm-2 control-label">Avg Annual Income :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="avg_annual_income" id="avg_annual_income" placeholder="Avg Annual Income" value="<?php echo $avg_annual_income; ?>" />
+                <div class="form-group">
+                    <label for="avg_annual_income" class="col-sm-2 control-label">বাৎসরিক গড় আয় :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="avg_annual_income" id="avg_annual_income" placeholder="বাৎসরিক গড় আয়" value="<?php echo $avg_annual_income; ?>" />
                         <?php echo form_error('avg_annual_income') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="father_name" class="col-sm-2 control-label">Father Name :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="father_name" id="father_name" placeholder="Father Name" value="<?php echo $father_name; ?>" />
+                <div class="form-group">
+                    <label for="father_name" class="col-sm-2 control-label">পিতা/স্বামীর নাম :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="father_name" id="father_name" placeholder="পিতা/স্বামীর নাম" value="<?php echo $father_name; ?>" />
                         <?php echo form_error('father_name') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="mother_name" class="col-sm-2 control-label">Mother Name :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="mother_name" id="mother_name" placeholder="Mother Name" value="<?php echo $mother_name; ?>" />
+                <div class="form-group">
+                    <label for="mother_name" class="col-sm-2 control-label">মাতার নাম :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="mother_name" id="mother_name" placeholder="মাতার নাম" value="<?php echo $mother_name; ?>" />
                         <?php echo form_error('mother_name') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="date_of_birth" class="col-sm-2 control-label">Date Of Birth :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="date_of_birth" id="date_of_birth" placeholder="Date Of Birth" value="<?php echo $date_of_birth; ?>" />
+                <div class="form-group">
+                    <label for="date_of_birth" class="col-sm-2 control-label">জন্ম তারিখ :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="date_of_birth" id="date_of_birth" placeholder="জন্ম তারিখ" value="<?php echo $date_of_birth; ?>" class="form-control js_datepicker" readonly="readonly"/>
+                        </div>
                         <?php echo form_error('date_of_birth') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="social_security_benefit_id" class="col-sm-2 control-label">Social Security Benefit Id :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="social_security_benefit_id" id="social_security_benefit_id" placeholder="Social Security Benefit Id" value="<?php echo $social_security_benefit_id; ?>" />
+                <div class="form-group">
+                    <label for="nid" class="col-sm-2 control-label">জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="nid" id="nid" placeholder="জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং" value="<?php echo $nid; ?>" />
+                        <?php echo form_error('nid') ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="social_security_benefit_id" class="col-sm-2 control-label">সামাজিক সুরক্ষার সুবিধা:<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <select id="social_security_benefit_id" name="social_security_benefit_id" class="form-control">
+                            <?php echo getSocialSecurityBenefit($social_security_benefit_id); ?>
+                        </select>
                         <?php echo form_error('social_security_benefit_id') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="income_source_id" class="col-sm-2 control-label">Income Source Id :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="income_source_id" id="income_source_id" placeholder="Income Source Id" value="<?php echo $income_source_id; ?>" />
+                <div class="form-group">
+                    <label for="income_source_id" class="col-sm-2 control-label">খানা প্রদানের পেশা/আয়ের উৎস :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <select id="income_source_id" name="income_source_id" class="form-control">
+                            <?php echo getIncomeSource($income_source_id); ?>
+                        </select>
                         <?php echo form_error('income_source_id') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="house_members" class="col-sm-2 control-label">House Members :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="house_members" id="house_members" placeholder="House Members" value="<?php echo $house_members; ?>" />
+                <div class="form-group">
+                    <label for="house_members" class="col-sm-2 control-label">খানা সদস্য সংখ্যা :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="0" step="1" class="form-control" name="house_members" id="house_members" placeholder="খানা সদস্য সংখ্যা" value="<?php echo $house_members; ?>" />
                         <?php echo form_error('house_members') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="male" class="col-sm-2 control-label">Male :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="male" id="male" placeholder="Male" value="<?php echo $male; ?>" />
+                <div class="form-group">
+                    <label for="male" class="col-sm-2 control-label">পুরুষ :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="0" step="1" class="form-control" name="male" id="male" placeholder="পুরুষ" value="<?php echo $male; ?>" />
                         <?php echo form_error('male') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="female" class="col-sm-2 control-label">Female :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="female" id="female" placeholder="Female" value="<?php echo $female; ?>" />
+                <div class="form-group">
+                    <label for="female" class="col-sm-2 control-label">মহিলা :</label>
+                    <div class="col-sm-10">
+                        <input  type="number" min="0" step="1" class="form-control" name="female" id="female" placeholder="মহিলা" value="<?php echo $female; ?>" />
                         <?php echo form_error('female') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="adult" class="col-sm-2 control-label">Adult :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="adult" id="adult" placeholder="Adult" value="<?php echo $adult; ?>" />
+                <div class="form-group">
+                    <label for="adult" class="col-sm-2 control-label">প্রাপ্ত বয়স্ক :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="0" step="1" class="form-control" name="adult" id="adult" placeholder="প্রাপ্ত বয়স্ক" value="<?php echo $adult; ?>" />
                         <?php echo form_error('adult') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="infant" class="col-sm-2 control-label">Infant :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="infant" id="infant" placeholder="Infant" value="<?php echo $infant; ?>" />
+                <div class="form-group">
+                    <label for="infant" class="col-sm-2 control-label">অপ্রাপ্ত বয়স্ক :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="infant" id="infant" placeholder="অপ্রাপ্ত বয়স্ক" value="<?php echo $infant; ?>" />
                         <?php echo form_error('infant') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="tube_well" class="col-sm-2 control-label">Tube Well :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="tube_well" id="tube_well" placeholder="Tube Well" value="<?php echo $tube_well; ?>" />
+                <h3>স্বাস্থ্য ও স্যানিটেশন</h3>
+                <div class="form-group">
+                    <label for="tube_well" class="col-sm-2 control-label">নলকূপ :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tube_well" id="tube_well_yes" value="হাঁ" <?= $tube_well=='হাঁ' ? 'checked="checked"' : '';?>>
+                            <label class="form-check-label" for="tube_well_yes">হাঁ</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="tube_well" id="tube_well_no" value="না" <?= $tube_well=='না' ? 'checked="checked"' : '';?>>
+                            <label class="form-check-label" for="tube_well_no">না</label>
+                        </div>
                         <?php echo form_error('tube_well') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="latrine" class="col-sm-2 control-label">Latrine :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="latrine" id="latrine" placeholder="Latrine" value="<?php echo $latrine; ?>" />
+                <div class="form-group">
+                    <label for="latrine" class="col-sm-2 control-label">ল্যাট্রিন :<sup>*</sup></label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="latrine" id="latrine_yes" value="হাঁ" <?= $latrine=='হাঁ' ? 'checked="checked"' : '';?>>
+                            <label class="form-check-label" for="latrine_yes">হাঁ</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="latrine" id="latrine_no" value="না" <?= $latrine=='না' ? 'checked="checked"' : '';?>>
+                            <label class="form-check-label" for="latrine_no">না</label>
+                        </div>
                         <?php echo form_error('latrine') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="disabled_member_name" class="col-sm-2 control-label">Disabled Member Name :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="disabled_member_name" id="disabled_member_name" placeholder="Disabled Member Name" value="<?php echo $disabled_member_name; ?>" />
+                <h3>খানার অন্যান্য সদস্যের তথ্য :</h3>
+                <div class="table-responsive">
+                    <table id="relativeTable" class="table table-bordered table-hover mb-4">
+                        <thead>
+                            <tr>
+                                <th width="20%" class="text-center">নাম</th>
+                                <th width="30%" class="text-center">পেশা</th>
+                                <th width="20%" class="text-center">সম্পর্ক</th>
+                                <th width="20%" class="text-center">শিক্ষাগত যোগ্যতা</th>
+                                <th width="10%" class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            if($relatives){
+                                foreach($relatives as $relative){
+                            ?>
+                                <tr data-id="<?= $relative->id;?>" id="relative_item-<?= $relative->id;?>" class="relative-item">
+                                <td class="text-center">
+                                    <input type="text" class="form-control" id="relative_name_<?= $relative->id;?>" name="relative_name[<?= $relative->id;?>]" value="<?= $relative->name;?>">
+                                </td>
+                                <td class="text-center">
+                                    <input type="text" class="form-control" id="relative_occupation_<?= $relative->id;?>" name="relative_occupation[<?= $relative->id;?>]" value="<?= $relative->occupation;?>">
+                                </td>
+                                <td class="text-center">
+                                    <input type="text" class="form-control" id="relative_relationship_<?= $relative->id;?>" name="relative_relationship[<?= $relative->id;?>]" value="<?= $relative->relationship;?>">
+                                </td>
+                                <td class="text-right">
+                                    <input type="text" class="form-control" id="relative_educational_qualification_<?= $relative->id;?>" name="relative_educational_qualification[<?= $relative->id;?>]" value="<?= $relative->educational_qualification;?>">
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-danger relative-delete" data-id="<?= $relative->id;?>"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <?php 
+                                }
+                            }else{
+                            ?>
+                            <tr data-id="0" id="relative_item-0" class="relative-item">
+                                <td class="text-center">
+                                    <input type="text" class="form-control" id="relative_name_0" name="relative_name[0]">
+                                </td>
+                                <td class="text-center">
+                                    <input type="text" class="form-control" id="relative_occupation_0" name="relative_occupation[0]">
+                                </td>
+                                <td class="text-center">
+                                    <input type="text" class="form-control" id="relative_relationship_0" name="relative_relationship[0]">
+                                </td>
+                                <td class="text-right">
+                                    <input type="text" class="form-control" id="relative_educational_qualification_0" name="relative_educational_qualification[0]">
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-xs btn-danger relative-delete" data-id="0"><i class="fa fa-trash" ></i></button>
+                                </td>
+                            </tr>
+                            <?php }?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-right">
+                                    <button type="button" id="addRelative" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> নতুন যোগ করুন</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <label for="disabled_member_name" class="col-sm-2 control-label">প্রতিবন্ধী সদস্য থাকলে তার নাম  :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="disabled_member_name" id="disabled_member_name" placeholder="প্রতিবন্ধী সদস্য থাকলে তার নাম" value="<?php echo $disabled_member_name; ?>" />
                         <?php echo form_error('disabled_member_name') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="disabled_member_age" class="col-sm-2 control-label">Disabled Member Age :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="disabled_member_age" id="disabled_member_age" placeholder="Disabled Member Age" value="<?php echo $disabled_member_age; ?>" />
+                <div class="form-group">
+                    <label for="disabled_member_age" class="col-sm-2 control-label">প্রতিবন্ধী সদস্য থাকলে তার বয়স :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="0" step="any" class="form-control" name="disabled_member_age" id="disabled_member_age" placeholder="প্রতিবন্ধী সদস্য থাকলে তার বয়স" value="<?php echo $disabled_member_age; ?>" />
                         <?php echo form_error('disabled_member_age') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="type_of_disability" class="col-sm-2 control-label">Type Of Disability :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="type_of_disability" id="type_of_disability" placeholder="Type Of Disability" value="<?php echo $type_of_disability; ?>" />
+                <div class="form-group">
+                    <label for="type_of_disability" class="col-sm-2 control-label">প্রতিবন্ধীতার ধরণ :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="type_of_disability" id="type_of_disability" placeholder="প্রতিবন্ধীতার ধরণ" value="<?php echo $type_of_disability; ?>" />
                         <?php echo form_error('type_of_disability') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="expatriate_name" class="col-sm-2 control-label">Expatriate Name :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="expatriate_name" id="expatriate_name" placeholder="Expatriate Name" value="<?php echo $expatriate_name; ?>" />
+                <div class="form-group">
+                    <label for="expatriate_name" class="col-sm-2 control-label">প্রবাসী কোন সদস্য থাকলে তার নাম :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="expatriate_name" id="expatriate_name" placeholder="প্রবাসী কোন সদস্য থাকলে তার নাম" value="<?php echo $expatriate_name; ?>" />
                         <?php echo form_error('expatriate_name') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="country_name" class="col-sm-2 control-label">Country Name :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="country_name" id="country_name" placeholder="Country Name" value="<?php echo $country_name; ?>" />
+                <div class="form-group">
+                    <label for="country_name" class="col-sm-2 control-label">দেশের নাম :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="country_name" id="country_name" placeholder="দেশের নাম" value="<?php echo $country_name; ?>" />
                         <?php echo form_error('country_name') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="asset_type_id" class="col-sm-2 control-label">Asset Type Id :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="asset_type_id" id="asset_type_id" placeholder="Asset Type Id" value="<?php echo $asset_type_id; ?>" />
+                <div class="form-group">
+                    <label for="asset_type_id" class="col-sm-2 control-label">খানা প্রদানের সম্পদের ধরন :</label>
+                    <div class="col-sm-10">
+                    <select id="asset_type_id" name="asset_type_id" class="form-control">
+                            <?php echo getAssetType($asset_type_id); ?>
+                        </select>
                         <?php echo form_error('asset_type_id') ?>
                     </div>
                 </div>
-	    <div class="form-group">        
-                    <label for="description" class="col-sm-2 control-label">Description :</label>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">বিস্তারিত উল্লেখ করুন :</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" rows="3" name="description" id="description" placeholder="Description"><?php echo $description; ?></textarea>
                         <?php echo form_error('description') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="raw_house" class="col-sm-2 control-label">Raw House :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="raw_house" id="raw_house" placeholder="Raw House" value="<?php echo $raw_house; ?>" />
+                <h3>বসতঘর/অবকাঠামোর ধরণ</h3>
+                <div class="form-group">
+                    <label for="raw_house" class="col-sm-2 control-label">কাঁচা ঘর :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="raw_house" id="raw_house" placeholder="কাঁচা ঘর" value="<?php echo $raw_house; ?>" />
                         <?php echo form_error('raw_house') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="half_baked_house" class="col-sm-2 control-label">Half Baked House :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="half_baked_house" id="half_baked_house" placeholder="Half Baked House" value="<?php echo $half_baked_house; ?>" />
+                <div class="form-group">
+                    <label for="half_baked_house" class="col-sm-2 control-label">আধাপাকা ঘর :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="half_baked_house" id="half_baked_house" placeholder="আধাপাকা ঘর" value="<?php echo $half_baked_house; ?>" />
                         <?php echo form_error('half_baked_house') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="paved_house" class="col-sm-2 control-label">Paved House :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="paved_house" id="paved_house" placeholder="Paved House" value="<?php echo $paved_house; ?>" />
+                <div class="form-group">
+                    <label for="paved_house" class="col-sm-2 control-label">পাকা ঘর :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="paved_house" id="paved_house" placeholder="পাকা ঘর" value="<?php echo $paved_house; ?>" />
                         <?php echo form_error('paved_house') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="type_of_infrastructure" class="col-sm-2 control-label">Type Of Infrastructure :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="type_of_infrastructure" id="type_of_infrastructure" placeholder="Type Of Infrastructure" value="<?php echo $type_of_infrastructure; ?>" />
+                <div class="form-group">
+                    <label for="type_of_infrastructure" class="col-sm-2 control-label">ধরন :</label>
+                    <div class="col-sm-10">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="type_of_infrastructure" id="type_of_infrastructure_yes" value="নিজে বসবাস" <?= $type_of_infrastructure=='নিজে বসবাস' ? 'checked="checked"' : '';?>>
+                                <label class="form-check-label" for="type_of_infrastructure_yes">নিজে বসবাস</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="type_of_infrastructure" id="type_of_infrastructure_no" value="ভাড়া দেওয়া" <?= $type_of_infrastructure=='ভাড়া দেওয়া' ? 'checked="checked"' : '';?>>
+                                <label class="form-check-label" for="type_of_infrastructure_no">ভাড়া দেওয়া</label>
+                            </div>
                         <?php echo form_error('type_of_infrastructure') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="annual_value" class="col-sm-2 control-label">Annual Value :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="annual_value" id="annual_value" placeholder="Annual Value" value="<?php echo $annual_value; ?>" />
+                <div class="form-group">
+                    <label for="annual_value" class="col-sm-2 control-label">বার্ষিক মূল্য/ব্যাংক ঋণ নিয়ে গৃহ তৈরী হলে বার্ষিক সুদ বাদে নীট বার্ষিক মূল্য :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="annual_value" id="annual_value" placeholder="বার্ষিক মূল্য/ব্যাংক ঋণ নিয়ে গৃহ তৈরী হলে বার্ষিক সুদ বাদে নীট বার্ষিক মূল্য" value="<?php echo $annual_value+0; ?>" />
                         <?php echo form_error('annual_value') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="annual_tax_amount" class="col-sm-2 control-label">Annual Tax Amount :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="annual_tax_amount" id="annual_tax_amount" placeholder="Annual Tax Amount" value="<?php echo $annual_tax_amount; ?>" />
+                <div class="form-group">
+                    <label for="annual_tax_amount" class="col-sm-2 control-label">বার্ষিক করের পরিমান :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="annual_tax_amount" id="annual_tax_amount" placeholder="বার্ষিক করের পরিমান" value="<?php echo $annual_tax_amount+0; ?>" />
                         <?php echo form_error('annual_tax_amount') ?>
                     </div>
                 </div>
-	    <div class="form-group">
-                    <label for="created_by" class="col-sm-2 control-label">Created By :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="created_by" id="created_by" placeholder="Created By" value="<?php echo $created_by; ?>" />
-                        <?php echo form_error('created_by') ?>
-                    </div>
+
+                <div class="col-md-10 col-md-offset-2" style="padding-left:5px;">
+                    <input type="hidden" name="id" value="<?php echo $id; ?>" />
+                    <button id="updateMember" type="button" class="btn btn-primary"><?php echo $button ?></button>
+                    <a href="<?php echo site_url(Backend_URL . 'member') ?>" class="btn btn-default">Cancel</a>
                 </div>
-	    <div class="form-group">
-                    <label for="updated_by" class="col-sm-2 control-label">Updated By :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="updated_by" id="updated_by" placeholder="Updated By" value="<?php echo $updated_by; ?>" />
-                        <?php echo form_error('updated_by') ?>
-                    </div>
-                </div>
-	    <div class="form-group">
-                    <label for="created_at" class="col-sm-2 control-label">Created At :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="created_at" id="created_at" placeholder="Created At" value="<?php echo $created_at; ?>" />
-                        <?php echo form_error('created_at') ?>
-                    </div>
-                </div>
-	    <div class="form-group">
-                    <label for="updated_at" class="col-sm-2 control-label">Updated At :</label>
-                    <div class="col-sm-10">                    
-                        <input type="text" class="form-control" name="updated_at" id="updated_at" placeholder="Updated At" value="<?php echo $updated_at; ?>" />
-                        <?php echo form_error('updated_at') ?>
-                    </div>
-                </div>
-	<div class="col-md-12 text-right">
-	    <input type="hidden" name="id" value="<?php echo $id; ?>" /> 
-	    <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
-	    <a href="<?php echo site_url( Backend_URL .'member') ?>" class="btn btn-default">Cancel</a>
-	</div>
-</form>
-	</div>
-</div>
+            </form>
+        </div>
+    </div>
 </section>
+<script type="text/javascript">
+  $(document.body).on('click', '#addRelative' ,function(event){
+
+    var index = Date.now();
+
+    let markup = '<tr data-id="'+index+'" class="relative-item" id="relative_item-'+index+'">' +
+    '<td>' +
+    '<input type="text" class="form-control" id="relative_name-'+index+'" name="relative_name['+index+']">' +
+    '</td>' +
+    '<td>' +
+    '<input type="text" class="form-control" id="relative_occupation-'+index+'" name="relative_occupation['+index+']">' +
+    '</td>' +
+    '<td>' +
+    '<input type="text" class="form-control" id="relative_relationship-'+index+'" name="relative_relationship['+index+']">' +
+    '</td>' +
+    '<td class="text-right">' +
+    '<input type="text" class="form-control" id="relative_educational_qualification-'+index+'" name="relative_educational_qualification['+index+']">' +
+    '</td>' +
+    '<td class="text-center">' +
+    '<button class="btn btn-xs btn-danger relative-delete" data-id="'+index+'"><i class="fa fa-trash" ></i></button>' +
+    '</td>' +
+    '</tr>';
+
+    $("#relativeTable tbody").append(markup);
+
+});
+
+$(document.body).on('click', '.relative-delete' ,function(){
+    var id = $(this).attr('data-id');
+    $('#relative_item-'+id).remove();
+
+});
+
+$(document.body).on('click', '#updateMember' ,function(){
+    var formData = jQuery('#memberForm').serialize();
+    jQuery.ajax({
+        url: 'member/update_action',
+        type: 'POST',
+        dataType: "json",
+        data: formData,
+        beforeSend: function () {
+            jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+        },
+        success: function (jsonRespond) {
+            console.log(jsonRespond);
+            if(jsonRespond.Status === 'OK'){
+                jQuery('#ajax_respond').html( jsonRespond.Msg );
+                setTimeout(function() {	
+                    jQuery('#ajax_respond').fadeOut(); 
+                    location.reload();},
+                2000);
+            } else {
+                jQuery('#ajax_respond').html( jsonRespond.Msg );
+            }
+        }
+    });
+
+});
+
+
+</script>

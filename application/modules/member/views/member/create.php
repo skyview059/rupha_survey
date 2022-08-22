@@ -20,7 +20,7 @@
         <div class="box-body">
             <form class="form-horizontal" id="memberForm" name="memberForm" method="post"> 
                 <div class="form-group">
-                    <label for="union_id" class="col-sm-2 control-label">ইউনিয়ন :</label>
+                    <label for="union_id" class="col-sm-2 control-label">ইউনিয়ন :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <select id="union_id" name="union_id" class="form-control">
                             <?php echo getUnions($union_id, 60); ?>
@@ -29,49 +29,49 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="previous_holding_no" class="col-sm-2 control-label">পূর্ববর্তী হোল্ডিং নাম্বার :</label>
+                    <label for="previous_holding_no" class="col-sm-2 control-label">পূর্ববর্তী হোল্ডিং নাম্বার :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="previous_holding_no" id="previous_holding_no" placeholder="পূর্ববর্তী হোল্ডিং নম্বর" value="<?php echo $previous_holding_no; ?>" />
                         <?php echo form_error('previous_holding_no') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="present_holding_no" class="col-sm-2 control-label">বর্তমান হোল্ডিং নাম্বার :</label>
+                    <label for="present_holding_no" class="col-sm-2 control-label">বর্তমান হোল্ডিং নাম্বার :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="present_holding_no" id="present_holding_no" placeholder="বর্তমান হোল্ডিং নম্বর" value="<?php echo $present_holding_no; ?>" />
                         <?php echo form_error('present_holding_no') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="word_no" class="col-sm-2 control-label">ওয়ার্ড নং :</label>
+                    <label for="word_no" class="col-sm-2 control-label">ওয়ার্ড নং :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="word_no" id="word_no" placeholder="ওয়ার্ড নং" value="<?php echo $word_no; ?>" />
                         <?php echo form_error('word_no') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="village" class="col-sm-2 control-label">গ্রাম/মহল্লার নাম :</label>
+                    <label for="village" class="col-sm-2 control-label">গ্রাম/মহল্লার নাম :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="village" id="village" placeholder="গ্রাম/মহল্লার নাম" value="<?php echo $village; ?>" />
                         <?php echo form_error('village') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="khana_chief_name_ba" class="col-sm-2 control-label">খানা প্রধানের নাম (বাংলায়):</label>
+                    <label for="khana_chief_name_ba" class="col-sm-2 control-label">খানা প্রধানের নাম (বাংলায়):<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="khana_chief_name_ba" id="khana_chief_name_ba" placeholder="খানা প্রধানের নাম (বাংলায়)" value="<?php echo $khana_chief_name_ba; ?>" />
                         <?php echo form_error('khana_chief_name_ba') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="khana_chief_name_en" class="col-sm-2 control-label">খানা প্রধানের নাম (ইংরেজিতে) :</label>
+                    <label for="khana_chief_name_en" class="col-sm-2 control-label">খানা প্রধানের নাম (ইংরেজিতে) :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="khana_chief_name_en" id="khana_chief_name_en" placeholder="খানা প্রধানের নাম (ইংরেজিতে)" value="<?php echo $khana_chief_name_en; ?>" />
                         <?php echo form_error('khana_chief_name_en') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="mobile_no" class="col-sm-2 control-label">মোবাইল নং :</label>
+                    <label for="mobile_no" class="col-sm-2 control-label">মোবাইল নং :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="mobile_no" id="mobile_no" placeholder="মোবাইল নং" value="<?php echo $mobile_no; ?>" />
                         <?php echo form_error('mobile_no') ?>
@@ -85,23 +85,26 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="father_name" class="col-sm-2 control-label">পিতা/স্বামীর নাম :</label>
+                    <label for="father_name" class="col-sm-2 control-label">পিতা/স্বামীর নাম :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="father_name" id="father_name" placeholder="পিতা/স্বামীর নাম" value="<?php echo $father_name; ?>" />
                         <?php echo form_error('father_name') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="mother_name" class="col-sm-2 control-label">মাতার নাম :</label>
+                    <label for="mother_name" class="col-sm-2 control-label">মাতার নাম :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="mother_name" id="mother_name" placeholder="মাতার নাম" value="<?php echo $mother_name; ?>" />
                         <?php echo form_error('mother_name') ?>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="date_of_birth" class="col-sm-2 control-label">জন্ম তারিখ :</label>
+                    <label for="date_of_birth" class="col-sm-2 control-label">জন্ম তারিখ :<sup>*</sup></label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="date_of_birth" id="date_of_birth" placeholder="জন্ম তারিখ" value="<?php echo $date_of_birth; ?>" />
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" name="date_of_birth" id="date_of_birth" placeholder="জন্ম তারিখ" value="<?php echo $date_of_birth; ?>" class="form-control js_datepicker" readonly="readonly"/>
+                        </div>
                         <?php echo form_error('date_of_birth') ?>
                     </div>
                 </div>
@@ -113,7 +116,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="social_security_benefit_id" class="col-sm-2 control-label">সামাজিক সুরক্ষার সুবিধা:</label>
+                    <label for="social_security_benefit_id" class="col-sm-2 control-label">সামাজিক সুরক্ষার সুবিধা:<sup>*</sup></label>
                     <div class="col-sm-10">
                         <select id="social_security_benefit_id" name="social_security_benefit_id" class="form-control">
                             <?php echo getSocialSecurityBenefit($social_security_benefit_id); ?>
@@ -122,7 +125,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="income_source_id" class="col-sm-2 control-label">খানা প্রদানের পেশা/আয়ের উৎস :</label>
+                    <label for="income_source_id" class="col-sm-2 control-label">খানা প্রদানের পেশা/আয়ের উৎস :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <select id="income_source_id" name="income_source_id" class="form-control">
                             <?php echo getIncomeSource($income_source_id); ?>
@@ -167,7 +170,7 @@
                 </div>
                 <h3>স্বাস্থ্য ও স্যানিটেশন</h3>
                 <div class="form-group">
-                    <label for="tube_well" class="col-sm-2 control-label">নলকূপ :</label>
+                    <label for="tube_well" class="col-sm-2 control-label">নলকূপ :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="tube_well" id="tube_well_yes" value="হাঁ">
@@ -181,7 +184,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="latrine" class="col-sm-2 control-label">ল্যাট্রিন :</label>
+                    <label for="latrine" class="col-sm-2 control-label">ল্যাট্রিন :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="latrine" id="latrine_yes" value="হাঁ">
@@ -394,14 +397,15 @@ $(document.body).on('click', '#saveMember' ,function(){
             jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
         },
         success: function (jsonRespond) {
-            if(jsonRepond.Status === 'OK'){
-                jQuery('#ajax_respond').html( jsonRepond.Msg );
+            console.log(jsonRespond);
+            if(jsonRespond.Status === 'OK'){
+                jQuery('#ajax_respond').html( jsonRespond.Msg );
                 setTimeout(function() {	
                     jQuery('#ajax_respond').fadeOut(); 
                     location.reload();},
                 2000);
             } else {
-                jQuery('#ajax_respond').html( jsonRepond.Msg );
+                jQuery('#ajax_respond').html( jsonRespond.Msg );
             }
         }
     });
