@@ -58,12 +58,12 @@ class Member_model extends Fm_model{
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
-		$this->db->select('members.*, u.bn_name as union_name, upazilas.bn_name as upazila_name, districts.bn_name as district_name, divisions.bn_name as division_name');
+		$this->db->select('members.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
 		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name');
-		$this->db->join('unions as u', 'u.id = members.union_id', 'left');
-		$this->db->join('upazilas', 'upazilas.id = u.upazilla_id', 'left');
-		$this->db->join('districts', 'districts.id = upazilas.district_id', 'left');
-		$this->db->join('divisions', 'divisions.id = districts.division_id', 'left');
+		$this->db->join('bd_unions as u', 'u.id = members.union_id', 'left');
+		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
+		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
+		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');
 		$this->db->join('social_security_benefits as ssb', 'ssb.id = members.social_security_benefit_id', 'left');
 		$this->db->join('income_sources as is', 'is.id = members.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = members.asset_type_id', 'left');
@@ -111,13 +111,13 @@ class Member_model extends Fm_model{
 
 	function get_by_id($id){
         
-		$this->db->select('m.*, u.bn_name as union_name, upazilas.bn_name as upazila_name, districts.bn_name as district_name, divisions.bn_name as division_name');
+		$this->db->select('m.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
 		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name, at.name_ba as asset_type_name');
 		$this->db->from("{$this->table} as m");
-		$this->db->join('unions as u', 'u.id = m.union_id', 'left');
-		$this->db->join('upazilas', 'upazilas.id = u.upazilla_id', 'left');
-		$this->db->join('districts', 'districts.id = upazilas.district_id', 'left');
-		$this->db->join('divisions', 'divisions.id = districts.division_id', 'left');
+		$this->db->join('bd_unions as u', 'u.id = m.union_id', 'left');
+		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
+		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
+		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');
 		$this->db->join('social_security_benefits as ssb', 'ssb.id = m.social_security_benefit_id', 'left');
 		$this->db->join('income_sources as is', 'is.id = m.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = m.asset_type_id', 'left');

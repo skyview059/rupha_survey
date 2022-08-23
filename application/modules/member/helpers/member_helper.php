@@ -75,7 +75,7 @@ function getDivisions($selected_id = 0, $label = '-- নির্বাচন �
 	$ci = &get_instance();
 	$ci->db->select('id,bn_name');
 	$results = $ci->db->order_by('id', 'ASC')
-		->get('divisions')
+		->get('bd_divisions')
 		->result();
 
 	$row = '<option value="0">' . $label . '</option>';
@@ -94,7 +94,7 @@ function getDistricts($selected_id = 0, $division_id = 0, $label = '-- নির
 	$ci->db->select('id,bn_name');
 	$results = $ci->db->order_by('id', 'ASC')
 		->where('division_id', $division_id)
-		->get('districts')
+		->get('bd_districts')
 		->result();
 
 	$row = '<option value="0">' . $label . '</option>';
@@ -113,7 +113,7 @@ function getUpazilas($selected_id = 0, $district_id = 0, $label = '-- নির�
 	$ci->db->select('id,bn_name');
 	$results = $ci->db->order_by('id', 'ASC')
 		->where('district_id', $district_id)
-		->get('upazilas')
+		->get('bd_upazilas')
 		->result();
 
 	$row = '<option value="0">' . $label . '</option>';
@@ -132,7 +132,7 @@ function getUnions($selected_id = 0, $upazilla_id = 0, $label = '-- নির্
 	$ci->db->select('id,bn_name');
 	$results = $ci->db->order_by('id', 'ASC')
 		->where('upazilla_id', $upazilla_id)
-		->get('unions')
+		->get('bd_unions')
 		->result();
 
 	$row = '<option value="0">' . $label . '</option>';

@@ -137,30 +137,17 @@ class Helper {
         return $row;
     }
     
-    private static function getDivisions($selected_id = 0, $label = '-- Select Division --') {
-        $ci = &get_instance();
-        $ci->db->select('id,bn_name,name');
-        $results = $ci->db->order_by('id', 'ASC')
-            ->get('divisions')
-            ->result();
-    
-        $row = '<option value="0">' . $label . '</option>';
-        foreach ($results as $result) {
-            $row .= '<option value="' . $result->id . '"';
-            $row .= ($selected_id == $result->id) ? ' selected' : '';
-            $row .= '>';
-            $row .= $result->name;
-            $row .= '</option>' . "\r\n";
-        }
-        return $row;
+
+    public static function getDivisions($selected_id = 0, $label = '-- Select Division --') {
+        return self::getTableToSelector('bd_divisions', 'bn_name', '-- Select Division --', $selected_id);
     }
     
-    private static function getDistricts($selected_id = 0, $division_id = 0, $label = '-- Select District --') {
+    public static function getDistricts($selected_id = 0, $division_id = 0, $label = '-- Select District --') {
         $ci = &get_instance();
         $ci->db->select('id,bn_name,name');
         $results = $ci->db->order_by('id', 'ASC')
             ->where('division_id', $division_id)
-            ->get('districts')
+            ->get('bd_districts')
             ->result();
     
         $row = '<option value="0">' . $label . '</option>';
@@ -174,12 +161,12 @@ class Helper {
         return $row;
     }
     
-    private static function getUpazilas($selected_id = 0, $district_id = 0, $label = '-- Select Upazila --') {
+    public static function getUpazilas($selected_id = 0, $district_id = 0, $label = '-- Select Upazila --') {
         $ci = &get_instance();
         $ci->db->select('id,bn_name,name');
         $results = $ci->db->order_by('id', 'ASC')
             ->where('district_id', $district_id)
-            ->get('upazilas')
+            ->get('bd_upazilas')
             ->result();
     
         $row = '<option value="0">' . $label . '</option>';
@@ -193,12 +180,12 @@ class Helper {
         return $row;
     }
     
-    private static function getUnions($selected_id = 0, $upazilla_id = 0, $label = '-- Select Union --') {
+    public static function getUnions($selected_id = 0, $upazilla_id = 0, $label = '-- Select Union --') {
         $ci = &get_instance();
         $ci->db->select('id,bn_name,name');
         $results = $ci->db->order_by('id', 'ASC')
             ->where('upazilla_id', $upazilla_id)
-            ->get('unions')
+            ->get('bd_unions')
             ->result();
     
         $row = '<option value="0">' . $label . '</option>';
