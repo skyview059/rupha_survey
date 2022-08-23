@@ -91,9 +91,9 @@ INSERT INTO `asset_types` (`id`, `name_ba`, `name_en`) VALUES
 	(8, 'অন্যান্য', 'Other');
 /*!40000 ALTER TABLE `asset_types` ENABLE KEYS */;
 
--- Dumping structure for table rupsa_survey.districts
-DROP TABLE IF EXISTS `districts`;
-CREATE TABLE IF NOT EXISTS `districts` (
+-- Dumping structure for table rupsa_survey.bd_districts
+DROP TABLE IF EXISTS `bd_districts`;
+CREATE TABLE IF NOT EXISTS `bd_districts` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
   `division_id` int(1) NOT NULL,
   `name` varchar(25) NOT NULL,
@@ -103,13 +103,13 @@ CREATE TABLE IF NOT EXISTS `districts` (
   `url` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `division_id` (`division_id`),
-  CONSTRAINT `districts_ibfk_2` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bd_districts_ibfk_2` FOREIGN KEY (`division_id`) REFERENCES `bd_divisions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table rupsa_survey.districts: ~64 rows (approximately)
-DELETE FROM `districts`;
-/*!40000 ALTER TABLE `districts` DISABLE KEYS */;
-INSERT INTO `districts` (`id`, `division_id`, `name`, `bn_name`, `lat`, `lon`, `url`) VALUES
+-- Dumping data for table rupsa_survey.bd_districts: ~64 rows (approximately)
+DELETE FROM `bd_districts`;
+/*!40000 ALTER TABLE `bd_districts` DISABLE KEYS */;
+INSERT INTO `bd_districts` (`id`, `division_id`, `name`, `bn_name`, `lat`, `lon`, `url`) VALUES
 	(1, 1, 'Comilla', 'কুমিল্লা', '23.4682747', '91.1788135', 'www.comilla.gov.bd'),
 	(2, 1, 'Feni', 'ফেনী', '23.023231', '91.3840844', 'www.feni.gov.bd'),
 	(3, 1, 'Brahmanbaria', 'ব্রাহ্মণবাড়িয়া', '23.9570904', '91.1119286', 'www.brahmanbaria.gov.bd'),
@@ -174,11 +174,11 @@ INSERT INTO `districts` (`id`, `division_id`, `name`, `bn_name`, `lat`, `lon`, `
 	(62, 8, 'Mymensingh', 'ময়মনসিংহ', '24.7465670', '90.4072093', 'www.mymensingh.gov.bd'),
 	(63, 8, 'Jamalpur', 'জামালপুর', '24.937533', '89.937775', 'www.jamalpur.gov.bd'),
 	(64, 8, 'Netrokona', 'নেত্রকোণা', '24.870955', '90.727887', 'www.netrokona.gov.bd');
-/*!40000 ALTER TABLE `districts` ENABLE KEYS */;
+/*!40000 ALTER TABLE `bd_districts` ENABLE KEYS */;
 
--- Dumping structure for table rupsa_survey.divisions
-DROP TABLE IF EXISTS `divisions`;
-CREATE TABLE IF NOT EXISTS `divisions` (
+-- Dumping structure for table rupsa_survey.bd_divisions
+DROP TABLE IF EXISTS `bd_divisions`;
+CREATE TABLE IF NOT EXISTS `bd_divisions` (
   `id` int(1) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
   `bn_name` varchar(25) NOT NULL,
@@ -186,10 +186,10 @@ CREATE TABLE IF NOT EXISTS `divisions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Dumping data for table rupsa_survey.divisions: ~8 rows (approximately)
-DELETE FROM `divisions`;
-/*!40000 ALTER TABLE `divisions` DISABLE KEYS */;
-INSERT INTO `divisions` (`id`, `name`, `bn_name`, `url`) VALUES
+-- Dumping data for table rupsa_survey.bd_divisions: ~8 rows (approximately)
+DELETE FROM `bd_divisions`;
+/*!40000 ALTER TABLE `bd_divisions` DISABLE KEYS */;
+INSERT INTO `bd_divisions` (`id`, `name`, `bn_name`, `url`) VALUES
 	(1, 'Chattagram', 'চট্টগ্রাম', 'www.chittagongdiv.gov.bd'),
 	(2, 'Rajshahi', 'রাজশাহী', 'www.rajshahidiv.gov.bd'),
 	(3, 'Khulna', 'খুলনা', 'www.khulnadiv.gov.bd'),
@@ -198,419 +198,11 @@ INSERT INTO `divisions` (`id`, `name`, `bn_name`, `url`) VALUES
 	(6, 'Dhaka', 'ঢাকা', 'www.dhakadiv.gov.bd'),
 	(7, 'Rangpur', 'রংপুর', 'www.rangpurdiv.gov.bd'),
 	(8, 'Mymensingh', 'ময়মনসিংহ', 'www.mymensinghdiv.gov.bd');
-/*!40000 ALTER TABLE `divisions` ENABLE KEYS */;
+/*!40000 ALTER TABLE `bd_divisions` ENABLE KEYS */;
 
--- Dumping structure for table rupsa_survey.expenses
-DROP TABLE IF EXISTS `expenses`;
-CREATE TABLE IF NOT EXISTS `expenses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `trans_date` date NOT NULL,
-  `head_id` int(11) NOT NULL,
-  `sub_head_id` int(11) NOT NULL,
-  `remark` varchar(120) DEFAULT NULL,
-  `amount` int(11) NOT NULL,
-  `timestamp` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `status` enum('OK','Void') DEFAULT 'OK',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dumping data for table rupsa_survey.expenses: ~0 rows (approximately)
-DELETE FROM `expenses`;
-/*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
-/*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.income_sources
-DROP TABLE IF EXISTS `income_sources`;
-CREATE TABLE IF NOT EXISTS `income_sources` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name_ba` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `name_en` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
-
--- Dumping data for table rupsa_survey.income_sources: ~14 rows (approximately)
-DELETE FROM `income_sources`;
-/*!40000 ALTER TABLE `income_sources` DISABLE KEYS */;
-INSERT INTO `income_sources` (`id`, `name_ba`, `name_en`) VALUES
-	(1, 'কৃষি', 'Agriculture'),
-	(2, 'ব্যবসা', 'Business'),
-	(3, 'শিক্ষকতা', 'Teaching'),
-	(4, 'গৃহিণী', 'Housewife'),
-	(5, 'শ্রমিক', 'Worker'),
-	(6, ' দিনমজুর', 'Day Laborer'),
-	(7, 'ড্রাইভার', 'Driver'),
-	(8, 'আইনজীবী ', 'Lawyer'),
-	(9, 'চিকিৎসক', 'Doctor'),
-	(10, 'গার্মেন্টস শ্রমিক', 'Garment worker'),
-	(11, 'কামার', 'Blacksmith'),
-	(12, 'কুমার', 'Kumar'),
-	(13, 'তাঁতি', 'Weaver'),
-	(14, 'জেলে', 'Fisherman'),
-	(15, 'অন্যান্য', 'Other');
-/*!40000 ALTER TABLE `income_sources` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.ledger_heads
-DROP TABLE IF EXISTS `ledger_heads`;
-CREATE TABLE IF NOT EXISTS `ledger_heads` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` enum('Income','Expense') NOT NULL DEFAULT 'Expense',
-  `type` enum('Head','SubHead') NOT NULL DEFAULT 'Head',
-  `name` varchar(100) NOT NULL,
-  `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
--- Dumping data for table rupsa_survey.ledger_heads: ~4 rows (approximately)
-DELETE FROM `ledger_heads`;
-/*!40000 ALTER TABLE `ledger_heads` DISABLE KEYS */;
-INSERT INTO `ledger_heads` (`id`, `category`, `type`, `name`, `status`) VALUES
-	(1, 'Expense', 'Head', 'Salary', 'Active'),
-	(2, 'Expense', 'Head', 'Office Cost', 'Active'),
-	(3, 'Expense', 'SubHead', 'Manager ( Rubel )', 'Active'),
-	(4, 'Income', 'Head', 'Deposit', 'Active');
-/*!40000 ALTER TABLE `ledger_heads` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.members
-DROP TABLE IF EXISTS `members`;
-CREATE TABLE IF NOT EXISTS `members` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `union_id` int(11) DEFAULT NULL,
-  `previous_holding_no` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `present_holding_no` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `word_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `village` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Village/Neighborhood',
-  `khana_chief_name_ba` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `khana_chief_name_en` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `mobile_no` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `avg_annual_income` decimal(10,2) DEFAULT NULL,
-  `father_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Father/Husband',
-  `mother_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `date_of_birth` date NOT NULL,
-  `nid` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `social_security_benefit_id` int(11) DEFAULT NULL,
-  `income_source_id` int(11) DEFAULT NULL COMMENT 'Khana Chief Profession/Source Of Income',
-  `house_members` tinyint(4) DEFAULT NULL COMMENT 'Number of house members',
-  `male` tinyint(4) DEFAULT NULL,
-  `female` tinyint(4) DEFAULT NULL,
-  `adult` tinyint(4) DEFAULT NULL,
-  `infant` tinyint(4) DEFAULT NULL,
-  `tube_well` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Yes/No',
-  `latrine` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Yes/No',
-  `disabled_member_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Pratibandhi sadasya name jodi thake',
-  `disabled_member_age` tinyint(4) DEFAULT NULL,
-  `type_of_disability` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Pratibandhitar Dharan',
-  `expatriate_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'If the expatriate has any problem his name',
-  `country_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `asset_type_id` int(11) DEFAULT NULL COMMENT 'Food is the main resource type',
-  `description` text COLLATE utf8_unicode_ci,
-  `raw_house` int(11) DEFAULT NULL COMMENT 'Living Room/Type of infrastructure',
-  `half_baked_house` int(11) DEFAULT NULL,
-  `paved_house` int(11) DEFAULT NULL COMMENT 'Paka Ghar',
-  `type_of_infrastructure` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Own House, Rent',
-  `annual_value` decimal(10,2) DEFAULT NULL,
-  `annual_tax_amount` decimal(10,2) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- Dumping data for table rupsa_survey.members: ~3 rows (approximately)
-DELETE FROM `members`;
-/*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` (`id`, `union_id`, `previous_holding_no`, `present_holding_no`, `word_no`, `village`, `khana_chief_name_ba`, `khana_chief_name_en`, `mobile_no`, `avg_annual_income`, `father_name`, `mother_name`, `date_of_birth`, `nid`, `social_security_benefit_id`, `income_source_id`, `house_members`, `male`, `female`, `adult`, `infant`, `tube_well`, `latrine`, `disabled_member_name`, `disabled_member_age`, `type_of_disability`, `expatriate_name`, `country_name`, `asset_type_id`, `description`, `raw_house`, `half_baked_house`, `paved_house`, `type_of_infrastructure`, `annual_value`, `annual_tax_amount`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(2, 563, '23423', '23423', '234', 'dfsd', 'sdf', 'sdfsdf', '213123', 0.00, 'sdfsdf', 'sdfsdf', '2022-08-22', '', 3, 12, 0, 0, 0, 0, 0, '???', '???', '', 0, '', '', '', 0, '', 0, 0, 0, '???? ?????', 0.00, 0.00, 1, NULL, '2022-08-22 19:58:02', NULL),
-	(3, 563, '???', '???', '?', '????', '?????', 'werwer', '23423423', 0.00, 'sdfsdf', 'sdfsdfsd', '2022-08-22', '', 3, 2, 0, 0, 0, 0, 0, 'না', 'হাঁ', '', 0, '', '', '', 2, '', 0, 0, 0, 'নিজে বসবাস', 0.00, 0.00, 1, 1, '2022-08-22 20:00:07', '2022-08-22 22:53:44'),
-	(4, 567, '??', '???', '??', '???', '??????', 'hggf', '56455655', 0.00, '?????', '?????', '2022-08-22', '', 2, 3, 0, 0, 0, 0, 0, '???', '???', '', 0, '', '', '', 0, '', 0, 0, 0, '???? ?????', 0.00, 0.00, 1, NULL, '2022-08-22 20:06:12', NULL);
-/*!40000 ALTER TABLE `members` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.member_relatives
-DROP TABLE IF EXISTS `member_relatives`;
-CREATE TABLE IF NOT EXISTS `member_relatives` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `member_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `occupation` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `relationship` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
-  `educational_qualification` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
-
--- Dumping data for table rupsa_survey.member_relatives: ~2 rows (approximately)
-DELETE FROM `member_relatives`;
-/*!40000 ALTER TABLE `member_relatives` DISABLE KEYS */;
-INSERT INTO `member_relatives` (`id`, `member_id`, `name`, `occupation`, `relationship`, `educational_qualification`) VALUES
-	(2, 2, 'ওয়ের্বের্বের', '্বের্বের', '্বের্বের', '্বের্বের'),
-	(6, 3, 'সদস', 'সদফফ', 'সদসদ', 'সদসদ');
-/*!40000 ALTER TABLE `member_relatives` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.member_stmt
-DROP TABLE IF EXISTS `member_stmt`;
-CREATE TABLE IF NOT EXISTS `member_stmt` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `member_id` int(11) NOT NULL,
-  `trans_date` date NOT NULL,
-  `head_id` int(11) DEFAULT NULL,
-  `sub_head_id` int(11) DEFAULT NULL,
-  `month_of_dps` date DEFAULT NULL,
-  `remark` varchar(250) DEFAULT NULL,
-  `dr` int(11) NOT NULL DEFAULT '0' COMMENT 'Withdraw',
-  `cr` int(11) NOT NULL DEFAULT '0' COMMENT 'Deposit',
-  `status` enum('OK','Void') NOT NULL DEFAULT 'OK',
-  `timestamp` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dumping data for table rupsa_survey.member_stmt: ~0 rows (approximately)
-DELETE FROM `member_stmt`;
-/*!40000 ALTER TABLE `member_stmt` DISABLE KEYS */;
-/*!40000 ALTER TABLE `member_stmt` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.modules
-DROP TABLE IF EXISTS `modules`;
-CREATE TABLE IF NOT EXISTS `modules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `added_date` date NOT NULL,
-  `order` int(11) NOT NULL,
-  `type` enum('Module','Utility','Accounts') CHARACTER SET latin1 DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `folder` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `description` text CHARACTER SET latin1 NOT NULL,
-  `status` enum('Enable','Disable','Locked') CHARACTER SET latin1 NOT NULL DEFAULT 'Disable',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `folder` (`folder`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- Dumping data for table rupsa_survey.modules: ~7 rows (approximately)
-DELETE FROM `modules`;
-/*!40000 ALTER TABLE `modules` DISABLE KEYS */;
-INSERT INTO `modules` (`id`, `added_date`, `order`, `type`, `name`, `folder`, `description`, `status`) VALUES
-	(1, '2014-09-07', 1, 'Module', 'Dashboard', 'dashboard', '', 'Locked'),
-	(2, '2022-08-04', 1, 'Module', 'Members', 'member', 'Micro Credit Members', 'Enable'),
-	(4, '2014-09-07', 10, 'Module', 'Admin User', 'user', '', 'Locked'),
-	(5, '2014-09-07', 15, 'Module', 'Site Setting', 'settings', '', 'Locked'),
-	(6, '2016-11-24', 32, 'Module', 'Manage Modules', 'module', '', 'Locked'),
-	(7, '2016-11-24', 33, 'Module', 'DB Sync', 'db_sync', '', 'Locked'),
-	(8, '2022-08-04', 1, 'Module', 'Trans & Report', 'trans', 'Trans & Report', 'Enable');
-/*!40000 ALTER TABLE `modules` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.roles
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `status` enum('Locked','Unlocked') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unlocked',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- Dumping data for table rupsa_survey.roles: ~4 rows (approximately)
-DELETE FROM `roles`;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` (`id`, `role_name`, `status`) VALUES
-	(1, 'Developer', 'Locked'),
-	(2, 'Site Owner / Admin', 'Locked'),
-	(3, 'Secretary', 'Locked'),
-	(4, 'Operator/Accounts', 'Unlocked');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.role_permissions
-DROP TABLE IF EXISTS `role_permissions`;
-CREATE TABLE IF NOT EXISTS `role_permissions` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) NOT NULL,
-  `acl_id` int(11) NOT NULL,
-  `access` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `roleID_2` (`role_id`,`acl_id`),
-  UNIQUE KEY `role_id` (`role_id`,`acl_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Role Permit ACL';
-
--- Dumping data for table rupsa_survey.role_permissions: ~126 rows (approximately)
-DELETE FROM `role_permissions`;
-/*!40000 ALTER TABLE `role_permissions` DISABLE KEYS */;
-INSERT INTO `role_permissions` (`id`, `role_id`, `acl_id`, `access`) VALUES
-	(1, 1, 12, 1),
-	(2, 1, 1, 1),
-	(3, 1, 332, 1),
-	(4, 1, 272, 1),
-	(5, 1, 83, 1),
-	(6, 1, 82, 1),
-	(7, 1, 8, 1),
-	(8, 1, 7, 1),
-	(9, 1, 3, 1),
-	(10, 1, 2, 1),
-	(11, 1, 9, 1),
-	(12, 1, 100, 1),
-	(13, 1, 169, 1),
-	(14, 1, 251, 1),
-	(15, 1, 126, 1),
-	(16, 1, 125, 1),
-	(17, 1, 124, 1),
-	(18, 1, 123, 1),
-	(19, 1, 121, 1),
-	(20, 1, 122, 1),
-	(21, 1, 157, 1),
-	(22, 1, 258, 1),
-	(23, 1, 257, 1),
-	(24, 1, 256, 1),
-	(25, 1, 255, 1),
-	(26, 1, 254, 1),
-	(27, 1, 253, 1),
-	(28, 1, 252, 1),
-	(29, 1, 270, 1),
-	(30, 1, 269, 1),
-	(31, 1, 268, 1),
-	(32, 1, 267, 1),
-	(33, 1, 264, 1),
-	(34, 1, 265, 1),
-	(35, 1, 266, 1),
-	(36, 1, 273, 1),
-	(37, 1, 291, 1),
-	(38, 1, 281, 1),
-	(39, 1, 280, 1),
-	(40, 1, 279, 1),
-	(41, 1, 278, 1),
-	(42, 1, 277, 1),
-	(43, 1, 276, 1),
-	(44, 1, 275, 1),
-	(45, 1, 274, 1),
-	(46, 1, 288, 1),
-	(47, 1, 316, 1),
-	(48, 1, 314, 1),
-	(49, 1, 290, 1),
-	(50, 1, 289, 1),
-	(51, 1, 287, 1),
-	(52, 1, 286, 1),
-	(53, 1, 285, 1),
-	(54, 1, 284, 1),
-	(55, 1, 331, 1),
-	(56, 1, 330, 1),
-	(57, 1, 329, 1),
-	(58, 1, 328, 1),
-	(59, 1, 327, 1),
-	(60, 1, 326, 1),
-	(61, 1, 325, 1),
-	(62, 1, 323, 1),
-	(63, 1, 322, 1),
-	(64, 1, 324, 1),
-	(65, 1, 334, 1),
-	(66, 1, 335, 1),
-	(111, 2, 12, 1),
-	(112, 2, 334, 1),
-	(113, 2, 335, 1),
-	(114, 2, 258, 1),
-	(115, 2, 257, 1),
-	(116, 2, 256, 1),
-	(117, 2, 255, 1),
-	(118, 2, 254, 1),
-	(119, 2, 253, 1),
-	(120, 2, 252, 1),
-	(121, 2, 270, 1),
-	(122, 2, 269, 1),
-	(123, 2, 268, 1),
-	(124, 2, 264, 1),
-	(125, 2, 265, 1),
-	(126, 2, 266, 1),
-	(127, 2, 267, 1),
-	(128, 2, 291, 1),
-	(129, 2, 281, 1),
-	(130, 2, 280, 1),
-	(131, 2, 279, 1),
-	(132, 2, 278, 1),
-	(133, 2, 277, 1),
-	(134, 2, 276, 1),
-	(135, 2, 275, 1),
-	(136, 2, 274, 1),
-	(137, 2, 273, 1),
-	(138, 2, 289, 1),
-	(139, 2, 316, 1),
-	(140, 2, 314, 1),
-	(141, 2, 290, 1),
-	(142, 2, 288, 1),
-	(143, 2, 287, 1),
-	(144, 2, 286, 1),
-	(145, 2, 284, 1),
-	(146, 2, 285, 1),
-	(147, 2, 331, 1),
-	(148, 2, 330, 1),
-	(149, 2, 329, 1),
-	(150, 2, 328, 1),
-	(151, 2, 327, 1),
-	(152, 2, 326, 1),
-	(153, 2, 324, 1),
-	(154, 2, 323, 1),
-	(155, 2, 322, 1),
-	(156, 2, 325, 1),
-	(157, 1, 336, 1),
-	(158, 1, 337, 1),
-	(159, 1, 338, 1),
-	(160, 1, 339, 1),
-	(161, 1, 340, 1),
-	(162, 1, 341, 1),
-	(163, 1, 342, 1),
-	(164, 1, 343, 1),
-	(165, 1, 344, 1),
-	(166, 1, 345, 1),
-	(167, 1, 346, 1),
-	(168, 1, 347, 1),
-	(169, 1, 348, 1),
-	(170, 1, 349, 1);
-/*!40000 ALTER TABLE `role_permissions` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.settings
-DROP TABLE IF EXISTS `settings`;
-CREATE TABLE IF NOT EXISTS `settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `value` text COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `label` (`label`),
-  UNIQUE KEY `label_2` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- Dumping data for table rupsa_survey.settings: ~6 rows (approximately)
-DELETE FROM `settings`;
-/*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` (`id`, `label`, `value`) VALUES
-	(1, 'ComName', 'Rupsha'),
-	(2, 'Title', 'House Hold Servey'),
-	(3, 'Address', ''),
-	(4, 'Contact', 'Tel: 01713-900-423'),
-	(20, 'IncomingEmail', 'skyview059@gmail.com'),
-	(21, 'OutgoingEmail', 'skyview059@gmail.com');
-/*!40000 ALTER TABLE `settings` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.social_security_benefits
-DROP TABLE IF EXISTS `social_security_benefits`;
-CREATE TABLE IF NOT EXISTS `social_security_benefits` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name_ba` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `name_en` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
-
--- Dumping data for table rupsa_survey.social_security_benefits: ~9 rows (approximately)
-DELETE FROM `social_security_benefits`;
-/*!40000 ALTER TABLE `social_security_benefits` DISABLE KEYS */;
-INSERT INTO `social_security_benefits` (`id`, `name_ba`, `name_en`) VALUES
-	(1, 'মুক্তিযোদ্ধা ভাতা', 'Freedom fighter allowance'),
-	(2, 'বয়স্ক ভাতা', 'Old Age Allowance'),
-	(3, 'বিধবা ভাতা', 'Widow\'s Allowance'),
-	(4, 'প্রতিবন্ধী ভাতা', 'Disability Allowance'),
-	(5, 'আশ্রয়ন প্রকল্প', 'Shelter Project'),
-	(6, 'ভিক্ষুক', 'Beggar'),
-	(7, 'ভিডিডি', 'VDD'),
-	(8, 'বিজিএফ অতিদরিদ্রদের জন্য কর্মসংস্থান কর্মসূচি', 'BGF is an employment program for the very poor'),
-	(9, 'অন্যান্য', 'Other');
-/*!40000 ALTER TABLE `social_security_benefits` ENABLE KEYS */;
-
--- Dumping structure for table rupsa_survey.unions
-DROP TABLE IF EXISTS `unions`;
-CREATE TABLE IF NOT EXISTS `unions` (
+-- Dumping structure for table rupsa_survey.bd_unions
+DROP TABLE IF EXISTS `bd_unions`;
+CREATE TABLE IF NOT EXISTS `bd_unions` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `upazilla_id` int(3) NOT NULL,
   `name` varchar(25) NOT NULL,
@@ -618,13 +210,13 @@ CREATE TABLE IF NOT EXISTS `unions` (
   `url` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `upazilla_id` (`upazilla_id`),
-  CONSTRAINT `unions_ibfk_2` FOREIGN KEY (`upazilla_id`) REFERENCES `upazilas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bd_unions_ibfk_2` FOREIGN KEY (`upazilla_id`) REFERENCES `bd_upazilas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4541 DEFAULT CHARSET=utf8;
 
--- Dumping data for table rupsa_survey.unions: ~4,622 rows (approximately)
-DELETE FROM `unions`;
-/*!40000 ALTER TABLE `unions` DISABLE KEYS */;
-INSERT INTO `unions` (`id`, `upazilla_id`, `name`, `bn_name`, `url`) VALUES
+-- Dumping data for table rupsa_survey.bd_unions: ~4,622 rows (approximately)
+DELETE FROM `bd_unions`;
+/*!40000 ALTER TABLE `bd_unions` DISABLE KEYS */;
+INSERT INTO `bd_unions` (`id`, `upazilla_id`, `name`, `bn_name`, `url`) VALUES
 	(1, 1, 'Subil', 'সুবিল', 'subilup.comilla.gov.bd'),
 	(2, 1, 'North Gunaighor', 'উত্তর গুনাইঘর', 'gunaighornorthup.comilla.gov.bd'),
 	(3, 1, 'South Gunaighor', 'দক্ষিণ গুনাইঘর', 'gunaighorsouth.comilla.gov.bd'),
@@ -5165,11 +4757,11 @@ INSERT INTO `unions` (`id`, `upazilla_id`, `name`, `bn_name`, `url`) VALUES
 	(4538, 491, 'Rouha', 'রৌহা', 'rouhaup.netrokona.gov.bd'),
 	(4539, 491, 'Medni', 'মেদনী', 'medniup.netrokona.gov.bd'),
 	(4540, 491, 'Kaliara Babragati', 'কালিয়ারা গাবরাগাতি', 'kaliaragabragatiup.netrokona.gov.bd');
-/*!40000 ALTER TABLE `unions` ENABLE KEYS */;
+/*!40000 ALTER TABLE `bd_unions` ENABLE KEYS */;
 
--- Dumping structure for table rupsa_survey.upazilas
-DROP TABLE IF EXISTS `upazilas`;
-CREATE TABLE IF NOT EXISTS `upazilas` (
+-- Dumping structure for table rupsa_survey.bd_upazilas
+DROP TABLE IF EXISTS `bd_upazilas`;
+CREATE TABLE IF NOT EXISTS `bd_upazilas` (
   `id` int(3) NOT NULL AUTO_INCREMENT,
   `district_id` int(2) NOT NULL,
   `name` varchar(25) NOT NULL,
@@ -5177,13 +4769,13 @@ CREATE TABLE IF NOT EXISTS `upazilas` (
   `url` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `district_id` (`district_id`),
-  CONSTRAINT `upazilas_ibfk_2` FOREIGN KEY (`district_id`) REFERENCES `districts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `bd_upazilas_ibfk_2` FOREIGN KEY (`district_id`) REFERENCES `bd_districts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=492 DEFAULT CHARSET=utf8;
 
--- Dumping data for table rupsa_survey.upazilas: ~491 rows (approximately)
-DELETE FROM `upazilas`;
-/*!40000 ALTER TABLE `upazilas` DISABLE KEYS */;
-INSERT INTO `upazilas` (`id`, `district_id`, `name`, `bn_name`, `url`) VALUES
+-- Dumping data for table rupsa_survey.bd_upazilas: ~491 rows (approximately)
+DELETE FROM `bd_upazilas`;
+/*!40000 ALTER TABLE `bd_upazilas` DISABLE KEYS */;
+INSERT INTO `bd_upazilas` (`id`, `district_id`, `name`, `bn_name`, `url`) VALUES
 	(1, 1, 'Debidwar', 'দেবিদ্বার', 'debidwar.comilla.gov.bd'),
 	(2, 1, 'Barura', 'বরুড়া', 'barura.comilla.gov.bd'),
 	(3, 1, 'Brahmanpara', 'ব্রাহ্মণপাড়া', 'brahmanpara.comilla.gov.bd'),
@@ -5675,7 +5267,415 @@ INSERT INTO `upazilas` (`id`, `district_id`, `name`, `bn_name`, `url`) VALUES
 	(489, 64, 'Mohongonj', 'মোহনগঞ্জ', 'mohongonj.netrokona.gov.bd'),
 	(490, 64, 'Purbadhala', 'পূর্বধলা', 'purbadhala.netrokona.gov.bd'),
 	(491, 64, 'Netrokona Sadar', 'নেত্রকোণা সদর', 'netrokonasadar.netrokona.gov.bd');
-/*!40000 ALTER TABLE `upazilas` ENABLE KEYS */;
+/*!40000 ALTER TABLE `bd_upazilas` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.expenses
+DROP TABLE IF EXISTS `expenses`;
+CREATE TABLE IF NOT EXISTS `expenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `trans_date` date NOT NULL,
+  `head_id` int(11) NOT NULL,
+  `sub_head_id` int(11) NOT NULL,
+  `remark` varchar(120) DEFAULT NULL,
+  `amount` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` enum('OK','Void') DEFAULT 'OK',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table rupsa_survey.expenses: ~0 rows (approximately)
+DELETE FROM `expenses`;
+/*!40000 ALTER TABLE `expenses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `expenses` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.income_sources
+DROP TABLE IF EXISTS `income_sources`;
+CREATE TABLE IF NOT EXISTS `income_sources` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name_ba` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name_en` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table rupsa_survey.income_sources: ~14 rows (approximately)
+DELETE FROM `income_sources`;
+/*!40000 ALTER TABLE `income_sources` DISABLE KEYS */;
+INSERT INTO `income_sources` (`id`, `name_ba`, `name_en`) VALUES
+	(1, 'কৃষি', 'Agriculture'),
+	(2, 'ব্যবসা', 'Business'),
+	(3, 'শিক্ষকতা', 'Teaching'),
+	(4, 'গৃহিণী', 'Housewife'),
+	(5, 'শ্রমিক', 'Worker'),
+	(6, ' দিনমজুর', 'Day Laborer'),
+	(7, 'ড্রাইভার', 'Driver'),
+	(8, 'আইনজীবী ', 'Lawyer'),
+	(9, 'চিকিৎসক', 'Doctor'),
+	(10, 'গার্মেন্টস শ্রমিক', 'Garment worker'),
+	(11, 'কামার', 'Blacksmith'),
+	(12, 'কুমার', 'Kumar'),
+	(13, 'তাঁতি', 'Weaver'),
+	(14, 'জেলে', 'Fisherman'),
+	(15, 'অন্যান্য', 'Other');
+/*!40000 ALTER TABLE `income_sources` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.ledger_heads
+DROP TABLE IF EXISTS `ledger_heads`;
+CREATE TABLE IF NOT EXISTS `ledger_heads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` enum('Income','Expense') NOT NULL DEFAULT 'Expense',
+  `type` enum('Head','SubHead') NOT NULL DEFAULT 'Head',
+  `name` varchar(100) NOT NULL,
+  `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table rupsa_survey.ledger_heads: ~4 rows (approximately)
+DELETE FROM `ledger_heads`;
+/*!40000 ALTER TABLE `ledger_heads` DISABLE KEYS */;
+INSERT INTO `ledger_heads` (`id`, `category`, `type`, `name`, `status`) VALUES
+	(1, 'Expense', 'Head', 'Salary', 'Active'),
+	(2, 'Expense', 'Head', 'Office Cost', 'Active'),
+	(3, 'Expense', 'SubHead', 'Manager ( Rubel )', 'Active'),
+	(4, 'Income', 'Head', 'Deposit', 'Active');
+/*!40000 ALTER TABLE `ledger_heads` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.members
+DROP TABLE IF EXISTS `members`;
+CREATE TABLE IF NOT EXISTS `members` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `union_id` int(11) DEFAULT NULL,
+  `previous_holding_no` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `present_holding_no` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `word_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `village` varchar(200) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Village/Neighborhood',
+  `khana_chief_name_ba` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `khana_chief_name_en` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile_no` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `avg_annual_income` decimal(10,2) DEFAULT NULL,
+  `father_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Father/Husband',
+  `mother_name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `date_of_birth` date NOT NULL,
+  `nid` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `social_security_benefit_id` int(11) DEFAULT NULL,
+  `income_source_id` int(11) DEFAULT NULL COMMENT 'Khana Chief Profession/Source Of Income',
+  `house_members` tinyint(4) DEFAULT NULL COMMENT 'Number of house members',
+  `male` tinyint(4) DEFAULT NULL,
+  `female` tinyint(4) DEFAULT NULL,
+  `adult` tinyint(4) DEFAULT NULL,
+  `infant` tinyint(4) DEFAULT NULL,
+  `tube_well` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Yes/No',
+  `latrine` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Yes/No',
+  `disabled_member_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Pratibandhi sadasya name jodi thake',
+  `disabled_member_age` tinyint(4) DEFAULT NULL,
+  `type_of_disability` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Pratibandhitar Dharan',
+  `expatriate_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'If the expatriate has any problem his name',
+  `country_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `asset_type_id` int(11) DEFAULT NULL COMMENT 'Food is the main resource type',
+  `description` text COLLATE utf8_unicode_ci,
+  `raw_house` int(11) DEFAULT NULL COMMENT 'Living Room/Type of infrastructure',
+  `half_baked_house` int(11) DEFAULT NULL,
+  `paved_house` int(11) DEFAULT NULL COMMENT 'Paka Ghar',
+  `type_of_infrastructure` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Own House, Rent',
+  `annual_value` decimal(10,2) DEFAULT NULL,
+  `annual_tax_amount` decimal(10,2) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table rupsa_survey.members: ~3 rows (approximately)
+DELETE FROM `members`;
+/*!40000 ALTER TABLE `members` DISABLE KEYS */;
+INSERT INTO `members` (`id`, `union_id`, `previous_holding_no`, `present_holding_no`, `word_no`, `village`, `khana_chief_name_ba`, `khana_chief_name_en`, `mobile_no`, `avg_annual_income`, `father_name`, `mother_name`, `date_of_birth`, `nid`, `social_security_benefit_id`, `income_source_id`, `house_members`, `male`, `female`, `adult`, `infant`, `tube_well`, `latrine`, `disabled_member_name`, `disabled_member_age`, `type_of_disability`, `expatriate_name`, `country_name`, `asset_type_id`, `description`, `raw_house`, `half_baked_house`, `paved_house`, `type_of_infrastructure`, `annual_value`, `annual_tax_amount`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(2, 563, '23423', '23423', '234', 'dfsd', 'sdf', 'sdfsdf', '213123', 0.00, 'sdfsdf', 'sdfsdf', '2022-08-22', '', 3, 12, 0, 0, 0, 0, 0, '???', '???', '', 0, '', '', '', 0, '', 0, 0, 0, '???? ?????', 0.00, 0.00, 1, NULL, '2022-08-22 19:58:02', NULL),
+	(3, 563, '???', '???', '?', '????', '?????', 'werwer', '23423423', 0.00, 'sdfsdf', 'sdfsdfsd', '2022-08-22', '', 3, 2, 0, 0, 0, 0, 0, 'না', 'হাঁ', '', 0, '', '', '', 2, '', 0, 0, 0, 'নিজে বসবাস', 0.00, 0.00, 1, 1, '2022-08-22 20:00:07', '2022-08-22 22:53:44'),
+	(4, 567, '??', '???', '??', '???', '??????', 'hggf', '56455655', 0.00, '?????', '?????', '2022-08-22', '', 2, 3, 0, 0, 0, 0, 0, '???', '???', '', 0, '', '', '', 0, '', 0, 0, 0, '???? ?????', 0.00, 0.00, 1, NULL, '2022-08-22 20:06:12', NULL);
+/*!40000 ALTER TABLE `members` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.member_relatives
+DROP TABLE IF EXISTS `member_relatives`;
+CREATE TABLE IF NOT EXISTS `member_relatives` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `occupation` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `relationship` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `educational_qualification` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table rupsa_survey.member_relatives: ~2 rows (approximately)
+DELETE FROM `member_relatives`;
+/*!40000 ALTER TABLE `member_relatives` DISABLE KEYS */;
+INSERT INTO `member_relatives` (`id`, `member_id`, `name`, `occupation`, `relationship`, `educational_qualification`) VALUES
+	(2, 2, 'ওয়ের্বের্বের', '্বের্বের', '্বের্বের', '্বের্বের'),
+	(6, 3, 'সদস', 'সদফফ', 'সদসদ', 'সদসদ');
+/*!40000 ALTER TABLE `member_relatives` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.member_stmt
+DROP TABLE IF EXISTS `member_stmt`;
+CREATE TABLE IF NOT EXISTS `member_stmt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `trans_date` date NOT NULL,
+  `head_id` int(11) DEFAULT NULL,
+  `sub_head_id` int(11) DEFAULT NULL,
+  `month_of_dps` date DEFAULT NULL,
+  `remark` varchar(250) DEFAULT NULL,
+  `dr` int(11) NOT NULL DEFAULT '0' COMMENT 'Withdraw',
+  `cr` int(11) NOT NULL DEFAULT '0' COMMENT 'Deposit',
+  `status` enum('OK','Void') NOT NULL DEFAULT 'OK',
+  `timestamp` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `member_id` (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table rupsa_survey.member_stmt: ~0 rows (approximately)
+DELETE FROM `member_stmt`;
+/*!40000 ALTER TABLE `member_stmt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `member_stmt` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.modules
+DROP TABLE IF EXISTS `modules`;
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `added_date` date NOT NULL,
+  `order` int(11) NOT NULL,
+  `type` enum('Module','Utility','Accounts') CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `folder` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `description` text CHARACTER SET latin1 NOT NULL,
+  `status` enum('Enable','Disable','Locked') CHARACTER SET latin1 NOT NULL DEFAULT 'Disable',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `folder` (`folder`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table rupsa_survey.modules: ~7 rows (approximately)
+DELETE FROM `modules`;
+/*!40000 ALTER TABLE `modules` DISABLE KEYS */;
+INSERT INTO `modules` (`id`, `added_date`, `order`, `type`, `name`, `folder`, `description`, `status`) VALUES
+	(1, '2014-09-07', 1, 'Module', 'Dashboard', 'dashboard', '', 'Locked'),
+	(2, '2022-08-04', 1, 'Module', 'Members', 'member', 'Micro Credit Members', 'Enable'),
+	(4, '2014-09-07', 10, 'Module', 'Admin User', 'user', '', 'Locked'),
+	(5, '2014-09-07', 15, 'Module', 'Site Setting', 'settings', '', 'Locked'),
+	(6, '2016-11-24', 32, 'Module', 'Manage Modules', 'module', '', 'Locked'),
+	(7, '2016-11-24', 33, 'Module', 'DB Sync', 'db_sync', '', 'Locked'),
+	(8, '2022-08-04', 1, 'Module', 'Trans & Report', 'trans', 'Trans & Report', 'Enable');
+/*!40000 ALTER TABLE `modules` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.roles
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('Locked','Unlocked') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unlocked',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table rupsa_survey.roles: ~4 rows (approximately)
+DELETE FROM `roles`;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` (`id`, `role_name`, `status`) VALUES
+	(1, 'Developer', 'Locked'),
+	(2, 'Site Owner / Admin', 'Locked'),
+	(3, 'Secretary', 'Locked'),
+	(4, 'Operator/Accounts', 'Unlocked');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.role_permissions
+DROP TABLE IF EXISTS `role_permissions`;
+CREATE TABLE IF NOT EXISTS `role_permissions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `acl_id` int(11) NOT NULL,
+  `access` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `roleID_2` (`role_id`,`acl_id`),
+  UNIQUE KEY `role_id` (`role_id`,`acl_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Role Permit ACL';
+
+-- Dumping data for table rupsa_survey.role_permissions: ~126 rows (approximately)
+DELETE FROM `role_permissions`;
+/*!40000 ALTER TABLE `role_permissions` DISABLE KEYS */;
+INSERT INTO `role_permissions` (`id`, `role_id`, `acl_id`, `access`) VALUES
+	(1, 1, 12, 1),
+	(2, 1, 1, 1),
+	(3, 1, 332, 1),
+	(4, 1, 272, 1),
+	(5, 1, 83, 1),
+	(6, 1, 82, 1),
+	(7, 1, 8, 1),
+	(8, 1, 7, 1),
+	(9, 1, 3, 1),
+	(10, 1, 2, 1),
+	(11, 1, 9, 1),
+	(12, 1, 100, 1),
+	(13, 1, 169, 1),
+	(14, 1, 251, 1),
+	(15, 1, 126, 1),
+	(16, 1, 125, 1),
+	(17, 1, 124, 1),
+	(18, 1, 123, 1),
+	(19, 1, 121, 1),
+	(20, 1, 122, 1),
+	(21, 1, 157, 1),
+	(22, 1, 258, 1),
+	(23, 1, 257, 1),
+	(24, 1, 256, 1),
+	(25, 1, 255, 1),
+	(26, 1, 254, 1),
+	(27, 1, 253, 1),
+	(28, 1, 252, 1),
+	(29, 1, 270, 1),
+	(30, 1, 269, 1),
+	(31, 1, 268, 1),
+	(32, 1, 267, 1),
+	(33, 1, 264, 1),
+	(34, 1, 265, 1),
+	(35, 1, 266, 1),
+	(36, 1, 273, 1),
+	(37, 1, 291, 1),
+	(38, 1, 281, 1),
+	(39, 1, 280, 1),
+	(40, 1, 279, 1),
+	(41, 1, 278, 1),
+	(42, 1, 277, 1),
+	(43, 1, 276, 1),
+	(44, 1, 275, 1),
+	(45, 1, 274, 1),
+	(46, 1, 288, 1),
+	(47, 1, 316, 1),
+	(48, 1, 314, 1),
+	(49, 1, 290, 1),
+	(50, 1, 289, 1),
+	(51, 1, 287, 1),
+	(52, 1, 286, 1),
+	(53, 1, 285, 1),
+	(54, 1, 284, 1),
+	(55, 1, 331, 1),
+	(56, 1, 330, 1),
+	(57, 1, 329, 1),
+	(58, 1, 328, 1),
+	(59, 1, 327, 1),
+	(60, 1, 326, 1),
+	(61, 1, 325, 1),
+	(62, 1, 323, 1),
+	(63, 1, 322, 1),
+	(64, 1, 324, 1),
+	(65, 1, 334, 1),
+	(66, 1, 335, 1),
+	(111, 2, 12, 1),
+	(112, 2, 334, 1),
+	(113, 2, 335, 1),
+	(114, 2, 258, 1),
+	(115, 2, 257, 1),
+	(116, 2, 256, 1),
+	(117, 2, 255, 1),
+	(118, 2, 254, 1),
+	(119, 2, 253, 1),
+	(120, 2, 252, 1),
+	(121, 2, 270, 1),
+	(122, 2, 269, 1),
+	(123, 2, 268, 1),
+	(124, 2, 264, 1),
+	(125, 2, 265, 1),
+	(126, 2, 266, 1),
+	(127, 2, 267, 1),
+	(128, 2, 291, 1),
+	(129, 2, 281, 1),
+	(130, 2, 280, 1),
+	(131, 2, 279, 1),
+	(132, 2, 278, 1),
+	(133, 2, 277, 1),
+	(134, 2, 276, 1),
+	(135, 2, 275, 1),
+	(136, 2, 274, 1),
+	(137, 2, 273, 1),
+	(138, 2, 289, 1),
+	(139, 2, 316, 1),
+	(140, 2, 314, 1),
+	(141, 2, 290, 1),
+	(142, 2, 288, 1),
+	(143, 2, 287, 1),
+	(144, 2, 286, 1),
+	(145, 2, 284, 1),
+	(146, 2, 285, 1),
+	(147, 2, 331, 1),
+	(148, 2, 330, 1),
+	(149, 2, 329, 1),
+	(150, 2, 328, 1),
+	(151, 2, 327, 1),
+	(152, 2, 326, 1),
+	(153, 2, 324, 1),
+	(154, 2, 323, 1),
+	(155, 2, 322, 1),
+	(156, 2, 325, 1),
+	(157, 1, 336, 1),
+	(158, 1, 337, 1),
+	(159, 1, 338, 1),
+	(160, 1, 339, 1),
+	(161, 1, 340, 1),
+	(162, 1, 341, 1),
+	(163, 1, 342, 1),
+	(164, 1, 343, 1),
+	(165, 1, 344, 1),
+	(166, 1, 345, 1),
+	(167, 1, 346, 1),
+	(168, 1, 347, 1),
+	(169, 1, 348, 1),
+	(170, 1, 349, 1);
+/*!40000 ALTER TABLE `role_permissions` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.settings
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `value` text COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `label` (`label`),
+  UNIQUE KEY `label_2` (`label`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table rupsa_survey.settings: ~6 rows (approximately)
+DELETE FROM `settings`;
+/*!40000 ALTER TABLE `settings` DISABLE KEYS */;
+INSERT INTO `settings` (`id`, `label`, `value`) VALUES
+	(1, 'ComName', 'Rupsha'),
+	(2, 'Title', 'House Hold Servey'),
+	(3, 'Address', ''),
+	(4, 'Contact', 'Tel: 01713-900-423'),
+	(20, 'IncomingEmail', 'skyview059@gmail.com'),
+	(21, 'OutgoingEmail', 'skyview059@gmail.com');
+/*!40000 ALTER TABLE `settings` ENABLE KEYS */;
+
+-- Dumping structure for table rupsa_survey.social_security_benefits
+DROP TABLE IF EXISTS `social_security_benefits`;
+CREATE TABLE IF NOT EXISTS `social_security_benefits` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name_ba` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name_en` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+
+-- Dumping data for table rupsa_survey.social_security_benefits: ~9 rows (approximately)
+DELETE FROM `social_security_benefits`;
+/*!40000 ALTER TABLE `social_security_benefits` DISABLE KEYS */;
+INSERT INTO `social_security_benefits` (`id`, `name_ba`, `name_en`) VALUES
+	(1, 'মুক্তিযোদ্ধা ভাতা', 'Freedom fighter allowance'),
+	(2, 'বয়স্ক ভাতা', 'Old Age Allowance'),
+	(3, 'বিধবা ভাতা', 'Widow\'s Allowance'),
+	(4, 'প্রতিবন্ধী ভাতা', 'Disability Allowance'),
+	(5, 'আশ্রয়ন প্রকল্প', 'Shelter Project'),
+	(6, 'ভিক্ষুক', 'Beggar'),
+	(7, 'ভিডিডি', 'VDD'),
+	(8, 'বিজিএফ অতিদরিদ্রদের জন্য কর্মসংস্থান কর্মসূচি', 'BGF is an employment program for the very poor'),
+	(9, 'অন্যান্য', 'Other');
+/*!40000 ALTER TABLE `social_security_benefits` ENABLE KEYS */;
 
 -- Dumping structure for table rupsa_survey.users
 DROP TABLE IF EXISTS `users`;
