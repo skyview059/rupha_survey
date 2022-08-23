@@ -21,6 +21,9 @@
 
 <script src="assets/lib/plugins/datepicker/bootstrap-datepicker.js"></script>
 
+<script src="assets/lib/plugins/toast/toastr.min.js" type="text/javascript"></script>
+<script src="assets/lib/plugins/sweetalert/sweetalert.js" type="text/javascript"></script>
+
 <!-- AdminLTE App -->
 <script src="assets/admin/dist/js/app.min.js"></script>
 
@@ -29,7 +32,13 @@
 
 <script src="assets/admin/custom_scripts.js" type="text/javascript"></script>
 <script>
-    jQuery(document).ready(function () {        
+    jQuery(document).ready(function () { 
+        
+        toastr.success('<h1>Request Successfull</h1>', 'Success', {
+            html: true
+        });
+        
+        
         jQuery('.js_select2').select2({
             placeholder : '--Select--',
             allowClear: true,
