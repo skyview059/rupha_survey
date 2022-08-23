@@ -9,6 +9,7 @@ class User extends Admin_controller{
         parent::__construct();
         $this->load->model('User_model');
         $this->load->helper('user');
+        $this->load->library('helper');
         $this->load->library('form_validation');
         $this->load->library('user/User_lib');
     }
@@ -70,6 +71,10 @@ class User extends Admin_controller{
 	    'password' => set_value('password'),	    
 	    'contact' => set_value('contact'),	    	    
 	    'status' => set_value('status'),
+        'division_id' => set_value('division_id'),
+        'district_id' => set_value('district_id'),
+        'upazilla_id' => set_value('upazilla_id'),
+        'union_id' => set_value('union_id'),
 	);
         $this->viewAdminContent('user/user/create', $data);
     }

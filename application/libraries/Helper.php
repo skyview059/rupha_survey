@@ -118,6 +118,99 @@ class Helper {
         return $row;
         
     }
+
+    private static function getIncomeSource($selected_id = 0, $label = '-- নির্বাচন করুন --') {
+        $ci = &get_instance();
+        $ci->db->select('id,name_ba');
+        $results = $ci->db->order_by('id', 'ASC')
+            ->get('income_sources')
+            ->result();
+    
+        $row = '<option value="0">' . $label . '</option>';
+        foreach ($results as $result) {
+            $row .= '<option value="' . $result->id . '"';
+            $row .= ($selected_id == $result->id) ? ' selected' : '';
+            $row .= '>';
+            $row .= $result->name_ba;
+            $row .= '</option>' . "\r\n";
+        }
+        return $row;
+    }
+    
+    private static function getDivisions($selected_id = 0, $label = '-- Select Division --') {
+        $ci = &get_instance();
+        $ci->db->select('id,bn_name,name');
+        $results = $ci->db->order_by('id', 'ASC')
+            ->get('divisions')
+            ->result();
+    
+        $row = '<option value="0">' . $label . '</option>';
+        foreach ($results as $result) {
+            $row .= '<option value="' . $result->id . '"';
+            $row .= ($selected_id == $result->id) ? ' selected' : '';
+            $row .= '>';
+            $row .= $result->name;
+            $row .= '</option>' . "\r\n";
+        }
+        return $row;
+    }
+    
+    private static function getDistricts($selected_id = 0, $division_id = 0, $label = '-- Select District --') {
+        $ci = &get_instance();
+        $ci->db->select('id,bn_name,name');
+        $results = $ci->db->order_by('id', 'ASC')
+            ->where('division_id', $division_id)
+            ->get('districts')
+            ->result();
+    
+        $row = '<option value="0">' . $label . '</option>';
+        foreach ($results as $result) {
+            $row .= '<option value="' . $result->id . '"';
+            $row .= ($selected_id == $result->id) ? ' selected' : '';
+            $row .= '>';
+            $row .= $result->name;
+            $row .= '</option>' . "\r\n";
+        }
+        return $row;
+    }
+    
+    private static function getUpazilas($selected_id = 0, $district_id = 0, $label = '-- Select Upazila --') {
+        $ci = &get_instance();
+        $ci->db->select('id,bn_name,name');
+        $results = $ci->db->order_by('id', 'ASC')
+            ->where('district_id', $district_id)
+            ->get('upazilas')
+            ->result();
+    
+        $row = '<option value="0">' . $label . '</option>';
+        foreach ($results as $result) {
+            $row .= '<option value="' . $result->id . '"';
+            $row .= ($selected_id == $result->id) ? ' selected' : '';
+            $row .= '>';
+            $row .= $result->name;
+            $row .= '</option>' . "\r\n";
+        }
+        return $row;
+    }
+    
+    private static function getUnions($selected_id = 0, $upazilla_id = 0, $label = '-- Select Union --') {
+        $ci = &get_instance();
+        $ci->db->select('id,bn_name,name');
+        $results = $ci->db->order_by('id', 'ASC')
+            ->where('upazilla_id', $upazilla_id)
+            ->get('unions')
+            ->result();
+    
+        $row = '<option value="0">' . $label . '</option>';
+        foreach ($results as $result) {
+            $row .= '<option value="' . $result->id . '"';
+            $row .= ($selected_id == $result->id) ? ' selected' : '';
+            $row .= '>';
+            $row .= $result->name;
+            $row .= '</option>' . "\r\n";
+        }
+        return $row;
+    }
     
     
 

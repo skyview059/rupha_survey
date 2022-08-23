@@ -27,6 +27,42 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="role_id" class="col-sm-2 control-label">Select Division :</label>
+                <div class="col-sm-10">                    
+                    <select name="division_id" class="form-control" id="division_id">
+                        <?php echo Helper::getDivisions($division_id); ?>
+                    </select>
+                    <?php echo form_error('division_id') ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="role_id" class="col-sm-2 control-label">Select District :</label>
+                <div class="col-sm-10">                    
+                    <select name="district_id" class="form-control" id="district_id">
+                        <?php echo Helper::getDistricts($district_id); ?>
+                    </select>
+                    <?php echo form_error('district_id') ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="role_id" class="col-sm-2 control-label">Select Upazila :</label>
+                <div class="col-sm-10">                    
+                    <select name="upazilla_id" class="form-control" id="upazilla_id">
+                        <?php echo Helper::getUpazilas($upazilla_id); ?>
+                    </select>
+                    <?php echo form_error('upazilla_id') ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="role_id" class="col-sm-2 control-label">Select Union :</label>
+                <div class="col-sm-10">                    
+                    <select name="union_id" class="form-control" id="union_id">
+                        <?php echo Helper::getUnions($union_id); ?>
+                    </select>
+                    <?php echo form_error('union_id') ?>
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="full_name" class="col-sm-2 control-label">Full Name :</label>
                 <div class="col-sm-10">                    
                     <input type="text" class="form-control" name="full_name" id="full_name" placeholder="First Name" value="<?php echo $full_name; ?>" />
