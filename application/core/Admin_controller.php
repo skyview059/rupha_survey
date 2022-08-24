@@ -8,6 +8,7 @@
 class Admin_controller extends MX_Controller {    
     protected $user_id;
     protected $role_id;
+    protected $union_id;
     
     public function __construct() {
         parent::__construct();               
@@ -19,7 +20,8 @@ class Admin_controller extends MX_Controller {
         /* @var $user_id type */
         $this->user_id = getLoginUserData('user_id');
         $this->role_id = getLoginUserData('role_id');
-        
+        $this->union_id = getLoginUserData('union_id');
+       
         
         if($this->user_id <= 0){
             redirect( site_url('login'));

@@ -13,6 +13,7 @@ class Member extends Admin_controller {
 	}
 
 	public function index() {
+		
 		$q = urldecode($this->input->get('q', TRUE));
 		$start = intval($this->input->get('start'));
 
@@ -38,6 +39,7 @@ class Member extends Admin_controller {
 	}
 
 	public function read($id) {
+		
 		$row = $this->Member_model->get_by_id($id);
 		if ($row) {
 			$data = array(
@@ -211,8 +213,6 @@ class Member extends Admin_controller {
 				$this->db->insert_batch('member_relatives', $relativeArr); 
 			}
 			echo ajaxRespond('OK', '<p class="ajax_success">Member Added Successfully</p>');
-			// $this->session->set_flashdata('message', '<p class="ajax_success">Member Added Successfully</p>');
-			// redirect(site_url(Backend_URL . 'member'));
 		}
 	}
 

@@ -397,15 +397,21 @@ $(document.body).on('click', '#saveMember' ,function(){
             jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
         },
         success: function (jsonRespond) {
-            console.log(jsonRespond);
+            jQuery('#ajax_respond').html('');
             if(jsonRespond.Status === 'OK'){
-                jQuery('#ajax_respond').html( jsonRespond.Msg );
+                toastr.success('Member Added Successfull', 'Success', {
+                    html: true
+                });
+                // jQuery('#ajax_respond').html( jsonRespond.Msg );
                 setTimeout(function() {	
                     jQuery('#ajax_respond').fadeOut(); 
                     location.reload();},
                 2000);
             } else {
-                jQuery('#ajax_respond').html( jsonRespond.Msg );
+                toastr.error(jsonRespond.Msg, 'Error', {
+                    html: true
+                });
+                // jQuery('#ajax_respond').html( jsonRespond.Msg );
             }
         }
     });

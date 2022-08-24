@@ -47,6 +47,7 @@ class Auth extends MX_Controller {
             'user_id' => $user->id,
             'user_mail' => $user->email,
             'role_id' => $user->role_id,
+            'union_id' => $user->union_id,
             'name' => $user->full_name,
         ]);
 

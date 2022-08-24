@@ -8,7 +8,7 @@
         <li class="active">Add New</li>
     </ol>
 </section>
-
+<?php echo $this->session->flashdata('message'); ?>
 <section class="content">       
     <div class="box">
         <div class="box-header with-border">

@@ -14,10 +14,15 @@ class Member_model extends Fm_model{
     
     // get total rows
     function total_rows($q = NULL) {
-    
+		
+		if(in_array($this->role_id, [3,4])){
+			$union_id = getLoginUserData('union_id');
+			
+			$this->db->where('members.union_id', $union_id);
+		}
+
 		if($q){
 			$this->db->like('id', $q);
-			$this->db->or_like('union_id', $q);
 			$this->db->or_like('previous_holding_no', $q);
 			$this->db->or_like('present_holding_no', $q);
 			$this->db->or_like('word_no', $q);
@@ -68,9 +73,13 @@ class Member_model extends Fm_model{
 		$this->db->join('income_sources as is', 'is.id = members.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = members.asset_type_id', 'left');
         $this->db->order_by($this->id, $this->order);
+		if(in_array($this->role_id, [3,4])){
+			$union_id = getLoginUserData('union_id');
+			$this->db->where('members.union_id', $union_id);
+		}
         if($q){
+			$this->db->group_start();
 			$this->db->like('members.id', $q);
-			$this->db->or_like('members.union_id', $q);
 			$this->db->or_like('members.previous_holding_no', $q);
 			$this->db->or_like('members.present_holding_no', $q);
 			$this->db->or_like('members.word_no', $q);
@@ -104,7 +113,11 @@ class Member_model extends Fm_model{
 			$this->db->or_like('members.type_of_infrastructure', $q);
 			$this->db->or_like('members.annual_value', $q);
 			$this->db->or_like('members.annual_tax_amount', $q);
+			$this->db->group_end();
 		}
+
+		
+		
 		$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
@@ -122,6 +135,10 @@ class Member_model extends Fm_model{
 		$this->db->join('income_sources as is', 'is.id = m.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = m.asset_type_id', 'left');
         $this->db->where('m.id', $id);
+		if(in_array($this->role_id, [3,4])){
+			$union_id = getLoginUserData('union_id');
+			$this->db->where('m.union_id', $union_id);
+		}
         return $this->db->get()->row();
     }
 

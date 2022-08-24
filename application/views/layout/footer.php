@@ -34,9 +34,7 @@
 <script>
     jQuery(document).ready(function () { 
         
-        toastr.success('<h1>Request Successfull</h1>', 'Success', {
-            html: true
-        });
+        
         
         
         jQuery('.js_select2').select2({
