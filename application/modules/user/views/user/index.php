@@ -33,6 +33,7 @@
                         <tr>
                             <th width="40">S/L</th>
                             <th>Role</th>
+                            <th>Area</th>
                             <th>Full Name</th>                            
                             <th>Email</th>                            
                             <th>Contact</th>
@@ -48,6 +49,12 @@
                             <tr>
                                 <td><?php echo ++$start; ?></td>
                                 <td><?php echo $user->role_name; ?></td>
+                                <td>
+                                    <?php if(in_array($user->role_id, [3,4])){?>
+                                    <?php echo $user->union_name; ?><br/>
+                                    <?php echo $user->upazila_name.', '.$user->district_name.', '.$user->division_name; ?><br/>
+                                    <?php }?>
+                                </td>
                                 <td><?php echo $user->full_name; ?></td>                                
                                 <td><?php echo $user->email; ?></td>                                
                                 <td><?php echo $user->contact; ?></td>

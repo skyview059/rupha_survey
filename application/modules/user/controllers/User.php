@@ -44,15 +44,20 @@ class User extends Admin_controller{
         $row = $this->User_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'id' => $row->id,
-		'role_name' => getRoleName($row->role_id),
-		'full_name' => $row->full_name,		
-		'email' => $row->email,		
-		'contact' => $row->contact,
-		'created_at' => globalDateFormat($row->created_at),
-		'last_access' => $row->last_access,
-		'status' => $row->status,
-	    );
+                'id' => $row->id,
+                'role_id' => $row->role_id,
+                'role_name' => getRoleName($row->role_id),
+                'union_name' => $row->union_name,
+                'upazila_name' => $row->upazila_name,
+                'district_name' => $row->district_name,
+                'division_name' => $row->division_name,
+                'full_name' => $row->full_name,		
+                'email' => $row->email,		
+                'contact' => $row->contact,
+                'created_at' => globalDateFormat($row->created_at),
+                'last_access' => $row->last_access,
+                'status' => $row->status,
+            );
             $this->viewAdminContent('user/user/profile', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">User Not Found</p>');
@@ -64,18 +69,18 @@ class User extends Admin_controller{
         $data = array(
             'button' => 'Create',
             'action' => site_url( Backend_URL . 'user/create_action'),
-	    'id' => set_value('id'),
-	    'role_id' => set_value('role_id', 2),
-	    'full_name' => set_value('full_name'),
-	    'email' => set_value('email'),	    
-	    'password' => set_value('password'),	    
-	    'contact' => set_value('contact'),	    	    
-	    'status' => set_value('status'),
-        'division_id' => set_value('division_id'),
-        'district_id' => set_value('district_id'),
-        'upazilla_id' => set_value('upazilla_id'),
-        'union_id' => set_value('union_id'),
-	);
+            'id' => set_value('id'),
+            'role_id' => set_value('role_id'),
+            'full_name' => set_value('full_name'),
+            'email' => set_value('email'),	    
+            'password' => set_value('password'),	    
+            'contact' => set_value('contact'),	    	    
+            'status' => set_value('status'),
+            'division_id' => set_value('division_id'),
+            'district_id' => set_value('district_id'),
+            'upazilla_id' => set_value('upazilla_id'),
+            'union_id' => set_value('union_id'),
+        );
         $this->viewAdminContent('user/user/create', $data);
     }
     
@@ -86,15 +91,19 @@ class User extends Admin_controller{
             $this->create();
         } else {
             $data = array(
-		'role_id' => $this->input->post('role_id',TRUE),
-		'full_name' => $this->input->post('full_name',TRUE),
-		'email' => $this->input->post('email',TRUE),
-		'password' => $this->input->post('password',TRUE),
-		'contact' => $this->input->post('contact',TRUE),
-		'created_at' => date('Y-m-d H:i:s'),
-		'last_access' => '',
-		'status' => $this->input->post('status',TRUE),
-	    );
+                'role_id' => $this->input->post('role_id',TRUE),
+                'full_name' => $this->input->post('full_name',TRUE),
+                'email' => $this->input->post('email',TRUE),
+                'password' => $this->input->post('password',TRUE),
+                'contact' => $this->input->post('contact',TRUE),
+                'created_at' => date('Y-m-d H:i:s'),
+                'last_access' => '',
+                'status' => $this->input->post('status',TRUE),
+	        );
+
+            if(in_array($this->input->post('role_id'), [3,4])){
+                $data['union_id'] = $this->input->post('union_id',TRUE);
+            }
 
             $this->User_model->insert($data);
             $this->session->set_flashdata('message', '<p class="ajax_success">User Added Successfully</p>');
@@ -104,18 +113,29 @@ class User extends Admin_controller{
     
     public function update($id){
         $row = $this->User_model->get_by_id($id);
-
+        
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url( Backend_URL . 'user/update_action'),
-		'id' => set_value('id', $row->id),
-		'role_id' => set_value('role_id', $row->role_id),
-		'full_name' => set_value('full_name', $row->full_name),
-		'email' => set_value('email', $row->email),		
-		'contact' => set_value('contact', $row->contact),				
-		'status' => set_value('status', $row->status),
-	    );
+                'id' => set_value('id', $row->id),
+                'role_id' => $row->role_id,
+                'role_name' => getRoleName($row->role_id),
+                'union_name' => $row->union_name,
+                'upazila_name' => $row->upazila_name,
+                'district_name' => $row->district_name,
+                'division_name' => $row->division_name,
+                'full_name' => set_value('full_name', $row->full_name),
+                'email' => set_value('email', $row->email),		
+                'contact' => set_value('contact', $row->contact),				
+                'status' => set_value('status', $row->status),
+                'division_id' => set_value('division_id', $row->division_id),
+                'district_id' => set_value('district_id', $row->district_id),
+                'upazilla_id' => set_value('upazilla_id', $row->upazilla_id),
+                'union_id' => set_value('union_id', $row->union_id),
+            );
+
+            
             $this->viewAdminContent('user/user/update', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">User Not Found</p>');
@@ -131,13 +151,17 @@ class User extends Admin_controller{
             $this->update( $id );
         } else {
             $data = array(
-		'role_id' => $this->input->post('role_id',TRUE),
-		'full_name' => $this->input->post('full_name',TRUE),		
-		'email' => $this->input->post('email',TRUE),		
-		'contact' => $this->input->post('contact',TRUE),		
-		'status' => $this->input->post('status',TRUE),
-		'updated_at' => date('Y-m-d H:i:s'),
-	    );
+                'role_id' => $this->input->post('role_id',TRUE),
+                'full_name' => $this->input->post('full_name',TRUE),		
+                'email' => $this->input->post('email',TRUE),		
+                'contact' => $this->input->post('contact',TRUE),		
+                'status' => $this->input->post('status',TRUE),
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+
+            if(in_array($this->input->post('role_id'), [3,4])){
+                $data['union_id'] = $this->input->post('union_id',TRUE);
+            }
 
             $this->User_model->update($id, $data);
             $this->session->set_flashdata('message', '<p class="ajax_success">User Updated Successlly</p>');
@@ -149,16 +173,21 @@ class User extends Admin_controller{
         $row = $this->User_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'id' => $row->id,
-		'role_name' => getRoleName($row->role_id),
-		'full_name' => $row->full_name,
-		'email' => $row->email,
-		'password' => $row->password,
-		'contact' => $row->contact,
-		'created_at' => $row->created_at,
-		'last_access' => $row->last_access,
-		'status' => $row->status,
-	    );
+                'id' => $row->id,
+                'role_name' => $row->role_name,
+                'role_id' => $row->role_id,
+                'union_name' => $row->union_name,
+                'upazila_name' => $row->upazila_name,
+                'district_name' => $row->district_name,
+                'division_name' => $row->division_name,
+                'full_name' => $row->full_name,
+                'email' => $row->email,
+                'password' => $row->password,
+                'contact' => $row->contact,
+                'created_at' => $row->created_at,
+                'last_access' => $row->last_access,
+                'status' => $row->status,
+            );
             $this->viewAdminContent('user/user/delete', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">User Not Found</p>');
@@ -206,14 +235,21 @@ class User extends Admin_controller{
     }
 
     public function _rules(){
-	$this->form_validation->set_rules('role_id', 'role id', 'trim|required|numeric');
-	$this->form_validation->set_rules('full_name', 'first name', 'trim|required');	
-	$this->form_validation->set_rules('email', 'email', 'trim|required');	
-	$this->form_validation->set_rules('contact', 'contact', 'trim');	
-	$this->form_validation->set_rules('status', 'status', 'trim|required');
+        $this->form_validation->set_rules('role_id', 'role id', 'trim|required|numeric');
+        $this->form_validation->set_rules('full_name', 'first name', 'trim|required');	
+        $this->form_validation->set_rules('email', 'email', 'trim|required');	
+        $this->form_validation->set_rules('contact', 'contact', 'trim');	
+        $this->form_validation->set_rules('status', 'status', 'trim|required');
 
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
+        if(in_array($this->input->post('role_id'), [3,4])){
+            $this->form_validation->set_rules('division_id', 'Division', 'trim|required|greater_than[0]');
+            $this->form_validation->set_rules('district_id', 'District', 'trim|required|greater_than[0]');
+            $this->form_validation->set_rules('upazilla_id', 'Upazilla', 'trim|required|greater_than[0]');
+            $this->form_validation->set_rules('union_id', 'Union', 'trim|required|greater_than[0]');
+        }
+
+        $this->form_validation->set_rules('id', 'id', 'trim');
+        $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');
     }
     
     public function password( $id ){  
@@ -251,5 +287,22 @@ class User extends Admin_controller{
         $this->db->where('id', $user_id);
         $this->db->update('users');
         echo ajaxRespond('OK', '<p class="ajax_success">Password Reset Successfully</p>');                  
+    }
+    
+
+    public function getDivision($division_id)
+    {
+        $districts = Helper::getDistricts(0, $division_id);
+        echo ajaxRespond('OK', $districts);    
+    }
+    public function getDistrict($district_id)
+    {
+        $upazilas = Helper::getUpazilas(0, $district_id);
+        echo ajaxRespond('OK', $upazilas);    
+    }
+    public function getUpazilla($upazilla_id)
+    {
+        $unions = Helper::getUnions(0, $upazilla_id);
+        echo ajaxRespond('OK', $unions);    
     }
 }

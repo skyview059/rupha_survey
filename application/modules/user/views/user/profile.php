@@ -19,6 +19,16 @@
         </div>
         <table class="table table-striped">
 	    <tr><td width="150">Role</td><td width="5">:</td><td><?php echo $role_name; ?></td></tr>
+        <?php if(in_array($role_id, [3,4])){?>
+	    <tr>
+            <td width="150">Area</td>
+            <td width="5">:</td>
+            <td>
+                <?php echo $union_name; ?><br/>
+                <?php echo $upazila_name.', '.$district_name.', '.$division_name; ?><br/>
+            </td>
+        </tr>
+        <?php }?>
 	    <tr><td width="150">Full Name</td><td width="5">:</td><td><?php echo $full_name; ?></td></tr>	    
 	    <tr><td width="150">Email</td><td width="5">:</td><td><?php echo $email; ?></td></tr>
 	    

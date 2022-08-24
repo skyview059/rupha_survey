@@ -155,7 +155,7 @@ class Helper {
             $row .= '<option value="' . $result->id . '"';
             $row .= ($selected_id == $result->id) ? ' selected' : '';
             $row .= '>';
-            $row .= $result->name;
+            $row .= $result->bn_name;
             $row .= '</option>' . "\r\n";
         }
         return $row;
@@ -174,7 +174,7 @@ class Helper {
             $row .= '<option value="' . $result->id . '"';
             $row .= ($selected_id == $result->id) ? ' selected' : '';
             $row .= '>';
-            $row .= $result->name;
+            $row .= $result->bn_name;
             $row .= '</option>' . "\r\n";
         }
         return $row;
@@ -193,7 +193,7 @@ class Helper {
             $row .= '<option value="' . $result->id . '"';
             $row .= ($selected_id == $result->id) ? ' selected' : '';
             $row .= '>';
-            $row .= $result->name;
+            $row .= $result->bn_name;
             $row .= '</option>' . "\r\n";
         }
         return $row;
