@@ -40,9 +40,15 @@
         <link href="assets/lib/plugins/datepicker/datepicker3.css" rel="stylesheet" type="text/css">
         
         <script src="assets/custom/script.js" type="text/javascript"></script>        
+        
+        <link href="assets/lib/plugins/toast/toastr.min.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/lib/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>        
+        
         <link href="assets/custom/ajax.css" rel="stylesheet" type="text/css">
         <link href="assets/custom/style.css" rel="stylesheet" type="text/css"/>
         <link href="assets/custom/print.css" rel="stylesheet" type="text/css"/>
+        
+        
     </head>
     
     <body class="hold-transition skin-blue sidebar-mini">
