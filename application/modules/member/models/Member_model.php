@@ -13,12 +13,28 @@ class Member_model extends Fm_model{
     }    
     
     // get total rows
-    function total_rows($q = NULL) {
+    function total_rows($q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null) {
 		
 		if(in_array($this->role_id, [3,4])){
 			$union_id = getLoginUserData('union_id');
 			
 			$this->db->where('members.union_id', $union_id);
+		}
+
+		if(!empty($division_id)){
+			$this->db->where('bd_divisions.id', $division_id);
+		}
+
+		if(!empty($district_id)){
+			$this->db->where('bd_districts.id', $district_id);
+		}
+
+		if(!empty($upazilla_id)){
+			$this->db->where('bd_upazilas.id', $upazilla_id);
+		}
+
+		if(!empty($union_id)){
+			$this->db->where('u.id', $union_id);
 		}
 
 		if($q){
@@ -58,11 +74,16 @@ class Member_model extends Fm_model{
 			$this->db->or_like('annual_tax_amount', $q);
 		}
 		$this->db->from($this->table);
+		$this->db->join('bd_unions as u', 'u.id = members.union_id', 'left');
+		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
+		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
+		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');
+
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL) {
+    function get_limit_data($limit, $start = 0, $q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null) {
 		$this->db->select('members.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
 		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name');
 		$this->db->join('bd_unions as u', 'u.id = members.union_id', 'left');
@@ -73,10 +94,28 @@ class Member_model extends Fm_model{
 		$this->db->join('income_sources as is', 'is.id = members.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = members.asset_type_id', 'left');
         $this->db->order_by($this->id, $this->order);
+
 		if(in_array($this->role_id, [3,4])){
 			$union_id = getLoginUserData('union_id');
 			$this->db->where('members.union_id', $union_id);
 		}
+
+		if(!empty($division_id)){
+			$this->db->where('bd_divisions.id', $division_id);
+		}
+
+		if(!empty($district_id)){
+			$this->db->where('bd_districts.id', $district_id);
+		}
+
+		if(!empty($upazilla_id)){
+			$this->db->where('bd_upazilas.id', $upazilla_id);
+		}
+
+		if(!empty($union_id)){
+			$this->db->where('u.id', $union_id);
+		}
+
         if($q){
 			$this->db->group_start();
 			$this->db->like('members.id', $q);
@@ -116,8 +155,6 @@ class Member_model extends Fm_model{
 			$this->db->group_end();
 		}
 
-		
-		
 		$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
@@ -139,6 +176,7 @@ class Member_model extends Fm_model{
 			$union_id = getLoginUserData('union_id');
 			$this->db->where('m.union_id', $union_id);
 		}
+
         return $this->db->get()->row();
     }
 

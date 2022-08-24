@@ -10,19 +10,44 @@
 <section class="content">
 	<div class="box">
 		<div class="box-header with-border">
-			<div class="col-md-3 col-md-offset-9 text-right">
-				<form action="<?php echo site_url(Backend_URL . 'member'); ?>" class="form-inline" method="get">
-					<div class="input-group">
-						<input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
-						<span class="input-group-btn">
-							<?php if ($q != '') {?>
-								<a href="<?php echo site_url(Backend_URL . 'member'); ?>" class="btn btn-default">Reset</a>
-							<?php }?>
-							<button class="btn btn-primary" type="submit">Search</button>
-						</span>
+			<form action="<?php echo site_url(Backend_URL . 'member'); ?>" class="form-inline" method="get">
+				<div class="row">
+					
+					<div class="col-md-2">
+						<select name="division_id" class="form-control" id="division_id">
+							<?php echo Helper::getDivisions($division_id); ?>
+						</select>
 					</div>
-				</form>
-			</div>
+					<div class="col-md-2">
+						<select name="district_id" class="form-control" id="district_id">
+							<?php echo Helper::getDistricts($district_id, $division_id); ?>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select name="upazilla_id" class="form-control" id="upazilla_id">
+							<?php echo Helper::getUpazilas($upazilla_id, $district_id); ?>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select name="union_id" class="form-control" id="union_id">
+							<?php echo Helper::getUnions($union_id, $upazilla_id); ?>
+						</select>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="input-group">
+							<input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
+							<span class="input-group-btn">
+								<?php if ($q != '') {?>
+									<a href="<?php echo site_url(Backend_URL . 'member'); ?>" class="btn btn-default">Reset</a>
+								<?php }?>
+								<button class="btn btn-primary" type="submit">Search</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+			
 		</div>
 
 		<div class="box-body">
@@ -95,3 +120,66 @@
 		</div>
 	</div>
 </section>
+<script  type="text/javascript">
+	$(document.body).on('change', '#division_id' ,function(){
+        var division_id = $(this).val();
+        jQuery.ajax({
+            url: 'user/getDivision/'+division_id,
+            type: 'get',
+            dataType: "json",
+            beforeSend: function () {
+                jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+            },
+            success: function (jsonRespond) {
+                
+                if(jsonRespond.Status === 'OK'){
+                   
+                    jQuery('#district_id').html( jsonRespond.Msg );
+                } else {
+                    jQuery('#ajax_respond').html( jsonRespond.Msg );
+                }
+            }
+        });
+    });
+
+    $(document.body).on('change', '#district_id' ,function(){
+        var district_id = $(this).val();
+        jQuery.ajax({
+            url: 'user/getDistrict/'+district_id,
+            type: 'get',
+            dataType: "json",
+            beforeSend: function () {
+                jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+            },
+            success: function (jsonRespond) {
+                
+                if(jsonRespond.Status === 'OK'){
+                   
+                    jQuery('#upazilla_id').html( jsonRespond.Msg );
+                } else {
+                    jQuery('#ajax_respond').html( jsonRespond.Msg );
+                }
+            }
+        });
+    });
+
+    $(document.body).on('change', '#upazilla_id' ,function(){
+        var upazilla_id = $(this).val();
+        jQuery.ajax({
+            url: 'user/getUpazilla/'+upazilla_id,
+            type: 'get',
+            dataType: "json",
+            beforeSend: function () {
+                jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+            },
+            success: function (jsonRespond) {
+                if(jsonRespond.Status === 'OK'){
+                   
+                    jQuery('#union_id').html( jsonRespond.Msg );
+                } else {
+                    jQuery('#ajax_respond').html( jsonRespond.Msg );
+                }
+            }
+        });
+    });
+</script>

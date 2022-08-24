@@ -15,6 +15,10 @@ class Member extends Admin_controller {
 	public function index() {
 		
 		$q = urldecode($this->input->get('q', TRUE));
+		$division_id = $this->input->get('division_id', TRUE);
+		$district_id = $this->input->get('district_id', TRUE);
+		$upazilla_id = $this->input->get('upazilla_id', TRUE);
+		$union_id = $this->input->get('union_id', TRUE);
 		$start = intval($this->input->get('start'));
 
 		$config['base_url'] = build_pagination_url(Backend_URL . 'member/', 'start');
@@ -22,14 +26,19 @@ class Member extends Admin_controller {
 
 		$config['per_page'] = 25;
 		$config['page_query_string'] = TRUE;
-		$config['total_rows'] = $this->Member_model->total_rows($q);
-		$members = $this->Member_model->get_limit_data($config['per_page'], $start, $q);
+		$config['total_rows'] = $this->Member_model->total_rows($q, $division_id, $district_id, $upazilla_id, $union_id);
+		$members = $this->Member_model->get_limit_data($config['per_page'], $start, $q, $division_id, $district_id, $upazilla_id, $union_id);
 
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 
 		$data = array(
 			'members' => $members,
+			'role_id' => $this->role_id,
+			'division_id' => $division_id,
+            'district_id' => $district_id,
+            'upazilla_id' => $upazilla_id,
+            'union_id' => $union_id,
 			'q' => $q,
 			'pagination' => $this->pagination->create_links(),
 			'total_rows' => $config['total_rows'],
