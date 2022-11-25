@@ -36,6 +36,7 @@ class User extends Admin_controller{
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
+            'role_id' => $this->role_id,
         );
         $this->viewAdminContent('user/user/index', $data);
     }
@@ -70,7 +71,7 @@ class User extends Admin_controller{
             'button' => 'Create',
             'action' => site_url( Backend_URL . 'user/create_action'),
             'id' => set_value('id'),
-            'role_id' => set_value('role_id'),
+            'role_id' => $this->role_id,
             'full_name' => set_value('full_name'),
             'email' => set_value('email'),	    
             'password' => set_value('password'),	    

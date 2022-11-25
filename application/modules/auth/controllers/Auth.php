@@ -14,12 +14,17 @@ class Auth extends MX_Controller {
         $this->load->library('form_validation');
     }
    
+    public function login() {
+//        $this->output->cache(60); 
+        $this->load->view('auth/login');
+    }
+    
     public function login_action() {
         ajaxAuthorized();
 //        sleep(1);
 
-        $username = $this->security->xss_clean($this->input->post('username'));
-        $password = $this->security->xss_clean($this->input->post('password'));
+        $username = $this->security->xss_clean( trim($this->input->post('username')));
+        $password = $this->security->xss_clean( trim($this->input->post('password')));
         $remember = ($this->input->post('remember')) ? (60 * 60 * 24 * 7) : (60 * 60 * 24);
 
         if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
@@ -29,6 +34,7 @@ class Auth extends MX_Controller {
 
 
         $user = $this->Auth_model->validateUser($username);
+        
         if (!$user) {
             echo ajaxRespond('Fail', '<p class="ajax_error">Incorrect Username!</p>');
             exit;
@@ -43,6 +49,8 @@ class Auth extends MX_Controller {
             exit;
         }
 
+        /* Set Last Access Timestamp */
+        $this->Auth_model->setLastAccess($username);
         $cookie_data = json_encode([
             'user_id' => $user->id,
             'user_mail' => $user->email,
@@ -69,6 +77,8 @@ class Auth extends MX_Controller {
         exit;        
     }
     
+    
+
     public function logout() {
         
         $cookie = [
@@ -86,13 +96,7 @@ class Auth extends MX_Controller {
 
         redirect(site_url('login'));
     }
-
-    public function login() {
-//        $this->output->cache(60); 
-        $this->load->view('auth/login');
-    }
-    
-                        
+                                
     public function forgot_pass(){               
        $email       = $this->input->post('forgot_mail'); 
        $this->db->where('email', $email);

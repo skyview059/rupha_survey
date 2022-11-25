@@ -8,10 +8,6 @@ class Auth_model extends Fm_model{
         parent::__construct();
     }
 
-    /**
-     * @param $username string    
-     * @return array
-     */
     function validateUser($username){
         return $this->db
                 ->select('id,role_id,union_id,full_name,email,password,status')
@@ -19,7 +15,11 @@ class Auth_model extends Fm_model{
                 ->row();
     }
     
-    
+    function setLastAccess($username){
+        $this->db->set('last_access', date('Y-m-d H:i:s'));
+        $this->db->where('email', $username );
+        $this->db->update($this->table);
+    }
             
     function sign_up($data){                
         $this->db->insert($this->table, $data);
