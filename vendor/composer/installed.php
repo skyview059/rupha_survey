@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '9664837c7dc93ae941375ef4e0611414e75e8a74',
+    'reference' => 'db1a86718ca2600f07e17c98d46c4cef18cafc81',
     'name' => 'codeigniter/framework',
   ),
   'versions' => 
@@ -18,25 +18,25 @@
       'aliases' => 
       array (
       ),
-      'reference' => '9664837c7dc93ae941375ef4e0611414e75e8a74',
+      'reference' => 'db1a86718ca2600f07e17c98d46c4cef18cafc81',
     ),
     'phpmailer/phpmailer' => 
     array (
-      'pretty_version' => 'v5.2.28',
-      'version' => '5.2.28.0',
+      'pretty_version' => 'v6.6.5',
+      'version' => '6.6.5.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'acba50393dd03da69a50226c139722af8b153b11',
+      'reference' => '8b6386d7417526d1ea4da9edb70b8352f7543627',
     ),
     'verot/class.upload.php' => 
     array (
-      'pretty_version' => '2.1.0',
-      'version' => '2.1.0.0',
+      'pretty_version' => '2.1.3',
+      'version' => '2.1.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '4d9aae875245948d21e42ade332fb45f897f28bb',
+      'reference' => '3c0ca9489d3662e9cccc597aedf70bac7dcca805',
     ),
   ),
 );

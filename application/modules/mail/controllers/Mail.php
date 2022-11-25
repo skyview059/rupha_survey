@@ -11,6 +11,7 @@ class Mail extends MX_Controller {
     public $send_from = 'public@mail.com';
     public $from_name = 'Error on Survey Software';
     public $send_to = 'admin@mail.com';
+    public $return_path = 'skyview059@gmail.com';
     public $body;
     private $ip;
 
@@ -67,27 +68,13 @@ class Mail extends MX_Controller {
 
     private function send() {
         // $send_to, $subject, $body, $cc = false, $bcc = false, $attach = null
-        $mail = new PHPMailer;
+        $mail = new PHPMailer();
 
         $mail->setFrom($this->send_from, $this->from_name);
         $mail->addAddress($this->send_to);
         $mail->addReplyTo($this->send_from, $this->from_name);
 
         $server = $_SERVER['SERVER_NAME'];
-
-        $mail->HeaderLine('MIME-Version', '1.0');
-        $mail->HeaderLine('X-Mailer', 'PHP/' . phpversion());
-        $mail->HeaderLine('Return-Path', $this->return_path);
-        $mail->HeaderLine('X-Mailer', "Microsoft Office Outlook, Build 11.0.5510");
-        $mail->HeaderLine("X-MimeOLE", "Produced By Microsoft MimeOLE V6.00.2800.1441");
-        $mail->HeaderLine('Content-Transfer-encoding', '8bit');
-        $mail->HeaderLine('Organization', $server);
-        $mail->HeaderLine('Message-ID', "<" . md5(uniqid(time())) . "@{$server}>");
-        $mail->HeaderLine('X-MSmail-Priority', 'Normal');
-        $mail->HeaderLine('X-Sender', $this->send_from);
-        $mail->HeaderLine('X-AntiAbuse', "This is a solicited email for - $server mailing list.");
-        $mail->HeaderLine('X-AntiAbuse', "Servername - {$server}");
-        $mail->HeaderLine('X-AntiAbuse', $this->send_from);
 
         if($this->cc){ $mail->addCC($this->cc); }
         if($this->bcc){ $mail->addBCC($this->bcc); }
@@ -117,7 +104,7 @@ class Mail extends MX_Controller {
         $this->subject = $templateSender->title;
 
         $this->body = $this->filterEmailBody($templateSender->template, [
-            'url' => base_url() . 'auth/reset_password?token=' . $token . '&email=' . $email,
+            'url' => base_url("auth/reset_password?token={$token}&email={$email}" ),
             'fullname' => $user->full_name
         ]);
 
