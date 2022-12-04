@@ -37,7 +37,7 @@
                             <th>Full Name</th>                            
                             <th>Email</th>                            
                             <th>Contact</th>
-                            <th>Created</th>
+                            <th>Register at</th>
                             <th>Last Access</th>
                             <th>Status</th>
                             <th class="text-center" width="160">Action</th>
@@ -58,7 +58,7 @@
                                 <td><?php echo $user->full_name; ?></td>                                
                                 <td><?php echo $user->email; ?></td>                                
                                 <td><?php echo $user->contact; ?></td>
-                                <td><?php echo date('d-M-y h:i A', strtotime($user->created_at)); ?></td>
+                                <td><?php echo date('d-M-y', strtotime($user->created_at)); ?></td>
                                 <td><?php echo $user->last_access; ?></td>
                                 <td><?php echo $user->status; ?></td>
                                 <td>

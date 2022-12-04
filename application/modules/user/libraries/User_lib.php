@@ -86,6 +86,10 @@ class User_lib {
         }
         return $options;
     }   
-
-    
+    public static function getSecretaryAccounts($limit = 25 ) {
+        $ci = & get_instance();        
+        $ci->db->where('role_id', 1 );
+        $data['users'] = $ci->db->get('users')->result();
+        $ci->load->view('dashboard/secterary', $data);
+    }    
 }
