@@ -15,6 +15,10 @@ class Member_model extends Fm_model{
     // get total rows
     function total_rows($q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null) {
 		
+		if(!empty($this->input->get('id', TRUE))){
+			$this->db->where('members.created_by', $this->input->get('id', TRUE));
+		}
+		
 		if(in_array($this->role_id, [3,4])){
 			$union_id = getLoginUserData('union_id');
 			
@@ -78,14 +82,17 @@ class Member_model extends Fm_model{
 		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
 		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
 		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');
+		$this->db->join('users', 'users.id = members.created_by', 'left');
 
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null) {
+		
 		$this->db->select('members.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
 		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name');
+		$this->db->select('users.full_name');
 		$this->db->join('bd_unions as u', 'u.id = members.union_id', 'left');
 		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
 		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
@@ -93,7 +100,12 @@ class Member_model extends Fm_model{
 		$this->db->join('social_security_benefits as ssb', 'ssb.id = members.social_security_benefit_id', 'left');
 		$this->db->join('income_sources as is', 'is.id = members.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = members.asset_type_id', 'left');
+		$this->db->join('users', 'users.id = members.created_by', 'left');
         $this->db->order_by($this->id, $this->order);
+
+		if(!empty($this->input->get('id', TRUE))){
+			$this->db->where('members.created_by', $this->input->get('id', TRUE));
+		}
 
 		if(in_array($this->role_id, [3,4])){
 			$union_id = getLoginUserData('union_id');
@@ -201,6 +213,7 @@ class Member_model extends Fm_model{
 
 		$this->db->select('members.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
 		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name');
+		$this->db->select('users.full_name');
 		$this->db->join('bd_unions as u', 'u.id = members.union_id', 'left');
 		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
 		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
@@ -208,6 +221,7 @@ class Member_model extends Fm_model{
 		$this->db->join('social_security_benefits as ssb', 'ssb.id = members.social_security_benefit_id', 'left');
 		$this->db->join('income_sources as is', 'is.id = members.income_source_id', 'left');
 		$this->db->join('asset_types as at', 'at.id = members.asset_type_id', 'left');
+		$this->db->join('users', 'users.id = members.created_by', 'left');
 		$this->db->order_by('members.id', 'DESC');
 
 		if(in_array($this->role_id, [3,4])){
@@ -222,8 +236,12 @@ class Member_model extends Fm_model{
 
 	public function getUnionInfoById($id)
 	{
-		$this->db->where('id', $id);
-		return $this->db->get('bd_unions')->row();
+		$this->db->select('u.name as union_name, u.bn_name as union_bn_name, bd_upazilas.name as upazila_name, bd_upazilas.bn_name as upazila_bn_name, bd_districts.name as district_name, bd_districts.bn_name as district_bn_name, bd_divisions.name as division_name, bd_divisions.bn_name as division_bn_name');
+		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
+		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
+		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');
+		$this->db->where('u.id', $id);
+		return $this->db->get('bd_unions as u')->row();
 	}
  
 

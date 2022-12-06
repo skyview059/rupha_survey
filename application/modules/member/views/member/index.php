@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <section class="content-header">
-	<h1> Member <small>Control panel</small> <?php echo anchor(site_url(Backend_URL . 'member/create'), ' + Add New', 'class="btn btn-default"'); ?> </h1>
+	<h1> Member <small>Control panel</small> <?php echo (in_array($role_id, [3,4])) ? anchor(site_url(Backend_URL . 'member/create'), ' + Add New', 'class="btn btn-default"') : ''; ?> </h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo site_url(Backend_URL) ?>"><i class="fa fa-dashboard"></i> Admin</a></li>
 		<li class="active">Member</li>
@@ -71,6 +71,7 @@
 							<th>সামাজিক সুরক্ষার সুবিধা</th>
 							<th>আয়ের উৎস</th>
 							<th>খানা সদস্য সংখ্যা</th>
+							<th>Creator</th>
 							<th width="200">Action</th>
 						</tr>
 					</thead>
@@ -93,11 +94,16 @@
 								<td><?php echo $member->ssb_name; ?></td>
 								<td><?php echo $member->income_source_name; ?></td>
 								<td><?php echo $member->house_members; ?></td>
+								<td><?php echo $member->full_name; ?></td>
 								<td>
 									<?php
 									echo anchor(site_url(Backend_URL . 'member/read/' . $member->id), '<i class="fa fa-fw fa-external-link"></i> View', 'class="btn btn-xs btn-primary"');
-									echo anchor(site_url(Backend_URL . 'member/update/' . $member->id), '<i class="fa fa-fw fa-edit"></i> Edit', 'class="btn btn-xs btn-warning"');
-									echo anchor(site_url(Backend_URL . 'member/delete/' . $member->id), '<i class="fa fa-fw fa-trash"></i> Delete ', 'class="btn btn-xs btn-danger"');
+									if((in_array($role_id, [3,4]))){
+										echo anchor(site_url(Backend_URL . 'member/update/' . $member->id), '<i class="fa fa-fw fa-edit"></i> Edit', 'class="btn btn-xs btn-warning"');
+									}else{
+										echo anchor(site_url(Backend_URL . 'member/delete/' . $member->id), '<i class="fa fa-fw fa-trash"></i> Delete ', 'class="btn btn-xs btn-danger"');
+									}
+									
 									?>
 								</td>
 							</tr>
@@ -110,7 +116,6 @@
 			<div class="row">
 				<div class="col-md-6">
 					<span class="btn btn-primary">Total Member: <?php echo $total_rows ?></span>
-
 				</div>
 				<div class="col-md-6 text-right">
 					<?php echo $pagination ?>
