@@ -23,7 +23,7 @@
                     <label for="union_id" class="col-sm-2 control-label">ইউনিয়ন :<sup>*</sup></label>
                     <div class="col-sm-10">
                         <select id="union_id" name="union_id" class="form-control">
-                            <?php echo getUnions($union_id, 60); ?>
+                            <?php echo getUnions($union_id, $upazilla_id); ?>
                         </select>
                         <?php echo form_error('union_id') ?>
                     </div>
