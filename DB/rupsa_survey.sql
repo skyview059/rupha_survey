@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 24, 2022 at 06:01 PM
+-- Generation Time: Dec 04, 2022 at 01:05 PM
 -- Server version: 5.7.24
--- PHP Version: 7.3.10
+-- PHP Version: 8.0.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -5313,6 +5313,33 @@ INSERT INTO `bd_upazilas` (`id`, `district_id`, `name`, `bn_name`, `url`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `email_templates`
+--
+
+DROP TABLE IF EXISTS `email_templates`;
+CREATE TABLE IF NOT EXISTS `email_templates` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `title` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  `template` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `status` enum('Locked','Unlocked') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Unlocked',
+  `adminnotes` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created` date NOT NULL,
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `email_templates`
+--
+
+INSERT INTO `email_templates` (`id`, `title`, `template`, `slug`, `status`, `adminnotes`, `created`, `modified`) VALUES
+(1, 'Welcome to Charity Fund', '<p>Dear %user_name%</p>\r\n\r\n<p>Welcome to Charity Fund,</p>\r\n\r\n<p>We&#39;re happy to confirm you&#39;ve successfully registered with us.</p>\r\n\r\n<p><br>\r\nBelow are your login details<br>\r\nUsername: %username%<br>\r\nPassword: %password%<br>\r\nURL: %url%</p>\r\n\r\n<p>Regards,</p>\r\n\r\n<p>Charity Fund Team</p>', 'onRegistrationSubscriber', 'Locked', 'When new user register then send welcome mail ', '2022-11-25', '2017-07-11 02:55:50'),
+(2, 'Reset your password', '<p>Dear %fullname% </p>\r\n\r\n<p>We received a request to reset the password associated with this email address. If you made this request, please click on link below to reset your password using our secure server:</p>\r\n\r\n<p>Your password reset link : %url%</p>\r\n\r\n<p>If you did not request to have your password reset, you can safely ignore the email.</p>\r\n\r\n<p>If clicking the link does not seem to work, you can copy and paste the link into your browser&#39;s address window or retype it there.</p>\r\n\r\n<p>Regards,</p>\r\n\r\n<p>DJ Group</p>', 'onRequestForgotPassword', 'Locked', 'When user request for reset  password  then send this email ', '2022-11-25', '2018-07-14 14:42:59');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `expenses`
 --
 
@@ -5572,7 +5599,7 @@ CREATE TABLE IF NOT EXISTS `role_permissions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `roleID_2` (`role_id`,`acl_id`),
   UNIQUE KEY `role_id` (`role_id`,`acl_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Role Permit ACL';
+) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Role Permit ACL';
 
 --
 -- Dumping data for table `role_permissions`
@@ -5645,52 +5672,6 @@ INSERT INTO `role_permissions` (`id`, `role_id`, `acl_id`, `access`) VALUES
 (64, 1, 324, 1),
 (65, 1, 334, 1),
 (66, 1, 335, 1),
-(111, 2, 12, 1),
-(112, 2, 334, 1),
-(113, 2, 335, 1),
-(114, 2, 258, 1),
-(115, 2, 257, 1),
-(116, 2, 256, 1),
-(117, 2, 255, 1),
-(118, 2, 254, 1),
-(119, 2, 253, 1),
-(120, 2, 252, 1),
-(121, 2, 270, 1),
-(122, 2, 269, 1),
-(123, 2, 268, 1),
-(124, 2, 264, 1),
-(125, 2, 265, 1),
-(126, 2, 266, 1),
-(127, 2, 267, 1),
-(128, 2, 291, 1),
-(129, 2, 281, 1),
-(130, 2, 280, 1),
-(131, 2, 279, 1),
-(132, 2, 278, 1),
-(133, 2, 277, 1),
-(134, 2, 276, 1),
-(135, 2, 275, 1),
-(136, 2, 274, 1),
-(137, 2, 273, 1),
-(138, 2, 289, 1),
-(139, 2, 316, 1),
-(140, 2, 314, 1),
-(141, 2, 290, 1),
-(142, 2, 288, 1),
-(143, 2, 287, 1),
-(144, 2, 286, 1),
-(145, 2, 284, 1),
-(146, 2, 285, 1),
-(147, 2, 331, 1),
-(148, 2, 330, 1),
-(149, 2, 329, 1),
-(150, 2, 328, 1),
-(151, 2, 327, 1),
-(152, 2, 326, 1),
-(153, 2, 324, 1),
-(154, 2, 323, 1),
-(155, 2, 322, 1),
-(156, 2, 325, 1),
 (157, 1, 336, 1),
 (158, 1, 337, 1),
 (159, 1, 338, 1),
@@ -5704,7 +5685,27 @@ INSERT INTO `role_permissions` (`id`, `role_id`, `acl_id`, `access`) VALUES
 (167, 1, 346, 1),
 (168, 1, 347, 1),
 (169, 1, 348, 1),
-(170, 1, 349, 1);
+(170, 1, 349, 1),
+(171, 2, 12, 1),
+(172, 2, 336, 1),
+(173, 2, 337, 1),
+(174, 2, 338, 1),
+(175, 2, 339, 1),
+(176, 2, 340, 1),
+(177, 2, 341, 1),
+(178, 2, 342, 1),
+(179, 2, 1, 1),
+(180, 2, 2, 1),
+(181, 2, 3, 1),
+(182, 2, 7, 1),
+(183, 2, 82, 1),
+(184, 2, 83, 1),
+(185, 2, 272, 1),
+(186, 2, 334, 1),
+(187, 2, 335, 1),
+(188, 2, 9, 1),
+(189, 2, 100, 1),
+(190, 2, 169, 1);
 
 -- --------------------------------------------------------
 
@@ -5773,6 +5774,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
+  `union_id` int(11) DEFAULT NULL,
   `full_name` varchar(65) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
@@ -5783,15 +5785,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `full_name`, `email`, `password`, `contact`, `last_access`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Khairul Azam', 'skyview059@gmail.com', '$2y$10$ESkO1tqNorvd9vYraMhNZejnWEMldpHhMt/.nk93seVTzwZNUJfle', '01713-900-423', '10/23/2016 1:10', 'Active', '2016-11-11 00:00:00', NULL),
-(2, 2, 'Hiron', 'rihen786@gmail.com', '$2y$10$E/eddxAc0WU0p0Rfk8FTHeV4wCfN6lOkDcSxY3/dwJ.uj.pCwFcla', '01712-662979', 'Last Access', 'Active', '2016-11-11 00:00:00', '2022-08-11 14:58:40');
+INSERT INTO `users` (`id`, `role_id`, `union_id`, `full_name`, `email`, `password`, `contact`, `last_access`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, 'Khairul Azam', 'skyview059@gmail.com', '$2y$10$ESkO1tqNorvd9vYraMhNZejnWEMldpHhMt/.nk93seVTzwZNUJfle', '01713-900-423', '10/23/2016 1:10', 'Active', '2016-11-11 00:00:00', NULL),
+(2, 2, NULL, 'Hiron', 'rupsa_08@yahoo.com', '$2y$10$Anx3FXMIk6G1lPqUeLpAjOB1lmGe5dvyecCqklP/.o4NBopzoWXO6', '01712-662979', '2022-11-25 12:28:56', 'Active', '2016-11-11 00:00:00', '2022-11-25 12:24:32'),
+(3, 3, 1938, 'asdfasd', 'abc@gmail.com', '$2y$10$tvlZJGUWyrYjgr0iyzkbveoMBKI/67LQ05foC6CWxhMSMYgG7tX2O', '987987987', '', 'Active', '2022-11-25 01:35:46', NULL);
 
 --
 -- Constraints for dumped tables
