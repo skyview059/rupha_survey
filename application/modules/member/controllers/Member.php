@@ -111,7 +111,7 @@ class Member extends Admin_controller {
 			'button' => 'Create',
 			'action' => site_url(Backend_URL . 'member/create_action'),
 			'id' => set_value('id'),
-			'union_id' => set_value('union_id'),
+			'union_id' => set_value('union_id', $union_id),
 			'upazilla_id' => $union_info->upazilla_id ?? 0,
 			'previous_holding_no' => set_value('previous_holding_no'),
 			'present_holding_no' => set_value('present_holding_no'),
