@@ -195,6 +195,36 @@ class Member_model extends Fm_model{
 			return false;
 		}
 	}
-    
+
+	public function get_latest_members($limit)
+	{
+
+		$this->db->select('members.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
+		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name');
+		$this->db->join('bd_unions as u', 'u.id = members.union_id', 'left');
+		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
+		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
+		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');
+		$this->db->join('social_security_benefits as ssb', 'ssb.id = members.social_security_benefit_id', 'left');
+		$this->db->join('income_sources as is', 'is.id = members.income_source_id', 'left');
+		$this->db->join('asset_types as at', 'at.id = members.asset_type_id', 'left');
+		$this->db->order_by('members.id', 'DESC');
+
+		if(in_array($this->role_id, [3,4])){
+			$union_id = getLoginUserData('union_id');
+			$this->db->where('members.union_id', $union_id);
+		}
+		$this->db->limit($limit);
+
+        $members = $this->db->get('members')->result();
+		return $members;
+	}
+
+	public function getUnionInfoById($id)
+	{
+		$this->db->where('id', $id);
+		return $this->db->get('bd_unions')->row();
+	}
+ 
 
 }

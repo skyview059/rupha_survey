@@ -140,6 +140,7 @@ function get_admin_email() {
 }
 
 function getSettingItem($setting_key = null) {
+    
     $ci = & get_instance();
     $setting = $ci->db->get_where('settings', ['label' => $setting_key])->row();
     return isset($setting->value) ? $setting->value : false;

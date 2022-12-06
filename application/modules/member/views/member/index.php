@@ -1,6 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <section class="content-header">
-	<h1> Member  <small>Control panel</small> <?php echo anchor(site_url(Backend_URL . 'member/create'), ' + Add New', 'class="btn btn-default"'); ?> </h1>
+	<h1> Member <small>Control panel</small> <?php echo anchor(site_url(Backend_URL . 'member/create'), ' + Add New', 'class="btn btn-default"'); ?> </h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo site_url(Backend_URL) ?>"><i class="fa fa-dashboard"></i> Admin</a></li>
 		<li class="active">Member</li>
@@ -12,7 +12,7 @@
 		<div class="box-header with-border">
 			<form action="<?php echo site_url(Backend_URL . 'member'); ?>" class="form-inline" method="get">
 				<div class="row">
-					
+
 					<div class="col-md-2">
 						<select name="division_id" class="form-control" id="division_id">
 							<?php echo Helper::getDivisions($division_id); ?>
@@ -33,21 +33,21 @@
 							<?php echo Helper::getUnions($union_id, $upazilla_id); ?>
 						</select>
 					</div>
-					
+
 					<div class="col-md-3">
 						<div class="input-group">
 							<input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
 							<span class="input-group-btn">
-								<?php if ($q != '') {?>
+								<?php if ($q != '') { ?>
 									<a href="<?php echo site_url(Backend_URL . 'member'); ?>" class="btn btn-default">Reset</a>
-								<?php }?>
+								<?php } ?>
 								<button class="btn btn-primary" type="submit">Search</button>
 							</span>
 						</div>
 					</div>
 				</div>
 			</form>
-			
+
 		</div>
 
 		<div class="box-body">
@@ -76,8 +76,7 @@
 					</thead>
 
 					<tbody>
-						<?php foreach ($members as $member) {
-	?>
+						<?php foreach ($members as $member) { ?>
 							<tr>
 								<td><?php echo ++$start ?></td>
 								<td><?php echo $member->union_name; ?></td>
@@ -85,7 +84,7 @@
 								<td><?php echo $member->present_holding_no; ?></td>
 								<td><?php echo $member->word_no; ?></td>
 								<td><?php echo $member->village; ?></td>
-								<td><?php echo $member->khana_chief_name_ba.' <br/>'.$member->khana_chief_name_en; ?></td>
+								<td><?php echo $member->khana_chief_name_ba . ' <br/>' . $member->khana_chief_name_en; ?></td>
 								<td><?php echo $member->mobile_no; ?></td>
 								<td><?php echo $member->father_name; ?></td>
 								<td><?php echo $member->mother_name; ?></td>
@@ -96,13 +95,13 @@
 								<td><?php echo $member->house_members; ?></td>
 								<td>
 									<?php
-										echo anchor(site_url(Backend_URL . 'member/read/' . $member->id), '<i class="fa fa-fw fa-external-link"></i> View', 'class="btn btn-xs btn-primary"');
-										echo anchor(site_url(Backend_URL . 'member/update/' . $member->id), '<i class="fa fa-fw fa-edit"></i> Edit', 'class="btn btn-xs btn-warning"');
-										echo anchor(site_url(Backend_URL . 'member/delete/' . $member->id), '<i class="fa fa-fw fa-trash"></i> Delete ', 'class="btn btn-xs btn-danger"');
+									echo anchor(site_url(Backend_URL . 'member/read/' . $member->id), '<i class="fa fa-fw fa-external-link"></i> View', 'class="btn btn-xs btn-primary"');
+									echo anchor(site_url(Backend_URL . 'member/update/' . $member->id), '<i class="fa fa-fw fa-edit"></i> Edit', 'class="btn btn-xs btn-warning"');
+									echo anchor(site_url(Backend_URL . 'member/delete/' . $member->id), '<i class="fa fa-fw fa-trash"></i> Delete ', 'class="btn btn-xs btn-danger"');
 									?>
 								</td>
 							</tr>
-						<?php }?>
+						<?php } ?>
 					</tbody>
 				</table>
 			</div>
@@ -120,66 +119,66 @@
 		</div>
 	</div>
 </section>
-<script  type="text/javascript">
-	$(document.body).on('change', '#division_id' ,function(){
-        var division_id = $(this).val();
-        jQuery.ajax({
-            url: 'user/getDivision/'+division_id,
-            type: 'get',
-            dataType: "json",
-            beforeSend: function () {
-                jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
-            },
-            success: function (jsonRespond) {
-                
-                if(jsonRespond.Status === 'OK'){
-                   
-                    jQuery('#district_id').html( jsonRespond.Msg );
-                } else {
-                    jQuery('#ajax_respond').html( jsonRespond.Msg );
-                }
-            }
-        });
-    });
+<script type="text/javascript">
+	$(document.body).on('change', '#division_id', function() {
+		var division_id = $(this).val();
+		jQuery.ajax({
+			url: 'user/getDivision/' + division_id,
+			type: 'get',
+			dataType: "json",
+			beforeSend: function() {
+				jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+			},
+			success: function(jsonRespond) {
 
-    $(document.body).on('change', '#district_id' ,function(){
-        var district_id = $(this).val();
-        jQuery.ajax({
-            url: 'user/getDistrict/'+district_id,
-            type: 'get',
-            dataType: "json",
-            beforeSend: function () {
-                jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
-            },
-            success: function (jsonRespond) {
-                
-                if(jsonRespond.Status === 'OK'){
-                   
-                    jQuery('#upazilla_id').html( jsonRespond.Msg );
-                } else {
-                    jQuery('#ajax_respond').html( jsonRespond.Msg );
-                }
-            }
-        });
-    });
+				if (jsonRespond.Status === 'OK') {
 
-    $(document.body).on('change', '#upazilla_id' ,function(){
-        var upazilla_id = $(this).val();
-        jQuery.ajax({
-            url: 'user/getUpazilla/'+upazilla_id,
-            type: 'get',
-            dataType: "json",
-            beforeSend: function () {
-                jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
-            },
-            success: function (jsonRespond) {
-                if(jsonRespond.Status === 'OK'){
-                   
-                    jQuery('#union_id').html( jsonRespond.Msg );
-                } else {
-                    jQuery('#ajax_respond').html( jsonRespond.Msg );
-                }
-            }
-        });
-    });
+					jQuery('#district_id').html(jsonRespond.Msg);
+				} else {
+					jQuery('#ajax_respond').html(jsonRespond.Msg);
+				}
+			}
+		});
+	});
+
+	$(document.body).on('change', '#district_id', function() {
+		var district_id = $(this).val();
+		jQuery.ajax({
+			url: 'user/getDistrict/' + district_id,
+			type: 'get',
+			dataType: "json",
+			beforeSend: function() {
+				jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+			},
+			success: function(jsonRespond) {
+
+				if (jsonRespond.Status === 'OK') {
+
+					jQuery('#upazilla_id').html(jsonRespond.Msg);
+				} else {
+					jQuery('#ajax_respond').html(jsonRespond.Msg);
+				}
+			}
+		});
+	});
+
+	$(document.body).on('change', '#upazilla_id', function() {
+		var upazilla_id = $(this).val();
+		jQuery.ajax({
+			url: 'user/getUpazilla/' + upazilla_id,
+			type: 'get',
+			dataType: "json",
+			beforeSend: function() {
+				jQuery('#ajax_respond').html('<p class="ajax_processing">Loading....</p>');
+			},
+			success: function(jsonRespond) {
+				if (jsonRespond.Status === 'OK') {
+
+					jQuery('#union_id').html(jsonRespond.Msg);
+				} else {
+					jQuery('#ajax_respond').html(jsonRespond.Msg);
+				}
+			}
+		});
+	});
 </script>

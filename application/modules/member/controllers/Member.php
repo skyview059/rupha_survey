@@ -104,11 +104,15 @@ class Member extends Admin_controller {
 	}
 
 	public function create() {
+		$union_id = getLoginUserData('union_id');
+		$union_info = $this->Member_model->getUnionInfoById($union_id);
+
 		$data = array(
 			'button' => 'Create',
 			'action' => site_url(Backend_URL . 'member/create_action'),
 			'id' => set_value('id'),
 			'union_id' => set_value('union_id'),
+			'upazilla_id' => $union_info->upazilla_id ?? 0,
 			'previous_holding_no' => set_value('previous_holding_no'),
 			'present_holding_no' => set_value('present_holding_no'),
 			'word_no' => set_value('word_no'),
@@ -226,6 +230,9 @@ class Member extends Admin_controller {
 	}
 
 	public function update($id) {
+		$union_id = getLoginUserData('union_id');
+		$union_info = $this->Member_model->getUnionInfoById($union_id);
+
 		$row = $this->Member_model->get_by_id($id);
 		$relatives = $this->Member_model->get_member_relatives($id);
 
@@ -235,6 +242,7 @@ class Member extends Admin_controller {
 				'action' => site_url(Backend_URL . 'member/update_action'),
 				'id' => set_value('id', $row->id),
 				'union_id' => set_value('union_id', $row->union_id),
+				'upazilla_id' => $union_info->upazilla_id ?? 0,
 				'previous_holding_no' => set_value('previous_holding_no', $row->previous_holding_no),
 				'present_holding_no' => set_value('present_holding_no', $row->present_holding_no),
 				'word_no' => set_value('word_no', $row->word_no),
