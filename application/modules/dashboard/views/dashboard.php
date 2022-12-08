@@ -47,7 +47,7 @@
 							foreach ($statistics as $userId => $user) {
 						?>
 						<tr>
-							<td><?php echo anchor(site_url(Backend_URL . 'member?id='.$userId), $user['full_name'], 'class=""');?></td>
+							<td><?php echo anchor(site_url(Backend_URL . 'member?user_id='.$userId), $user['full_name'], 'class=""');?></td>
 							<td>
 								<h5><?= $user['union_info']->union_bn_name;?> ইউনিয়ন পরিষদ</h5>
 								<p>উপজেলা: <?= $user['union_info']->upazila_bn_name;?>, <?= $user['union_info']->district_bn_name;?>, <?= $user['union_info']->division_bn_name;?></p>

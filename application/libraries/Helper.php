@@ -198,6 +198,20 @@ class Helper {
         }
         return $row;
     }
+
+    public static function getSecretaryDropDown($id = 0, $label = '--Select Secretary--') {
+        $ci = & get_instance();
+        $ci->db->select('id,full_name');
+        $ci->db->where('role_id =', 3);
+        $users = $ci->db->get('users')->result();            
+        $row = '<option value="0">' . $label . '</option>';
+        foreach ($users as $user) {
+            $row .= '<option value="' . $user->id . '"';
+            $row .= ($id == $user->id ) ? ' selected' : '';
+            $row .= '>'. $user->full_name .'</option>';
+        }
+        return $row;
+    }
     
     
 

@@ -13,16 +13,17 @@ class Member_model extends Fm_model{
     }    
     
     // get total rows
-    function total_rows($q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null) {
+    function total_rows($q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null, $user_id = null) {
 		
-		if(!empty($this->input->get('id', TRUE))){
-			$this->db->where('members.created_by', $this->input->get('id', TRUE));
-		}
 		
 		if(in_array($this->role_id, [3,4])){
 			$union_id = getLoginUserData('union_id');
-			
 			$this->db->where('members.union_id', $union_id);
+			$this->db->where('members.created_by', $this->user_id);
+		}else{
+			if(!empty($user_id)){
+				$this->db->where('members.created_by', $user_id);
+			}
 		}
 
 		if(!empty($division_id)){
@@ -88,7 +89,7 @@ class Member_model extends Fm_model{
     }
 
     // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null) {
+    function get_limit_data($limit, $start = 0, $q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null, $user_id=null) {
 		
 		$this->db->select('members.*, u.bn_name as union_name, bd_upazilas.bn_name as upazila_name, bd_districts.bn_name as district_name, bd_divisions.bn_name as division_name');
 		$this->db->select('ssb.name_ba as ssb_name, is.name_ba as income_source_name');
@@ -103,13 +104,14 @@ class Member_model extends Fm_model{
 		$this->db->join('users', 'users.id = members.created_by', 'left');
         $this->db->order_by($this->id, $this->order);
 
-		if(!empty($this->input->get('id', TRUE))){
-			$this->db->where('members.created_by', $this->input->get('id', TRUE));
-		}
-
 		if(in_array($this->role_id, [3,4])){
 			$union_id = getLoginUserData('union_id');
 			$this->db->where('members.union_id', $union_id);
+			$this->db->where('members.created_by', $this->user_id);
+		}else{
+			if(!empty($user_id)){
+				$this->db->where('members.created_by', $user_id);
+			}
 		}
 
 		if(!empty($division_id)){
