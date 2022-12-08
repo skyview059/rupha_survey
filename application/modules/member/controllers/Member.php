@@ -19,11 +19,14 @@ class Member extends Admin_controller {
     public function index()
     {
 
+        $union_info = $this->Member_model->getUnionInfoById(getLoginUserData('union_id'));
+
         $q = urldecode($this->input->get('q', TRUE));
         $division_id = $this->input->get('division_id', TRUE);
         $district_id = $this->input->get('district_id', TRUE);
         $upazilla_id = $this->input->get('upazilla_id', TRUE);
         $union_id = $this->input->get('union_id', TRUE);
+        $user_id = $this->input->get('user_id', TRUE);
         $start = intval($this->input->get('start'));
 
         $config['base_url'] = build_pagination_url(Backend_URL . 'member/', 'start');
@@ -31,8 +34,8 @@ class Member extends Admin_controller {
 
         $config['per_page'] = 25;
         $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Member_model->total_rows($q, $division_id, $district_id, $upazilla_id, $union_id);
-        $members = $this->Member_model->get_limit_data($config['per_page'], $start, $q, $division_id, $district_id, $upazilla_id, $union_id);
+        $config['total_rows'] = $this->Member_model->total_rows($q, $division_id, $district_id, $upazilla_id, $union_id, $user_id);
+        $members = $this->Member_model->get_limit_data($config['per_page'], $start, $q, $division_id, $district_id, $upazilla_id, $union_id, $user_id);
 
         $this->load->library('pagination');
         $this->pagination->initialize($config);
@@ -44,6 +47,8 @@ class Member extends Admin_controller {
             'district_id' => $district_id,
             'upazilla_id' => $upazilla_id,
             'union_id' => $union_id,
+            'user_id' => $user_id,
+            'union_info' => $union_info,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
@@ -117,8 +122,11 @@ class Member extends Admin_controller {
         $data = array(
             'button' => 'Create',
             'action' => site_url(Backend_URL . 'member/create_action'),
-            'id' => set_value('id'),
-            'union_id' => set_value('union_id', $union_id),
+			'role_id' => $this->role_id,
+			'id' => set_value('id'),
+			'union_id' => set_value('union_id', $union_info->id),
+			'union_name' => $union_info->union_name ?? '',
+			'union_bn_name' => $union_info->union_bn_name ?? '',
             'upazilla_id' => $union_info->upazilla_id ?? 0,
             'previous_holding_no' => set_value('previous_holding_no'),
             'present_holding_no' => set_value('present_holding_no'),
@@ -248,8 +256,11 @@ class Member extends Admin_controller {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url(Backend_URL . 'member/update_action'),
+				'role_id' => $this->role_id,
                 'id' => set_value('id', $row->id),
                 'union_id' => set_value('union_id', $row->union_id),
+				'union_name' => $union_info->union_name ?? '',
+				'union_bn_name' => $union_info->union_bn_name ?? '',
                 'upazilla_id' => $union_info->upazilla_id ?? 0,
                 'previous_holding_no' => set_value('previous_holding_no', $row->previous_holding_no),
                 'present_holding_no' => set_value('present_holding_no', $row->present_holding_no),

@@ -11,6 +11,25 @@
 	<div class="box">
 		<div class="box-header with-border">
 			<form action="<?php echo site_url(Backend_URL . 'member'); ?>" class="form-inline" method="get">
+				<?php if(in_array($role_id,[3,4])){?>
+					<div class="row">
+						<div class="col-md-12">
+							<h3 class="text-center"><?php echo $union_info->union_bn_name; ?> ইউনিয়ন পরিষদ</h3>
+							<h5 class="text-center">উপজেলা: <?= $union_info->upazila_bn_name;?>, <?= $union_info->district_bn_name;?></h5>
+						</div>
+						<div class="col-md-offset-4 col-md-4">
+							<div class="input-group">
+								<input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
+								<span class="input-group-btn">
+									<?php if ($q != '') { ?>
+										<a href="<?php echo site_url(Backend_URL . 'member'); ?>" class="btn btn-default">Reset</a>
+									<?php } ?>
+									<button class="btn btn-primary" type="submit">Search</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				<?php }else{?>
 				<div class="row">
 
 					<div class="col-md-2">
@@ -33,8 +52,12 @@
 							<?php echo Helper::getUnions($union_id, $upazilla_id); ?>
 						</select>
 					</div>
-
-					<div class="col-md-3">
+					<div class="col-md-2">
+						<select name="user_id" class="form-control" id="user_id">
+							<?php echo Helper::getSecretaryDropDown($user_id); ?>
+						</select>
+					</div>
+					<div class="col-md-2">
 						<div class="input-group">
 							<input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
 							<span class="input-group-btn">
@@ -46,6 +69,7 @@
 						</div>
 					</div>
 				</div>
+				<?php }?>
 			</form>
 
 		</div>
