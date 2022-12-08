@@ -23,6 +23,7 @@ class Dashboard extends Admin_controller {
     
     private function showReport2Secretary( $data ){
         $today = date( 'Y-m-d');
+        $last7Days = date('Y-m-d', strtotime("-7 day"));
         $union_id = getLoginUserData('union_id');
         $union_info = $this->Member_model->getUnionInfoById($union_id);
 
