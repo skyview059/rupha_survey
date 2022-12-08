@@ -11,6 +11,7 @@
 
 <section class="content">
     <?php echo $this->session->flashdata('message'); ?>
+    <?php echo $access_msg; ?>
     <div id="ajax_respond"></div>
     <div class="box">
         <div class="box-header with-border">
