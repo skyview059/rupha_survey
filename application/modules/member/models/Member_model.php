@@ -236,7 +236,7 @@ class Member_model extends Fm_model{
 
 	public function getUnionInfoById($id)
 	{
-		$this->db->select('u.name as union_name, u.bn_name as union_bn_name, bd_upazilas.name as upazila_name, bd_upazilas.bn_name as upazila_bn_name, bd_districts.name as district_name, bd_districts.bn_name as district_bn_name, bd_divisions.name as division_name, bd_divisions.bn_name as division_bn_name');
+		$this->db->select('u.*, u.name as union_name, u.bn_name as union_bn_name, bd_upazilas.name as upazila_name, bd_upazilas.bn_name as upazila_bn_name, bd_districts.name as district_name, bd_districts.bn_name as district_bn_name, bd_divisions.name as division_name, bd_divisions.bn_name as division_bn_name');
 		$this->db->join('bd_upazilas', 'bd_upazilas.id = u.upazilla_id', 'left');
 		$this->db->join('bd_districts', 'bd_districts.id = bd_upazilas.district_id', 'left');
 		$this->db->join('bd_divisions', 'bd_divisions.id = bd_districts.division_id', 'left');

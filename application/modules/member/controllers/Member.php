@@ -110,8 +110,11 @@ class Member extends Admin_controller {
 		$data = array(
 			'button' => 'Create',
 			'action' => site_url(Backend_URL . 'member/create_action'),
+			'role_id' => $this->role_id,
 			'id' => set_value('id'),
 			'union_id' => set_value('union_id', $union_id),
+			'union_name' => $union_info->union_name ?? '',
+			'union_bn_name' => $union_info->union_bn_name ?? '',
 			'upazilla_id' => $union_info->upazilla_id ?? 0,
 			'previous_holding_no' => set_value('previous_holding_no'),
 			'present_holding_no' => set_value('present_holding_no'),
@@ -240,8 +243,11 @@ class Member extends Admin_controller {
 			$data = array(
 				'button' => 'Update',
 				'action' => site_url(Backend_URL . 'member/update_action'),
+				'role_id' => $this->role_id,
 				'id' => set_value('id', $row->id),
 				'union_id' => set_value('union_id', $row->union_id),
+				'union_name' => $union_info->union_name ?? '',
+				'union_bn_name' => $union_info->union_bn_name ?? '',
 				'upazilla_id' => $union_info->upazilla_id ?? 0,
 				'previous_holding_no' => set_value('previous_holding_no', $row->previous_holding_no),
 				'present_holding_no' => set_value('present_holding_no', $row->present_holding_no),
