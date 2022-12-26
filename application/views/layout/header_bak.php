@@ -77,13 +77,36 @@
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav"> 
                             <li><a href="<?= site_url(Backend_URL . 'member/create'); ?>"> <i class="fa fa-user-plus"></i> Member Registration </a></li>
-                            
+                            <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-edit"></i> Receive Payment Entry 
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu left-align" role="menu" style="left: 0;">
+                                    <!--<li><a href="<?= site_url(Backend_URL . 'trans/income_entry'); ?>"> <i class="fa fa-th"></i> Income </a></li>-->                                                                       
+                                    <li><a href="<?= site_url(Backend_URL . 'trans/subscripton'); ?>"> <i class="fa fa-refresh"></i> For Member </a></li>
+                                    <li><a href="<?= site_url(Backend_URL . 'trans/expense_entry'); ?>"> <i class="fa fa-exchange"></i> For Ledger  </a></li>                                    
+                                    <li><a href="<?= site_url(Backend_URL . 'trans/banking_entry'); ?>"> <i class="fa fa-cart-plus"></i> For Banking </a></li>                                    
+                                    
+                                </ul>
+                            </li>
                             <li>
-                                <a href="member/summary">                                    
+                                <a href="trans">
                                     <i class="fa fa-bar-chart-o"></i>
-                                    Summary
+                                    Report
                                 </a>                                
-                            </li>                            
+                            </li>
+                            <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-gear"></i> Setup 
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu left-align" role="menu" style="left: 0;">                                    
+                                    <li><a href="<?= site_url(Backend_URL . 'trans/head'); ?>"> <i class="fa fa-exchange"></i> Ledger/Heads </a></li>                                    
+                                    <li><a href="<?= site_url(Backend_URL . 'bank/create'); ?>"> <i class="fa fa-cart-plus"></i> Add Bank Account </a></li>                                    
+                                    <li><a href="<?= site_url(Backend_URL . 'sms/template'); ?>"> <i class="fa fa-user-plus"></i> SMS Template </a></li>                                    
+                                </ul>
+                            </li>
                             
                             
                             <li class="dropdown user user-menu">

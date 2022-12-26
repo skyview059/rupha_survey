@@ -10,12 +10,14 @@
 class Fm_model extends CI_Model{
     protected $user_id;
     protected $role_id;
+    protected $union_id;
     
     public function __construct() {
         parent::__construct();
         
         $this->user_id = getLoginUserData('user_id');
         $this->role_id = getLoginUserData('role_id');
+        $this->union_id = getLoginUserData('union_id');
     }
     // get all
     function get_all(){
