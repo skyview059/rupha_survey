@@ -11,7 +11,7 @@ class Dashboard extends Admin_controller {
     public function index(){
         $members = $this->Member_model->get_latest_members(10);        
         $data['start'] = 0;
-        $data['members'] = $members;
+        $data['members'] = [];
         
         if(in_array($this->role_id, [1,2])){
             self::showReport2Admin( $data );
@@ -56,11 +56,11 @@ class Dashboard extends Admin_controller {
                 $union_info = $this->Member_model->getUnionInfoById($user->union_id);
 
                 //Get Member Statistics Data
-                $todayCount = $this->db->from("members")->where('created_by', $user->id)->where('DATE(created_at)', $today)->count_all_results();
-                $last7DayCount = $this->db->from("members")->where('created_by', $user->id)->where('DATE(created_at)>=', $last7Days)->where('DATE(created_at)<=', $today)->count_all_results();
-                $currentMonthCount = $this->db->from("members")->where('created_by', $user->id)->where('MONTH(created_at)', date("m"))->count_all_results();
-                $currentYearCount = $this->db->from("members")->where('created_by', $user->id)->where('YEAR(created_at)', date("Y"))->count_all_results();
-                $lifetimeCount = $this->db->from("members")->where('created_by', $user->id)->count_all_results();
+                $todayCount = $this->db->where('created_by', $user->id)->where('DATE(created_at)', $today)->count_all_results('members');
+                $last7DayCount = $this->db->where('created_by', $user->id)->where('DATE(created_at)>=', $last7Days)->where('DATE(created_at)<=', $today)->count_all_results('members');
+                $currentMonthCount = $this->db->where('created_by', $user->id)->where('MONTH(created_at)', date("m"))->count_all_results('members');
+                $currentYearCount = $this->db->where('created_by', $user->id)->where('YEAR(created_at)', date("Y"))->count_all_results('members');
+                $lifetimeCount = $this->db->where('created_by', $user->id)->count_all_results('members');
 
                 $statistics[$user->id]['full_name'] = $user->full_name;
                 $statistics[$user->id]['union_info'] = $union_info;

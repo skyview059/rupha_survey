@@ -38,7 +38,7 @@
                             <th>Email</th>                            
                             <th>Contact</th>
                             <th>Register at</th>
-                            <th>Last Access</th>
+                            <th>Last Log-in</th>
                             <th>Status</th>
                             <th class="text-center" width="160">Action</th>
                         </tr>
@@ -58,8 +58,8 @@
                                 <td><?php echo $user->full_name; ?></td>                                
                                 <td><?php echo $user->email; ?></td>                                
                                 <td><?php echo $user->contact; ?></td>
-                                <td><?php echo date('d-M-y', strtotime($user->created_at)); ?></td>
-                                <td><?php echo $user->last_access; ?></td>
+                                <td><?php echo globalDateFormat($user->created_at); ?></td>
+                                <td><?php echo time_count($user->last_access); ?></td>
                                 <td><?php echo $user->status; ?></td>
                                 <td>
                                     <?php

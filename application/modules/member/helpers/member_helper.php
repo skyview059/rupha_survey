@@ -5,8 +5,8 @@ function memberTabs($id, $active_tab) {
 	$tabs = [
 		'read' => 'Details',
 		'update' => 'Update',
+		'tax' => 'Yearly Tax',
 		'delete' => 'Delete',
-		'annual_tax_assessments' => 'Annual Tax Assessment',
 	];
 
 	foreach ($tabs as $link => $tab) {

@@ -20,7 +20,8 @@ class Member extends Admin_controller
     public function index()
     {
 
-        $union_info = $this->Member_model->getUnionInfoById(getLoginUserData('union_id'));
+        $union_id = (int) getLoginUserData('union_id');
+        $union_info = $this->Member_model->getUnionInfoById( $union_id );
 
         $q = urldecode($this->input->get('q', TRUE));
         $division_id = $this->input->get('division_id', TRUE);
@@ -30,8 +31,8 @@ class Member extends Admin_controller
         $user_id = $this->input->get('user_id', TRUE);
         $start = intval($this->input->get('start'));
 
-        $config['base_url'] = build_pagination_url(Backend_URL . 'member/', 'start');
-        $config['first_url'] = build_pagination_url(Backend_URL . 'member/', 'start');
+        $config['base_url'] = build_pagination_url(Backend_URL . 'member', 'start');
+        $config['first_url'] = build_pagination_url(Backend_URL . 'member', 'start');
 
         $config['per_page'] = 25;
         $config['page_query_string'] = TRUE;
@@ -62,7 +63,7 @@ class Member extends Admin_controller
     {
 
         $row = $this->Member_model->get_by_id($id);
-        $taxAssessments = $this->Member_model->get_member_annual_tax_assessments($id);
+        $taxAssessments = $this->Member_model->get_member_annual_tax($id);
 
         if ($row) {
             $data = array(
@@ -102,11 +103,11 @@ class Member extends Admin_controller
 
     public function create()
     {
-        $union_id = getLoginUserData('union_id');
+        $union_id = (int) getLoginUserData('union_id');
         $union_info = $this->Member_model->getUnionInfoById($union_id);
 
         $data = array(
-            'button' => 'Create',
+            'button' => 'Register',
             'action' => site_url(Backend_URL . 'member/create_action'),
             'role_id' => $this->role_id,
             'id' => set_value('id'),
@@ -132,7 +133,7 @@ class Member extends Admin_controller
             'type_of_infrastructure' => set_value('type_of_infrastructure'),
             'annual_value' => set_value('annual_value'),
             'annual_tax_amount' => set_value('annual_tax_amount'),
-            'access_msg' => in_array($this->role_id, [1, 2]) ? "<p class='ajax_error'>You Can Not Register Data</p>" : '',
+            'access_msg' => in_array($this->role_id, [1,2]) ? "<p class='ajax_error'>Only Secetary Can register member </p>" : '',
         );
         $this->viewAdminContent('member/member/create', $data);
     }
@@ -196,7 +197,7 @@ class Member extends Admin_controller
                     ];
                 }
 
-                $this->db->insert_batch('member_annual_tax_assessments', $taxAssessmentArr);
+                $this->db->insert_batch('member_annual_tax', $taxAssessmentArr);
             }
             echo ajaxRespond('OK', '<p class="ajax_success">Member Added Successfully</p>');
         }
@@ -208,7 +209,7 @@ class Member extends Admin_controller
         $union_info = $this->Member_model->getUnionInfoById($union_id);
 
         $row = $this->Member_model->get_by_id($id);
-        $taxAssessments = $this->Member_model->get_member_annual_tax_assessments($id);
+        $taxAssessments = $this->Member_model->get_member_annual_tax($id);
 
         if ($row) {
             $data = array(
@@ -289,7 +290,7 @@ class Member extends Admin_controller
             );
 
             $this->Member_model->update($id, $data);
-            $this->Member_model->delete_annual_tax_assessment($id);
+            $this->Member_model->delete_annual_tax($id);
 
             $taxAssessmentArr = [];
             if (!empty($fiscalYear)) {
@@ -307,7 +308,7 @@ class Member extends Admin_controller
                     ];
                 }
 
-                $this->db->insert_batch('member_annual_tax_assessments', $taxAssessmentArr);
+                $this->db->insert_batch('member_annual_tax', $taxAssessmentArr);
             }
             echo ajaxRespond('OK', '<p class="ajax_success">Member Updated Successlly</p>');
         }
@@ -317,7 +318,7 @@ class Member extends Admin_controller
     public function delete($id)
     {
         $row = $this->Member_model->get_by_id($id);
-        $taxAssessments = $this->Member_model->get_member_annual_tax_assessments($id);
+        $taxAssessments = $this->Member_model->get_member_annual_tax($id);
 
         if ($row) {
             $data = array(
@@ -370,28 +371,28 @@ class Member extends Admin_controller
         }
     }
 
-    public function annual_tax_assessments($id)
+    public function tax($id)
     {
 
         $row = $this->Member_model->get_by_id($id);
-        $taxAssessments = $this->Member_model->get_member_annual_tax_assessments($id);
+        $taxAssessments = $this->Member_model->get_member_annual_tax($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update Tax Assessment',
-                'action' => site_url(Backend_URL . 'member/update_action'),
+                'action' => site_url(Backend_URL . 'member/update_tax_action'),
                 'role_id' => $this->role_id,
                 'id' => set_value('id', $row->id),
                 'annual_tax_assessments' => $taxAssessments,
             );
-            $this->viewAdminContent('member/member/tax_assessment', $data);
+            $this->viewAdminContent('member/member/tax', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
             redirect(site_url(Backend_URL . 'member'));
         }
     }
 
-    public function update_tax_assessment_action()
+    public function update_tax_action()
     {
         $id = $this->input->post('id', TRUE);
         $fiscalYear = $this->input->post('fiscal_year');
@@ -402,7 +403,7 @@ class Member extends Admin_controller
         $previousFiscalYear = $this->input->post('previous_fiscal_year');
         $totalDueAmount = $this->input->post('total_due_amount');
 
-        $this->Member_model->delete_annual_tax_assessment($id);
+        $this->Member_model->delete_annual_tax($id);
 
         $taxAssessmentArr = [];
         if (!empty($fiscalYear)) {
@@ -420,7 +421,7 @@ class Member extends Admin_controller
                 ];
             }
 
-            $this->db->insert_batch('member_annual_tax_assessments', $taxAssessmentArr);
+            $this->db->insert_batch('member_annual_tax', $taxAssessmentArr);
         }
         echo ajaxRespond('OK', '<p class="ajax_success">Member Annual Tax Assessment Updated Successlly</p>');
     }
@@ -437,10 +438,14 @@ class Member extends Admin_controller
                     'title' => 'All Member',
                     'icon' => 'fa fa-bars',
                     'href' => 'member',
-                ], [
+                ],[
                     'title' => ' |_ Add New',
                     'icon' => 'fa fa-plus',
                     'href' => 'member/create',
+                ],[
+                    'title' => 'Summary',
+                    'icon' => 'fa fa-bars',
+                    'href' => 'member/summary',
                 ],
             ],
         ]);

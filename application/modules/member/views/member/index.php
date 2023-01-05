@@ -94,7 +94,7 @@
 							<th>পরিবারের সদস্য সংখ্যা</th>
 							<th>সামাজিক সুরক্ষার সুবিধা</th>
 							<th>Creator</th>
-							<th width="200">Action</th>
+							<th width="150">Action</th>
 						</tr>
 					</thead>
 

@@ -9,7 +9,7 @@
     </ol>
 </section>
 
-<section class="content"><?php echo memberTabs($id, 'annual_tax_assessments'); ?>
+<section class="content"><?php echo memberTabs($id, 'tax'); ?>
     <div class="box no-border">
         <div class="box-header with-border">
             <h3 class="box-title">বাৎসরিক কর নির্ণয়</h3>
@@ -161,7 +161,7 @@ $(document.body).on('click', '.annual_tax_assessment-delete' ,function(){
 $(document.body).on('click', '#updateAnnualTaxAssessmentForm' ,function(){
     var formData = jQuery('#annualTaxAssessmentForm').serialize();
     jQuery.ajax({
-        url: 'member/update_tax_assessment_action',
+        url: 'member/update_tax_action',
         type: 'POST',
         dataType: "json",
         data: formData,
