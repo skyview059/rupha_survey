@@ -5,6 +5,7 @@ function memberTabs($id, $active_tab) {
 	$tabs = [
 		'read' => 'Details',
 		'update' => 'Update',
+		'tax' => 'Yearly Tax',
 		'delete' => 'Delete',
 	];
 
