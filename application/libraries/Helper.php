@@ -61,29 +61,30 @@ class Helper {
         $ci = & get_instance();
         $exists = $ci->db->table_exists($table);
 
-        $row = '<option value="0">' . $label . '</option>';
-        if ($exists) {
-            if ($get_where_col) {
-                $results = $ci->db->get_where($table, [$get_where_col => $get_where_val])->result();
-            } else {
-                $results = $ci->db->get($table)->result();
-            }
-
-            foreach ($results as $result) {
-                $row .= '<option value="' . $result->id . '"';
-                $row .= ($selected == $result->id ) ? ' selected' : '';
-                $row .= '>';
-                $row .= ($result->$column) ? $result->$column : '-- ID#' . $result->id;
-                $row .= '</option>';
-            }
-
-            if (count($results) == 0) {
-                $row .= '<option ="0">No Item Found</p>';
-            }
-        } else {
-            $row .= '<option>-: Tbl ' . $table . ' Not Exists :-</option>';
+        
+        if (!$exists) {
+            return '<option>-: Tbl ' . $table . ' Not Exists :-</option>';
         }
-        return $row;
+        
+        
+        if ($get_where_col) {
+            $ci->db->where($get_where_col, $get_where_val);
+        } 
+        $results = $ci->db->get($table)->result();
+        
+        if (!$results) {
+            return '<option ="0">No Item Found</p>';
+        }
+
+        $opt = '<option value="0">' . $label . '</option>';
+        foreach ($results as $row) {
+            $opt .= '<option value="' . $row->id . '"';
+            $opt .= ($selected == $row->id ) ? ' selected' : '';
+            $opt .= '>';
+            $opt .= ($row->$column) ? $row->$column : '-- ID#' . $row->id;
+            $opt .= '</option>';
+        }
+        return $opt;
     }
 
     private static function getSingleColumnName($table, $column, $id = 0) {
@@ -118,27 +119,9 @@ class Helper {
         return $row;
         
     }
-
-    private static function getIncomeSource($selected_id = 0, $label = '-- নির্বাচন করুন --') {
-        $ci = &get_instance();
-        $ci->db->select('id,name_ba');
-        $results = $ci->db->order_by('id', 'ASC')
-            ->get('income_sources')
-            ->result();
-    
-        $row = '<option value="0">' . $label . '</option>';
-        foreach ($results as $result) {
-            $row .= '<option value="' . $result->id . '"';
-            $row .= ($selected_id == $result->id) ? ' selected' : '';
-            $row .= '>';
-            $row .= $result->name_ba;
-            $row .= '</option>' . "\r\n";
-        }
-        return $row;
-    }
     
 
-    public static function getDivisions($selected_id = 0, $label = '-- Select Division --') {
+    public static function getDivisions($selected_id = 0) {
         return self::getTableToSelector('bd_divisions', 'bn_name', '-- Select Division --', $selected_id);
     }
     
@@ -202,17 +185,16 @@ class Helper {
     public static function getSecretaryDropDown($id = 0, $label = '--Select Secretary--') {
         $ci = & get_instance();
         $ci->db->select('id,full_name');
-        $ci->db->where('role_id =', 3);
-        $users = $ci->db->get('users')->result();            
-        $row = '<option value="0">' . $label . '</option>';
+        $ci->db->where('role_id', 3);
+        $users = $ci->db->get('users')->result();   
+        
+        $opt = '<option value="0">' . $label . '</option>';
         foreach ($users as $user) {
-            $row .= '<option value="' . $user->id . '"';
-            $row .= ($id == $user->id ) ? ' selected' : '';
-            $row .= '>'. $user->full_name .'</option>';
+            $opt .= '<option value="' . $user->id . '"';
+            $opt .= ($id == $user->id ) ? ' selected' : '';
+            $opt .= '>'. $user->full_name .'</option>';
         }
-        return $row;
+        return $opt;
     }
-    
-    
 
 }

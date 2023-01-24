@@ -361,7 +361,7 @@ class Member extends Admin_controller
         $row = $this->Member_model->get_by_id($id);
 
         if ($row) {
-            $this->Member_model->delete_member_relative($id);
+//            $this->Member_model->delete_member_relative($id);
             $this->Member_model->delete($id);
             $this->session->set_flashdata('message', '<p class="ajax_success">Member Deleted Successfully</p>');
             redirect(site_url(Backend_URL . 'member'));

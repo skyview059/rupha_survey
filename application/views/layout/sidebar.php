@@ -6,6 +6,8 @@
             <?php
                 echo Modules::run('user/_menu');
                 echo Modules::run('member/_menu');
+                echo Modules::run('benefit/_menu');
+                echo Modules::run('union/_menu');
                 echo Modules::run('profile/_menu');
 
                 echo Modules::run('sms/_menu');

@@ -157,8 +157,8 @@
                                 <label class="form-check-label" for="type_of_infrastructure_yes">নিজে বসবাস</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="type_of_infrastructure" id="type_of_infrastructure_no" value="ভাড়া দেওয়া" <?= $type_of_infrastructure=='ভাড়া দেওয়া' ? 'checked="checked"' : '';?>>
-                                <label class="form-check-label" for="type_of_infrastructure_no">ভাড়া দেওয়া</label>
+                                <input class="form-check-input" type="radio" name="type_of_infrastructure" id="type_of_infrastructure_no" value="ভাড়া দেওয়া" <?= $type_of_infrastructure=='ভাড়া নেওয়া' ? 'checked="checked"' : '';?>>
+                                <label class="form-check-label" for="type_of_infrastructure_no">ভাড়া নেওয়া</label>
                             </div>
                         <?php echo form_error('type_of_infrastructure') ?>
                     </div>
@@ -192,10 +192,10 @@
                                     <input type="text" class="form-control" id="annual_tax_amount_<?= $assessment->id;?>" name="annual_tax_amount[<?= $assessment->id;?>]" value="<?= $assessment->annual_tax_amount;?>">
                                 </td>
                                 <td class="text-center">
-                                    <input type="text" class="form-control" id="current_deposit_amount_<?= $assessment->id;?>" name="current_deposit_amount[<?= $assessment->id;?>]" value="<?= $assessment->current_deposit_amount;?>">
+                                    <input type="text" class="form-control running_depo" id="current_deposit_amount_<?= $assessment->id;?>" name="current_deposit_amount[<?= $assessment->id;?>]" value="<?= $assessment->current_deposit_amount;?>">
                                 </td>
                                 <td class="text-center">
-                                    <input type="text" class="form-control" id="current_due_amount_<?= $assessment->id;?>" name="current_due_amount[<?= $assessment->id;?>]" value="<?= $assessment->current_due_amount;?>">
+                                    <input type="text" class="form-control" readonly="readonly" id="current_due_amount_<?= $assessment->id;?>" name="current_due_amount[<?= $assessment->id;?>]" value="<?= $assessment->current_due_amount;?>">
                                 </td>
                                 <td class="text-right">
                                     <input type="text" class="form-control" id="previous_fiscal_year_due_amount_<?= $assessment->id;?>" name="previous_fiscal_year_due_amount[<?= $assessment->id;?>]" value="<?= $assessment->previous_fiscal_year_due_amount;?>">
@@ -204,7 +204,7 @@
                                     <input type="text" class="form-control" id="previous_fiscal_year_<?= $assessment->id;?>" name="previous_fiscal_year[<?= $assessment->id;?>]" value="<?= $assessment->previous_fiscal_year;?>">
                                 </td>
                                 <td class="text-right">
-                                    <input type="text" class="form-control" id="total_due_amount_<?= $assessment->id;?>" name="total_due_amount[<?= $assessment->id;?>]" value="<?= $assessment->total_due_amount;?>">
+                                    <input type="text" class="form-control  total_due" readonly="readonly" id="total_due_amount_<?= $assessment->id;?>" name="total_due_amount[<?= $assessment->id;?>]" value="<?= $assessment->total_due_amount;?>">
                                 </td>
                                 <td class="text-center">
                                     <button class="btn btn-xs btn-danger annual_tax_assessment-delete" data-id="<?= $assessment->id;?>"><i class="fa fa-trash"></i></button>
@@ -222,10 +222,10 @@
                                     <input type="number" min="0" class="form-control" id="annual_tax_amount_0" name="annual_tax_amount[0]">
                                 </td>
                                 <td class="text-center">
-                                    <input type="number" min="0" class="form-control" id="current_deposit_amount_0" name="current_deposit_amount[0]">
+                                    <input type="number" min="0" class="form-control running_depo" id="current_deposit_amount_0" name="current_deposit_amount[0]">
                                 </td>
                                 <td class="text-center">
-                                    <input type="number" min="0" class="form-control" id="current_due_amount_0" name="current_due_amount[0]">
+                                    <input type="number" min="0" class="form-control running_due" readonly="readonly" id="current_due_amount_0" name="current_due_amount[0]">
                                 </td>
                                 <td class="text-center">
                                     <input type="number" min="0" class="form-control" id="previous_fiscal_year_due_amount_0" name="previous_fiscal_year_due_amount[0]">
@@ -234,7 +234,7 @@
                                     <input type="text" class="form-control" id="previous_fiscal_year_0" name="previous_fiscal_year[0]">
                                 </td>
                                 <td class="text-right">
-                                    <input type="number" min="0" class="form-control" id="total_due_amount_0" name="total_due_amount[0]">
+                                    <input type="number" min="0" class="form-control total_due" readonly="readonly" id="total_due_amount_0" name="total_due_amount[0]">
                                 </td>
                                 <td class="text-center">
                                     <button class="btn btn-xs btn-danger annual_tax_assessment-delete" data-id="0"><i class="fa fa-trash" ></i></button>
@@ -263,7 +263,7 @@
     </div>
 </section>
 <script type="text/javascript">
-  $(document.body).on('click', '#addAnnualTaxAssessment' ,function(event){
+  $(document.body).on('click', '#addAnnualTaxAssessment', function(event){
 
     var index = Date.now();
 
@@ -275,10 +275,10 @@
     '<input type="number" min="0" class="form-control" id="annual_tax_amount-'+index+'" name="annual_tax_amount['+index+']" value="">' +
     '</td>' +
     '<td>' +
-    '<input type="number" min="0" class="form-control" id="current_deposit_amount-'+index+'" name="current_deposit_amount['+index+']">' +
+    '<input type="number" min="0" class="form-control running_depo" id="current_deposit_amount-'+index+'" name="current_deposit_amount['+index+']">' +
     '</td>' +
     '<td class="text-right">' +
-    '<input type="number" min="0" class="form-control" id="current_due_amount-'+index+'" name="current_due_amount['+index+']" value="">' +
+    '<input type="number" min="0" class="form-control running_due" readonly id="current_due_amount-'+index+'" name="current_due_amount['+index+']" value="">' +
     '</td>' +
     '<td class="text-right">' +
     '<input type="number" min="0" class="form-control" id="previous_fiscal_year_due_amount-'+index+'" name="previous_fiscal_year_due_amount['+index+']" value="">' +
@@ -287,7 +287,7 @@
     '<input type="text" class="form-control" id="previous_fiscal_year-'+index+'" name="previous_fiscal_year['+index+']" value="">' +
     '</td>' +
     '<td class="text-right">' +
-    '<input type="number" min="0" class="form-control" id="total_due_amount-'+index+'" name="total_due_amount['+index+']" value="">' +
+    '<input type="number" min="0" class="form-control  total_due" readonly="readonly" id="total_due_amount-'+index+'" name="total_due_amount['+index+']" value="">' +
     '</td>' +
     '<td class="text-center">' +
     '<button class="btn btn-xs btn-danger annual_tax_assessment-delete" data-id="'+index+'"><i class="fa fa-trash" ></i></button>' +

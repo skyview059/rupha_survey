@@ -156,8 +156,8 @@
                                 <label class="form-check-label" for="type_of_infrastructure_yes">নিজে বসবাস</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="type_of_infrastructure" id="type_of_infrastructure_no" value="ভাড়া দেওয়া">
-                                <label class="form-check-label" for="type_of_infrastructure_no">ভাড়া দেওয়া</label>
+                                <input class="form-check-input" type="radio" name="type_of_infrastructure" id="type_of_infrastructure_no" value="ভাড়া নেওয়া">
+                                <label class="form-check-label" for="type_of_infrastructure_no">ভাড়া নেওয়া</label>
                             </div>
                         <?php echo form_error('type_of_infrastructure') ?>
                     </div>
