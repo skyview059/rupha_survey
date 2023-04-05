@@ -185,7 +185,7 @@ function billingMonth($datetime = '0000-00-00') {
 function globalDateTimeFormat($datetime = '0000-00-00 00:00:00') {
 
     if ($datetime == '0000-00-00 00:00:00' or $datetime == '0000-00-00' or $datetime == '') {
-        return 'Unknown';
+        return '--';
     }
     return date('h:i A d/m/y', strtotime($datetime));
 }
@@ -220,6 +220,22 @@ function globalDateFormat($datetime = '0000-00-00 00:00:00') {
         return 'Unknown';
     }
     return date('d-M-y', strtotime($datetime));
+}
+
+function DOB($datetime = '0000-00-00') {
+
+    if ($datetime == '0000-00-00' or $datetime == null) {
+        return '--';
+    }
+    return En2BD_Digit( date('d/m/Y', strtotime($datetime)) );
+}
+
+function DOB_Age($datetime = '0000-00-00') {
+
+    if ($datetime == '0000-00-00' or $datetime == null) {
+        return '--';
+    }
+    return En2BD_Digit( date('Y') - date('Y', strtotime($datetime)) );
 }
 
 function globalTimeOnly($datetime = '0000-00-00 00:00:00') {
@@ -458,4 +474,10 @@ function getPhoto($photo) {
     } else {
         return 'uploads/no-photo.jpg'; 
     }
+}
+
+function En2BD_Digit( $string ){
+    $search     = [0,1,2,3,4,5,6,7,8,9];
+    $replace    = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+    return str_replace($search, $replace, $string);
 }

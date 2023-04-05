@@ -168,7 +168,7 @@ class Member_model extends Fm_model {
         }
         
         $this->db->select('u.id, u.name as union_name, u.bn_name as union_bn_name');
-        $this->db->select('up.name as upazila_name, up.bn_name as upazila_bn_name');
+        $this->db->select('up.name as upazila_name, u.upazilla_id, up.bn_name as upazila_bn_name');
         $this->db->select('dis.name as district_name, dis.bn_name as district_bn_name');
         $this->db->select('div.name as division_name, div.bn_name as division_bn_name');
         

@@ -10,8 +10,8 @@
 </section>
 
 <section class="content">
-    <?php echo unionTabs($id, 'update'); ?>
-    <div class="box no-border">
+    
+    <div class="box">
         <div class="box-header with-border">
             <h3 class="box-title">Update Union</h3>
             <?php if($msg == 'success'){ echo "<p class='ajax_success'>Union Updated Successlly</p>"; } ?>

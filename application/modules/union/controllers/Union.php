@@ -78,8 +78,7 @@ class Union extends Admin_controller{
     }
     
     public function update($id){
-        $row = $this->Union_model->get_by_id($id);                
-
+        $row = $this->Union_model->get_by_id($id);
         if ($row) {
             $data = array(
                 'button' => 'Update',

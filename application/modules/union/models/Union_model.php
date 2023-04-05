@@ -20,6 +20,7 @@ class Union_model extends Fm_model {
         $this->db->from('bd_unions as unio');        
         $this->db->join('bd_upazilas as upaz','unio.upazilla_id=upaz.id','LEFT');
         $this->db->join('bd_districts as dist','upaz.district_id=dist.id','LEFT');        
+        $this->db->where('unio.id', $id );
         return $this->db->get()->row();
     }
     

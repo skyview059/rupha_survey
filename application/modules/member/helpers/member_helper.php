@@ -1,9 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 function memberTabs($id, $active_tab) {
-	$html = '<ul class="tabsmenu">';
+	$html = '<ul class="tabsmenu hide_on_print">';
 	$tabs = [
-		'read' => 'Details',
+		'details' => 'Details',
 		'update' => 'Update',
 		'tax' => 'Yearly Tax',
 		'delete' => 'Delete',
@@ -129,21 +129,21 @@ function getUpazilas($selected_id = 0, $district_id = 0, $label = '-- নির�
 }
 
 function getUnions($selected_id = 0, $upazilla_id = 0, $label = '-- নির্বাচন করুন --') {
-	$ci = &get_instance();
-	$ci->db->select('id,bn_name');
-	$results = $ci->db->order_by('id', 'ASC')
-		->where('upazilla_id', $upazilla_id)
-		->get('bd_unions')
-		->result();
+    $ci = &get_instance();
+    $ci->db->select('id,bn_name');
+    $results = $ci->db->order_by('id', 'ASC')
+            ->where('upazilla_id', $upazilla_id)
+            ->get('bd_unions')
+            ->result();
 
-	$row = '<option value="0">' . $label . '</option>';
-	foreach ($results as $result) {
-		$row .= '<option value="' . $result->id . '"';
-		$row .= ($selected_id == $result->id) ? ' selected' : '';
-		$row .= '>';
-		$row .= $result->bn_name;
-		$row .= '</option>' . "\r\n";
-	}
-	return $row;
+    $row = '<option value="0">' . $label . '</option>';
+    foreach ($results as $result) {
+            $row .= '<option value="' . $result->id . '"';
+            $row .= ($selected_id == $result->id) ? ' selected' : '';
+            $row .= '>';
+            $row .= $result->bn_name;
+            $row .= '</option>' . "\r\n";
+    }
+    return $row;
 }
 

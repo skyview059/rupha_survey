@@ -59,42 +59,40 @@ class Member extends Admin_controller
         $this->viewAdminContent('member/member/index', $data);
     }
 
-    public function read($id)
-    {
+    public function details($id){
 
-        $row = $this->Member_model->get_by_id($id);
-        $taxAssessments = $this->Member_model->get_member_annual_tax($id);
+        $member = $this->Member_model->get_by_id($id);        
 
-        if ($row) {
+        if ($member) {
             $data = array(
-                'id' => $row->id,
-                'division_name' => $row->division_name,
-                'district_name' => $row->district_name,
-                'upazila_name' => $row->upazila_name,
-                'union_name' => $row->union_name,
-                'present_holding_no' => $row->present_holding_no,
-                'word_no' => $row->word_no,
-                'village' => $row->village,
-                'khana_chief_name_ba' => $row->khana_chief_name_ba,
-                'khana_chief_name_en' => $row->khana_chief_name_en,
-                'mobile_no' => $row->mobile_no,
-                'father_name' => $row->father_name,
-                'mother_name' => $row->mother_name,
-                'date_of_birth' => $row->date_of_birth,
-                'nid' => $row->nid,
-                'social_security_benefit_name' => $row->ssb_name,
-                'house_members' => $row->house_members,
-                'raw_house' => $row->raw_house,
-                'half_baked_house' => $row->half_baked_house,
-                'paved_house' => $row->paved_house,
-                'type_of_infrastructure' => $row->type_of_infrastructure,
-                'annual_tax_assessments' => $taxAssessments,
-                'created_by' => $row->created_by,
-                'updated_by' => $row->updated_by,
-                'created_at' => $row->created_at,
-                'updated_at' => $row->updated_at,
+                'id' => $member->id,
+                'division_name' => $member->division_name,
+                'district_name' => $member->district_name,
+                'upazila_name' => $member->upazila_name,
+                'union_name' => $member->union_name,
+                'present_holding_no' => $member->present_holding_no,
+                'word_no' => En2BD_Digit($member->word_no),
+                'village' => $member->village,
+                'khana_chief_name_ba' => $member->khana_chief_name_ba,
+                'khana_chief_name_en' => $member->khana_chief_name_en,
+                'mobile_no' => En2BD_Digit($member->mobile_no),
+                'father_name' => $member->father_name,
+                'mother_name' => $member->mother_name,
+                'date_of_birth' => DOB($member->date_of_birth),
+                'nid' => En2BD_Digit($member->nid),
+                'social_security_benefit_name' => $member->ssb_name,
+                'house_members' => En2BD_Digit($member->house_members),
+                'raw_house' => $member->raw_house,
+                'half_baked_house' => $member->half_baked_house,
+                'paved_house' => $member->paved_house,
+                'type_of_infrastructure' => $member->type_of_infrastructure,
+                'taxes' => $this->Member_model->get_member_annual_tax($id),
+                'created_by' => Helper::getUserName($member->created_by),
+                'updated_by' => Helper::getUserName($member->updated_by),                
+                'created_at' => globalDateTimeFormat($member->created_at),
+                'updated_at' => globalDateTimeFormat($member->updated_at),
             );
-            $this->viewAdminContent('member/member/read', $data);
+            $this->viewAdminContent('member/member/details', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
             redirect(site_url(Backend_URL . 'member'));

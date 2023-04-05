@@ -4,23 +4,16 @@
 class Helper {    
     
     public static function getUserName($user_id = 0) {
-        $ci = & get_instance();
-        
+        $ci =& get_instance();        
         $ci->db->select('full_name');
         $ci->db->where('id', $user_id);
         $user = $ci->db->get('users')->row();
-        
-        if($user){
-            return $user->full_name;
-        } else {
-            return 'Unknown #ID-' . $user_id;
-        }
-    }    
+        return ($user) ? $user->full_name : "-xx-{$user_id}";
+    }
     
     public static function memberName($id = 0) {
         return self::getSingleColumnName('members', 'name', $id);
     }
-
          
     public static function getMemberDropDown( $area_id = 0, $label = '--Select--' ) {
                 
@@ -196,5 +189,4 @@ class Helper {
         }
         return $opt;
     }
-
 }

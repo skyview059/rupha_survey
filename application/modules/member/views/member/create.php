@@ -22,16 +22,21 @@
             <form class="form-horizontal" id="memberForm" name="memberForm" method="post"> 
                 <div class="form-group">
                     <label for="union_id" class="col-sm-2 control-label">ইউনিয়ন :<sup>*</sup></label>
-                    <div class="col-sm-10">
-                        <?php if(in_array($role_id,[3,4])){?>
+                    <div class="col-sm-10">                        
+                        <select id="union_id" name="union_id" class="form-control">
+                            <?php echo getUnions($union_id, $upazilla_id); ?>
+                        </select>
+                        <?php echo form_error('union_id') ?>
+                        
+                        <?php /* if(in_array($role_id,[3,4])){?>
                             <input type="text" value="<?= $union_bn_name?>" class="form-control" readonly >
                             <input type="hidden" name="union_id" id="union_id" value="<?= $union_id?>">
                         <?php }else{?>
                             <select id="union_id" name="union_id" class="form-control">
                                 <?php echo getUnions($union_id, $upazilla_id); ?>
                             </select>
-                        <?php }?>
-                        <?php echo form_error('union_id') ?>
+                        <?php } */ ?>
+                        
                     </div>
                 </div>
                 <div class="form-group">
