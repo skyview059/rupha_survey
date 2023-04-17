@@ -67,3 +67,7 @@ td.Expense { color: red;}
 
 td.Income,
 td.Expense { font-weight: bold;}
+
+.role_5 {
+    display: none !important;
+}
