@@ -63,7 +63,11 @@
                                 <td>
                                     <?php                                    
                                     echo anchor(site_url(Backend_URL . 'union/update/' . $union->id), '<i class="fa fa-fw fa-edit"></i> Update ', 'class="btn btn-xs btn-warning"');
-                                    echo anchor(site_url(Backend_URL . 'union/delete/' . $union->id), '<i class="fa fa-fw fa-trash"></i> ', 'class="btn btn-xs btn-danger"');
+                                    echo anchor(
+                                            site_url(Backend_URL . 'union/delete/' . $union->id), 
+                                            '<i class="fa fa-fw fa-trash"></i> ', 
+                                            'class="btn btn-xs btn-danger" onclick="return confirm(\'Confirm Delete\')"'
+                                        );
                                     ?>
                                 </td>
                             </tr>

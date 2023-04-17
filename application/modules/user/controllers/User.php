@@ -95,14 +95,14 @@ class User extends Admin_controller{
                 'role_id' => $this->input->post('role_id',TRUE),
                 'full_name' => $this->input->post('full_name',TRUE),
                 'email' => $this->input->post('email',TRUE),
-                'password' => $this->input->post('password',TRUE),
+                'password' => password_encription( $this->input->post('password',TRUE) ),
                 'contact' => $this->input->post('contact',TRUE),
                 'created_at' => date('Y-m-d H:i:s'),
                 'last_access' => '',
                 'status' => $this->input->post('status',TRUE),
-	        );
+	    );
 
-            if(in_array($this->input->post('role_id'), [3,4])){
+            if(in_array($this->input->post('role_id'), [3,4,5])){
                 $data['union_id'] = $this->input->post('union_id',TRUE);
             }
 
@@ -157,6 +157,7 @@ class User extends Admin_controller{
                 'email' => $this->input->post('email',TRUE),		
                 'contact' => $this->input->post('contact',TRUE),		
                 'status' => $this->input->post('status',TRUE),
+                'union_id' => $this->input->post('union_id'),
                 'updated_at' => date('Y-m-d H:i:s'),
             );
 

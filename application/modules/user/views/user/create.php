@@ -111,14 +111,14 @@
                     <a href="<?php echo site_url(Backend_URL . 'user') ?>" class="btn btn-default">Cancel</a>
                 </div>
             </div>
-            <?php echo form_close(); ?>>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </section>
 <script type="text/javascript">
     $(document.body).on('change', '#role_id' ,function(){
         var role_id = $(this).val();
-        if(role_id==3 || role_id==4){
+        if(role_id==3 || role_id==4 || role_id == 5){
             $("#show_bd_area").show('slow');
         }else{
             $("#show_bd_area").hide('slow');

@@ -53,14 +53,14 @@ class Member_model extends Fm_model {
     
     function search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id,$q){
         
-        if (in_array($this->role_id, [3, 4])) {            
-            $this->db->where('members.union_id', $this->union_id);
-            $this->db->where('members.created_by', $this->user_id);
+        if ($this->role_id == 1) {            
+           // $this->db->where('members.created_by', $this->user_id);
+        } elseif($this->role_id == 3) {
+             $this->db->where('members.created_by', $this->user_id);
         } else {
-            if (!empty($user_id)) {
-                $this->db->where('members.created_by', $user_id);
-            }
+            $this->db->where('members.union_id', $this->union_id);
         }
+        
 
         if (!empty($division_id)) {
             $this->db->where('div.id', $division_id);

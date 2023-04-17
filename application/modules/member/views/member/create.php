@@ -76,10 +76,17 @@
                 </div>
                 <div class="form-group">
                     <label for="date_of_birth" class="col-sm-2 control-label">জন্ম তারিখ :<sup>*</sup></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-5">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input type="text" name="date_of_birth" id="date_of_birth" placeholder="জন্ম তারিখ" value="<?php echo $date_of_birth; ?>" class="form-control js_datepicker" readonly="readonly"/>
+                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
+                            <!--<input type="text" name="date_of_birth" id="date_of_birth" placeholder="জন্ম তারিখ" value="<?php echo $date_of_birth; ?>" class="form-control js_datepicker" readonly="readonly"/>-->
+                            
+                            <span class="input-group-addon">Day/</span>
+                            <input type="text" name="dob[dd]" placeholder="DD" class="form-control" maxlength="2"/>
+                            <span class="input-group-addon">Month/</span>
+                            <input type="text" name="dob[mm]" placeholder="MM" class="form-control" maxlength="2"/>
+                            <span class="input-group-addon">Year/</span>
+                            <input type="text" name="dob[yy]" placeholder="YYYY" class="form-control" maxlength="4"/>
                         </div>
                         <?php echo form_error('date_of_birth') ?>
                     </div>

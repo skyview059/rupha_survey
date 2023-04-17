@@ -84,8 +84,7 @@
                             <th>মাতা</th>
                             <th>জন্ম তারিখ</th>
                             <th>জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং</th>
-                            <th>পরিবারের সদস্য সংখ্যা</th>
-                            <th>সামাজিক সুরক্ষার সুবিধা</th>
+                            <th>পরিবারের সদস্য সংখ্যা</th>                            
                             <th width="50">Action</th>
                         </tr>
                     </thead>
@@ -103,8 +102,7 @@
                                 <td><?php echo $member->mother_name; ?></td>
                                 <td><?php echo $member->date_of_birth; ?></td>
                                 <td><?php echo $member->nid; ?></td>
-                                <td><?php echo $member->house_members; ?></td>
-                                <td><?php echo $member->ssb_name; ?></td>
+                                <td><?php echo $member->house_members; ?></td>                                
                                 <td>
                                     <?php
                                     echo anchor(site_url(Backend_URL . 'member/read/' . $member->id), '<i class="fa fa-fw fa-external-link"></i> View', 'class="btn btn-xs btn-primary"');

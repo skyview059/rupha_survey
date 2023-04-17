@@ -33,17 +33,21 @@ class Admin_controller extends MX_Controller {
         if( $this->input->is_ajax_request() ){
             $this->load->view($view, $data);        
         } else {
-            $this->load->view('layout/header');
+            $this->load->view('layout/header', ['role_class' => "role_{$this->role_id}"]);
             $this->load->view('layout/sidebar'); 
             //$this->load->view('maintenance');    
             
-            $this->load->view($view, $data); 
-//            
-//            if( $this->check_access( $view ) ){
-//                $this->load->view($view, $data); 
-//            } else {
-//                $this->load->view('restrict');    
-//            }
+//            $this->load->view($view, $data); 
+            
+            if( $this->check_access( $view ) ){
+                $this->load->view($view, $data); 
+            } else {                
+                $data = [
+                    'role_id'   => $this->role_id,
+                    'accesskey' => $view,
+                ];
+                $this->load->view('restrict', $data );    
+            }
             $this->load->view('layout/footer');
         }
     }

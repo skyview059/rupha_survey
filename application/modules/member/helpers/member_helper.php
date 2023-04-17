@@ -1,21 +1,25 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 function memberTabs($id, $active_tab) {
-	$html = '<ul class="tabsmenu hide_on_print">';
-	$tabs = [
-		'details' => 'Details',
-		'update' => 'Update',
-		'tax' => 'Yearly Tax',
-		'delete' => 'Delete',
-	];
+    $role_id  = getLoginUserData('role_id');
+    
+    $html = "<ul class=\"tabsmenu hide_on_print role_{$role_id}\">";
+    $tabs = [
+            'details' => 'Details',
+            'update' => 'Update',
+            'tax' => 'Yearly Tax',
+            'delete' => 'Delete',
+    ];
 
-	foreach ($tabs as $link => $tab) {
-		$html .= '<li><a href="' . Backend_URL . "member/{$link}/{$id}\"";
-		$html .= ($link == $active_tab) ? ' class="active"' : '';
-		$html .= '>' . $tab . '</a></li>';
-	}
-	$html .= '</ul>';
-	return $html;
+    foreach ($tabs as $link => $tab) {
+        if(checkPermission("member/{$link}", $role_id)){
+            $html .= '<li><a href="' . Backend_URL . "member/{$link}/{$id}\"";
+            $html .= ($link == $active_tab) ? ' class="active"' : '';
+            $html .= '>' . $tab . '</a></li>';
+        }
+    }
+    $html .= '</ul>';
+    return $html;
 }
 
 function getSocialSecurityBenefit($selected_id = 0, $label = '-- নির্বাচন করুন --') {

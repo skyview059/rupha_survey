@@ -108,12 +108,13 @@
                 <i class="fa fa-long-arrow-left"></i> 
                 Back to List
             </a>
-                 
-            <a href="<?php echo site_url(Backend_URL . 'member/update/' . $id) ?>" class="btn btn-primary"> 
+                
+            
+            <a href="<?php echo site_url(Backend_URL . 'member/update/' . $id) ?>" class="btn btn-primary <?= $role_class; ?>"> 
                <i class="fa fa-edit"></i> Edit
             </a>
             
-            <span onclick="print(document);" class="btn btn-warning"> 
+            <span onclick="print(document);" class="btn btn-warning <?= $role_class; ?>"> 
                <i class="fa fa-print"></i> Print
             </span>
         </div>

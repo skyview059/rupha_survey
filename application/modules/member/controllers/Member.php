@@ -30,6 +30,11 @@ class Member extends Admin_controller
         $union_id = $this->input->get('union_id', TRUE);
         $user_id = $this->input->get('user_id', TRUE);
         $start = intval($this->input->get('start'));
+        
+        
+        if($this->role_id == 4){
+            $union_id = (int) getLoginUserData('union_id');
+        }
 
         $config['base_url'] = build_pagination_url(Backend_URL . 'member', 'start');
         $config['first_url'] = build_pagination_url(Backend_URL . 'member', 'start');
@@ -39,11 +44,13 @@ class Member extends Admin_controller
         $config['total_rows'] = $this->Member_model->total_rows($q, $division_id, $district_id, $upazilla_id, $union_id, $user_id);
         $members = $this->Member_model->get_limit_data($config['per_page'], $start, $q, $division_id, $district_id, $upazilla_id, $union_id, $user_id);
 
+        
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
         $data = array(
             'members' => $members,
+//            'sql_query' => $this->db->last_query(),
             'role_id' => $this->role_id,
             'division_id' => $division_id,
             'district_id' => $district_id,
@@ -55,6 +62,7 @@ class Member extends Admin_controller
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
+            'role_class' => "role_{$this->role_id}"
         );
         $this->viewAdminContent('member/member/index', $data);
     }
@@ -91,6 +99,7 @@ class Member extends Admin_controller
                 'updated_by' => Helper::getUserName($member->updated_by),                
                 'created_at' => globalDateTimeFormat($member->created_at),
                 'updated_at' => globalDateTimeFormat($member->updated_at),
+                'role_class' => "role_{$this->role_id}"
             );
             $this->viewAdminContent('member/member/details', $data);
         } else {
@@ -112,7 +121,7 @@ class Member extends Admin_controller
             'union_id' => set_value('union_id', $union_info->id ?? ''),
             'union_name' => $union_info->union_name ?? '',
             'union_bn_name' => $union_info->union_bn_name ?? '',
-            'upazilla_id' => $union_info->upazilla_id ?? 0,
+            'upazilla_id' => 213, //$union_info->upazilla_id ?? 0,
             'present_holding_no' => set_value('present_holding_no'),
             'word_no' => set_value('word_no'),
             'village' => set_value('village'),
@@ -121,7 +130,10 @@ class Member extends Admin_controller
             'mobile_no' => set_value('mobile_no'),
             'father_name' => set_value('father_name'),
             'mother_name' => set_value('mother_name'),
-            'date_of_birth' => set_value('date_of_birth'),
+//            'date_of_birth' => set_value('date_of_birth'),
+            'dob[dd]' => set_value('dob[dd]'),
+            'dob[mm]' => set_value('dob[mm]'),
+            'dob[yy]' => set_value('dob[yy]'),
             'nid' => set_value('nid'),
             'social_security_benefit_id' => set_value('social_security_benefit_id'),
             'house_members' => set_value('house_members'),
@@ -154,6 +166,7 @@ class Member extends Admin_controller
             $previousFiscalYear = $this->input->post('previous_fiscal_year');
             $totalDueAmount = $this->input->post('total_due_amount');
 
+            $dob = $this->input->post('dob');
             $data = array(
                 'union_id' => $this->input->post('union_id', TRUE),
                 'present_holding_no' => $this->input->post('present_holding_no', TRUE),
@@ -164,7 +177,8 @@ class Member extends Admin_controller
                 'mobile_no' => $this->input->post('mobile_no', TRUE),
                 'father_name' => $this->input->post('father_name', TRUE),
                 'mother_name' => $this->input->post('mother_name', TRUE),
-                'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+//                'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+                'date_of_birth' => "{$dob['yy']}-{$dob['mm']}-{$dob['dd']}",
                 'nid' => $this->input->post('nid', TRUE),
                 'social_security_benefit_id' => $this->input->post('social_security_benefit_id', TRUE),
                 'house_members' => $this->input->post('house_members', TRUE),
@@ -227,7 +241,10 @@ class Member extends Admin_controller
                 'mobile_no' => set_value('mobile_no', $row->mobile_no),
                 'father_name' => set_value('father_name', $row->father_name),
                 'mother_name' => set_value('mother_name', $row->mother_name),
-                'date_of_birth' => set_value('date_of_birth', $row->date_of_birth),
+//                'date_of_birth' => set_value('date_of_birth', $row->date_of_birth),
+                'dob_dd' => set_value('dob[dd]', date('d', strtotime($row->date_of_birth))  ),
+                'dob_mm' => set_value('dob[mm]', date('m', strtotime($row->date_of_birth))  ),
+                'dob_yy' => set_value('dob[yy]', date('Y', strtotime($row->date_of_birth))  ),
                 'nid' => set_value('nid', $row->nid),
                 'social_security_benefit_id' => set_value('social_security_benefit_id', $row->social_security_benefit_id),
                 'house_members' => set_value('house_members', $row->house_members),
@@ -239,6 +256,14 @@ class Member extends Admin_controller
                 'updated_by' => $this->user_id,
                 'updated_at' => date('Y-m-d H:i:s'),
             );
+            
+            if( $row->date_of_birth == '0000-00-00'){
+                $data['dob_dd'] = set_value('dob[dd]');
+                $data['dob_mm'] = set_value('dob[mm]');
+                $data['dob_yy'] = set_value('dob[yy]');
+            }
+            
+            
             $this->viewAdminContent('member/member/update', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
@@ -256,7 +281,7 @@ class Member extends Admin_controller
         if ($this->form_validation->run() == FALSE) {
             echo ajaxRespond('Fail', validation_errors());
         } else {
-
+            $dob = $this->input->post('dob');
             $fiscalYear = $this->input->post('fiscal_year');
             $annualTaxAmount = $this->input->post('annual_tax_amount');
             $currentDepositAmount = $this->input->post('current_deposit_amount');
@@ -275,7 +300,8 @@ class Member extends Admin_controller
                 'mobile_no' => $this->input->post('mobile_no', TRUE),
                 'father_name' => $this->input->post('father_name', TRUE),
                 'mother_name' => $this->input->post('mother_name', TRUE),
-                'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+//                'date_of_birth' => $this->input->post('date_of_birth', TRUE),
+                'date_of_birth' => "{$dob['yy']}-{$dob['mm']}-{$dob['dd']}",
                 'nid' => $this->input->post('nid', TRUE),
                 'social_security_benefit_id' => $this->input->post('social_security_benefit_id', TRUE),
                 'house_members' => $this->input->post('house_members', TRUE),
@@ -459,7 +485,7 @@ class Member extends Admin_controller
         $this->form_validation->set_rules('khana_chief_name_en', 'khana chief name en', 'trim|required', array('required' => 'খানা প্রধানের নাম (ইংরেজিতে) অবশ্যই পূরণ করতে হবে!'));
         $this->form_validation->set_rules('father_name', 'father name', 'trim|required', array('required' => 'পিতা/স্বামীর নাম অবশ্যই পূরণ করতে হবে!'));
         $this->form_validation->set_rules('mother_name', 'mother name', 'trim|required', array('required' => 'মাতার নাম অবশ্যই পূরণ করতে হবে!'));
-        $this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required', array('required' => 'জন্ম তারিখ অবশ্যই পূরণ করতে হবে!'));
+//        $this->form_validation->set_rules('date_of_birth', 'date of birth', 'trim|required', array('required' => 'জন্ম তারিখ অবশ্যই পূরণ করতে হবে!'));
         $this->form_validation->set_rules('social_security_benefit_id', 'social security benefit id', 'trim|required|numeric', array('required' => 'জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং অবশ্যই পূরণ করতে হবে!'));
         $this->form_validation->set_rules('id', 'id', 'trim');
         $this->form_validation->set_error_delimiters('<p class="text-danger">', '</p>');

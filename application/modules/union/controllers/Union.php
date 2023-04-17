@@ -116,24 +116,8 @@ class Union extends Admin_controller{
         }
     }
 
+    
     public function delete($id){
-        $row = $this->Union_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-		'id' => $row->id,
-		'upazilla_id' => $row->upazilla_id,
-		'name' => $row->name,
-		'bn_name' => $row->bn_name,
-	    );
-            $this->viewAdminContent('union/union/delete', $data);
-        } else {
-            $this->session->set_flashdata('message', '<p class="ajax_error">Union Not Found</p>');
-            redirect(site_url( Backend_URL. 'union'));
-        }
-    }
-
-
-    public function delete_action($id){
         $row = $this->Union_model->get_by_id($id);
 
         if ($row) {

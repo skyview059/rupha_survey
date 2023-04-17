@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div id="show_bd_area" <?= (in_array($role_id, [3,4]) ? 'style="display:block;"' : 'style="display:none;"')?>>
+                <div id="show_bd_area" <?= (in_array($role_id, [3,4,5]) ? 'style="display:block;"' : 'style="display:none;"')?>>
                     <div class="form-group">
                         <label for="role_id" class="col-sm-2 control-label">Select Division :<sup>*</sup></label>
                         <div class="col-sm-10">                    

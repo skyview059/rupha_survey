@@ -45,7 +45,7 @@
         <link href="assets/lib/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css"/>        
         
         <link href="assets/custom/ajax.css" rel="stylesheet" type="text/css">
-        <link href="assets/custom/style.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/custom/style.css?v=2" rel="stylesheet" type="text/css"/>
         <link href="assets/custom/print.css" rel="stylesheet" type="text/css"/>
         
         
@@ -76,9 +76,14 @@
 
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav"> 
-                            <li><a href="<?= site_url(Backend_URL . 'member/create'); ?>"> <i class="fa fa-user-plus"></i> Member Registration </a></li>
+                            <li class="<?= $role_class; ?>">
+                                <a href="<?= site_url(Backend_URL . 'member/create'); ?>"> 
+                                    <i class="fa fa-user-plus"></i> 
+                                    Member Registration 
+                                </a>
+                            </li>
                             
-                            <li>
+                            <li class="<?= $role_class; ?>">
                                 <a href="member/summary">                                    
                                     <i class="fa fa-bar-chart-o"></i>
                                     Summary
