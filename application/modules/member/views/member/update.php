@@ -1,5 +1,4 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<?php load_module_asset('users','css'); ?>
 <section class="content-header">
     <h1>Member<small><?php echo $button ?></small> </h1>
     <ol class="breadcrumb">

@@ -263,7 +263,7 @@ class Member extends Admin_controller
                 $data['dob_yy'] = set_value('dob[yy]');
             }
             
-            
+//            dd( $data );
             $this->viewAdminContent('member/member/update', $data);
         } else {
             $this->session->set_flashdata('message', '<p class="ajax_error">Member Not Found</p>');
