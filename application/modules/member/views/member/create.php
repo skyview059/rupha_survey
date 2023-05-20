@@ -98,6 +98,16 @@
                         <?php echo form_error('nid') ?>
                     </div>
                 </div>
+                
+                <div class="form-group">
+                    <label for="profession" class="col-sm-2 control-label">পেশা:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="profession" id="profession" placeholder="পেশা" value="<?php echo $profession; ?>" />
+                        <?php echo form_error('profession') ?>
+                    </div>
+                </div>
+                
+                
                 <div class="form-group">
                     <label for="village" class="col-sm-2 control-label">গ্রাম/মহল্লার নাম :<sup>*</sup></label>
                     <div class="col-sm-10">

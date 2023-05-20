@@ -31,6 +31,7 @@
                     <tr><td>মাতার নাম</td><td>:</td><td><?php echo $mother_name; ?></td></tr>
                     <tr><td>জন্ম তারিখ</td><td>:</td><td><?php echo $date_of_birth; ?></td></tr>
                     <tr><td>জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন নং</td><td>:</td><td><?php echo $nid; ?></td></tr>
+                    <tr><td>পেশা</td><td>:</td><td><?php echo $profession; ?></td></tr>
                     <tr><td>গ্রাম/মহল্লার নাম</td><td>:</td><td><?php echo $village; ?></td></tr>
                     <tr><td>ওয়ার্ড নং</td><td>:</td><td><?php echo $word_no; ?></td></tr>
                     <tr><td>মোবাইল নং</td><td>:</td><td><?php echo $mobile_no; ?></td></tr>

@@ -12,3 +12,7 @@ ALTER TABLE `member_relatives` ADD FOREIGN KEY (`member_id`) REFERENCES `members
 
 
 --- আর্নিকা কত মিনিট পর পর ব্যথা জায়গায় দেখা যায়?
+
+
+/* Date: 20th May 2023 */
+ALTER TABLE `members` ADD `profession` VARCHAR(120) NULL AFTER `nid`;
