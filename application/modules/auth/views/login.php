@@ -24,22 +24,30 @@
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  
+  <style type="text/css">
+      .login-box, .register-box {
+          margin-top: 1%;
+          background-color: #FFF;
+      }
+  </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-      <img src="assets/logo.jpg" height="50" class="img-circle" alt="Logo">
-      <a href="<?php echo base_url(); ?>"><?php echo getSettingItem( 'comName' ) ?></a>
+  <div class="login-logo" style="padding-top:25px;">
+      
+      <!--<img src="assets/logo.jpg" height="50" class="img-circle" alt="Logo">-->      
+      <!--<a href="<?php //echo base_url(); ?>"><?php //echo getSettingItem( 'comName' ) ?></a>-->
+      <img src="uploads/rupsa-logo.jpg" height="125" alt="Logo"/>
+      
+      <h1>Holding Assessment</h1>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    
-
-        
-    
+      
       <form id="credential" action="<?php echo base_url('auth/login'); ?>" method="post">
           <div id="loginPart"> 
-        <p class="login-box-msg">Sign in to start your session</p>      
+        <!--<p class="login-box-msg">Sign in to start your session</p>-->      
         <div id="respond"></div>
         <div class="form-group has-feedback">            
           <input type="text" id="username" name="username" class="form-control" placeholder="username"/>

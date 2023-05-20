@@ -14,7 +14,7 @@
 <section class="content">
     <?php echo memberTabs($id, 'details'); ?>
     <div class="box no-border">
-        <div class="box-header text-center">
+        <div class="box-header text-center">            
             <h3 class="no-margin"><?php echo $union_name; ?> ইউনিয়ন পরিষদ</h3>
             <h5 class="no-margin">উপজেলা: <?= $upazila_name; ?>, জেলা:<?= $district_name; ?></h5>
         </div>

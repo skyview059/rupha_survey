@@ -59,8 +59,50 @@
                                 <?php echo Helper::getSecretaryDropDown($user_id); ?>
                             </select>
                         </div>
+                    </div>
+                
+                    <div class="row">
+                        
                         <div class="col-md-2">
+                            <select name="ssb_id" class="form-control">
+                                <?php //echo getSocialSecurityBenefit($ssb_id, '-সামাজিক সুরক্ষার সুবিধা-'); ?>
+                                <?php echo selectOptions($ssb_id, [ 
+                                        'All' => '-সামাজিক সুরক্ষার সুবিধা-', 
+                                        'Yes' => 'আছে ', 
+                                        'No' => 'নেই' 
+                                    ]); ?>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <select name="house_type" class="form-control">                                
+                                <?php echo selectOptions($house_type, [ 
+                                        'All' => ' -- বসতঘর/অবকাঠামোর ধরণ --', 
+                                        'raw_house' => 'কাঁচা ঘর ', 
+                                        'half_baked_house' => 'আধাপাকা ঘর ',
+                                        'paved_house' => 'পাকা ঘর' 
+                                    ]); ?>
+                            </select>
+                        </div>
+                        
+                        
+                        
+                        
+                        <div class="col-md-4">
                             <div class="input-group">
+                                <span class="input-group-addon">Search by</span>
+                                <select name="column" class="form-control">
+                                    <?php echo selectOptions($column, [
+                                        'all' => '--All--',
+                                        'khana_chief_name_en' => 'Name En',
+                                        'khana_chief_name_bn' => 'Name Bn',
+                                        'nid' => 'NID',
+                                        'mobile_no' => 'Mobile No',                                        
+                                        'present_holding_no' => 'Hoding No',
+                                        'word_no' => 'Word No',                                    
+                                    ]); ?>
+                                </select>
+                                <span class="input-group-btn">=</span>
                                 <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                                 <span class="input-group-btn">
                                     <?php if ($q != '') { ?>
@@ -77,7 +119,7 @@
 
         <div class="box-body">
             <?php echo $this->session->flashdata('message'); ?>
-            <!--<pre><?php // echo $sql_query; ?></pre>-->
+            <!--<pre><?php //echo $sql_query; ?></pre>-->
             <div class="table-responsive">
                 <table class="table table-striped table-condensed">
                     <thead>
@@ -90,10 +132,13 @@
                             <th>গ্রাম/মহল্লা</th>
                             <th class="text-center">ওয়ার্ড নং</th>
                             <th>মোবাইল নং</th>
+                            
+                            <!--
                             <th>পিতা/স্বামী</th>                            
                             <th>জন্ম তারিখ</th>
                             <th class="text-center" width="60">বয়স </th>
-                            
+                            -->
+                            <th>পেশা</th>
                             <!--<th>Creator</th>-->
                             <th class="text-center" width="150">Action</th>
                         </tr>
@@ -110,11 +155,14 @@
                                 <td><?php echo $member->village; ?></td>
                                 <td class="text-center"><?php echo En2BD_Digit($member->word_no); ?></td>
                                 <td><?php echo En2BD_Digit($member->mobile_no); ?></td>
-                                <td><?php echo $member->father_name; ?></td>
                                 
-                                <td><?php echo DOB($member->date_of_birth); ?></td>
-                                <td class="text-center"><?php echo DOB_Age($member->date_of_birth); ?></td>
+                                <!--
+                                <td><?php //echo $member->father_name; ?></td>                                
+                                <td><?php //echo DOB($member->date_of_birth); ?></td>
+                                <td class="text-center"><?php //echo DOB_Age($member->date_of_birth); ?></td>
+                                -->
                                 
+                                <td><?php echo $member->profession; ?></td>    
                                 
 <!--                                <td><?php //echo $member->full_name; ?></td>-->
                                 <td class="text-center">

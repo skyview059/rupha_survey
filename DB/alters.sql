@@ -16,3 +16,6 @@ ALTER TABLE `member_relatives` ADD FOREIGN KEY (`member_id`) REFERENCES `members
 
 /* Date: 20th May 2023 */
 ALTER TABLE `members` ADD `profession` VARCHAR(120) NULL AFTER `nid`;
+
+
+SELECT id,khana_chief_name_ba,raw_house,half_baked_house,paved_house, (raw_house + half_baked_house + paved_house) as total FROM `members`;

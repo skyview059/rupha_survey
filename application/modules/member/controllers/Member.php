@@ -29,6 +29,10 @@ class Member extends Admin_controller
         $upazilla_id = $this->input->get('upazilla_id', TRUE);
         $union_id = $this->input->get('union_id', TRUE);
         $user_id = $this->input->get('user_id', TRUE);
+        $ssb_id = $this->input->get('ssb_id', TRUE);
+        $column = $this->input->get('column', TRUE);
+        $house_type = $this->input->get('house_type', TRUE);
+        
         $start = intval($this->input->get('start'));
         
         
@@ -41,8 +45,8 @@ class Member extends Admin_controller
 
         $config['per_page'] = 25;
         $config['page_query_string'] = TRUE;
-        $config['total_rows'] = $this->Member_model->total_rows($q, $division_id, $district_id, $upazilla_id, $union_id, $user_id);
-        $members = $this->Member_model->get_limit_data($config['per_page'], $start, $q, $division_id, $district_id, $upazilla_id, $union_id, $user_id);
+        $config['total_rows'] = $this->Member_model->total_rows( $division_id, $district_id, $upazilla_id, $union_id, $user_id, $ssb_id, $house_type, $column, $q);
+        $members = $this->Member_model->get_limit_data($config['per_page'], $start, $division_id, $district_id, $upazilla_id, $union_id, $user_id, $ssb_id, $house_type, $column, $q);
 
         
         $this->load->library('pagination');
@@ -58,6 +62,9 @@ class Member extends Admin_controller
             'union_id' => $union_id,
             'user_id' => $user_id,
             'union_info' => $union_info,
+            'ssb_id' => $ssb_id,
+            'column' => $column,
+            'house_type' => $house_type,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],

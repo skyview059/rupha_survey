@@ -14,7 +14,7 @@ class Member_model extends Fm_model {
     }
 
     // get total rows
-    function total_rows($q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null, $user_id = null)
+    function total_rows($division_id = null, $district_id = null, $upazilla_id = null, $union_id = null, $user_id = null, $ssb_id=0, $house_type='all', $column='all', $q=null)
     {
        
         $this->db->from($this->table);
@@ -23,12 +23,12 @@ class Member_model extends Fm_model {
         $this->db->join('bd_districts as dis', 'dis.id = up.district_id', 'left');
         $this->db->join('bd_divisions as div', 'div.id = dis.division_id', 'left');
         $this->db->join('users', 'users.id = members.created_by', 'left');        
-        $this->search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id,$q );
+        $this->search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id, $ssb_id, $house_type, $column, $q  );
         return $this->db->count_all_results();
     }
 
     // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null, $user_id = null)
+    function get_limit_data($limit, $start, $division_id = null, $district_id = null, $upazilla_id = null, $union_id = null, $user_id = null, $ssb_id=0, $house_type='', $column='all', $q=null)
     {
 
         $this->db->select('members.*, un.bn_name as union_name, up.bn_name as upazila_name');
@@ -45,20 +45,22 @@ class Member_model extends Fm_model {
         $this->db->join('users', 'users.id = members.created_by', 'left');
         $this->db->order_by($this->id, $this->order);
 
-        $this->search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id,$q );
+        $this->search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id, $ssb_id, $house_type, $column, $q );
         
         $this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
     
-    function search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id,$q){
+    function search_sql($division_id, $district_id, $upazilla_id, $union_id, $user_id, $ssb_id, $house_type, $column, $q ){
         
         if ($this->role_id == 1) {            
            // $this->db->where('members.created_by', $this->user_id);
         } elseif($this->role_id == 3) {
              $this->db->where('members.created_by', $this->user_id);
         } else {
-            $this->db->where('members.union_id', $this->union_id);
+            if( $this->union_id ){
+                $this->db->where('members.union_id', $this->union_id);
+            }
         }
         
 
@@ -78,18 +80,33 @@ class Member_model extends Fm_model {
             $this->db->where('un.id', $union_id);
         }
 
-        if ($q) {
+        if ($ssb_id == 'Yes') {
+            $this->db->where('members.social_security_benefit_id !=', '0' );
+        }
+        
+        if ($ssb_id == 'No') {
+            $this->db->where('members.social_security_benefit_id', '0' );
+        }
+        
+        if (in_array($house_type, ['raw_house', 'half_baked_house', 'paved_house'])) {
+            $this->db->where("members.{$house_type} >", '0' );
+        }
+        
+        if ($column == 'all' && $q) {
             $this->db->group_start();
             $this->db->like('members.id', $q);
             $this->db->or_like('members.present_holding_no', $q);
-			$this->db->or_like('members.nid', $q);
-			$this->db->or_like('members.mobile_no', $q);
-			$this->db->or_like('members.word_no', $q);
-			$this->db->or_like('members.village', $q);
-			$this->db->or_like('members.khana_chief_name_ba', $q);
-			$this->db->or_like('members.khana_chief_name_en', $q);
-			$this->db->or_like('members.date_of_birth', $q);
+            $this->db->or_like('members.nid', $q);
+            $this->db->or_like('members.mobile_no', $q);
+            $this->db->or_like('members.word_no', $q);
+            $this->db->or_like('members.village', $q);
+            $this->db->or_like('members.khana_chief_name_ba', $q);
+            $this->db->or_like('members.khana_chief_name_en', $q);            
             $this->db->group_end();
+        }
+        
+        if ( !empty($column) && $column != 'all' ) {
+            $this->db->like("members.{$column}", $q);
         }
 
     }
